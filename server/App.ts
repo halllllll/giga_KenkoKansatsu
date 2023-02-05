@@ -1,4 +1,4 @@
-import { ss } from './const';
+import { ss } from './Const';
 
 export const doGet = (): GoogleAppsScript.HTML.HtmlOutput => {
   return HtmlService.createHtmlOutputFromFile('index.html')
@@ -7,9 +7,9 @@ export const doGet = (): GoogleAppsScript.HTML.HtmlOutput => {
 };
 
 const affectCountToA1 = (count: number): void => {
-  const sheet = ss.getActiveSheet();
-  const range = sheet.getRange('A1');
-  range.setValue(count);
+  const sheet = ss.getSheetByName('シート1');
+  const range = sheet?.getRange('A1');
+  range?.setValue(count);
 };
 
 const getSpreadSheetName = (): string | null => {

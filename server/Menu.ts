@@ -1,5 +1,5 @@
 import { getSpreadSheetName } from './App';
-import { ss } from './const';
+import { ss } from './Const';
 
 /**
  * Sheetでの操作部分
