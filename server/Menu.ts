@@ -1,14 +1,14 @@
-import { getSpreadSheetName } from './App';
 import { ss } from './Const';
-
 /**
  * Sheetでの操作部分
  * シートの初期化などをする
+ * （サーバー側のビルドのやり方がわからず、変数や関数の依存関係が解決されない？ので、SpreadSheetのカスタムメニューは独立して作ってる
  */
 
-export const onOpen = (): void => {
-  const menu = SpreadsheetApp.getUi().createMenu(
-    `${getSpreadSheetName() ?? 'カスタム'} メニュー`
+const onOpen = (): void => {
+  const ssUi = SpreadsheetApp.getUi();
+  const menu = ssUi.createMenu(
+    `${SpreadsheetApp.getActive().getName() ?? 'カスタム'} メニュー`
   );
   menu.addItem('初期化', 'initEnv_');
   menu.addToUi();
@@ -16,16 +16,16 @@ export const onOpen = (): void => {
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const initEnv_ = (): void => {
-  const ui = SpreadsheetApp.getUi();
-  const response = ui.prompt(
+  const ssUi = SpreadsheetApp.getUi();
+  const response = ssUi.prompt(
     'CAUTION',
     'すべてのデータを初期化します。\n（この操作は取り消せません。アーカイブを残しておきたいときは、初期化する前にSpreadSheetごとコピーを作成しておいてください）',
-    ui.ButtonSet.YES_NO
+    ssUi.ButtonSet.YES_NO
   );
   switch (response.getSelectedButton()) {
-    case ui.Button.NO:
+    case ssUi.Button.NO:
       break;
-    case ui.Button.YES:
+    case ssUi.Button.YES:
       init_();
       break;
     default:
@@ -40,3 +40,5 @@ const init_ = (): void => {
     return sheet.clear();
   });
 };
+
+export { onOpen };

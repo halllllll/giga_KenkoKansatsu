@@ -13,12 +13,50 @@ const App: FC = () => {
     await serverFunctions.affectCountToA1(count);
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+  const [data, setData] = useState<any | string>('');
+  const handleGetDataFromGAS = async () => {
+    interface User {
+      username: string;
+      password: string;
+      isLocal: number;
+      schoolCode: string;
+      schoolName: string;
+      familyName: string;
+      givenName: string;
+      familyKanaName: string;
+      givenKanaName: string;
+      renewName: string;
+      renewPassword: string;
+      renewClass: string;
+      termName: string;
+      className: string;
+      classRole: string;
+      TekitouName: string;
+    }
+    const ret = (await serverFunctions.getDataFromGAS()) as string;
+    console.log('OK!!!!');
+    console.log(`return? ${ret}`);
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+    const obj = JSON.parse(ret);
+    console.log('obj:');
+    console.log(obj);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
+    const users: User[] = obj.result;
+    setData(users[0].TekitouName);
+  };
+
   const [title, setTitle] = useState<string | null>('');
   useEffect(() => {
     const getTitle = async () => {
-      const spreadsheettitle = await serverFunctions.getSpreadSheetName();
+      const [spreadsheettitle, FormElements] = await Promise.all([
+        serverFunctions.getSpreadSheetName(),
+        serverFunctions.PrepareForm(),
+      ]);
       console.log(`get spread sheet title: ${spreadsheettitle ?? '(null)'}`);
       setTitle(spreadsheettitle);
+      console.log('got form data!');
+      console.log(FormElements, FormElements.Students);
     };
     void getTitle();
   }, []);
@@ -43,6 +81,17 @@ const App: FC = () => {
             SpreadSheetにカウントを反映する
           </button>
         </div>
+        <div className="card">
+          <button
+            onClick={async () => {
+              await handleGetDataFromGAS();
+              console.log('done');
+            }}
+          >
+            SpreadSheetからFormを構成するデータを取得する
+          </button>
+        </div>
+        <div>{data ?? 'OK'}</div>
         <p>
           Edit <code>src/App.tsx</code> and save to test HMR
         </p>
