@@ -1,6 +1,6 @@
 import { type FC, useState, useEffect } from 'react';
 import { GASClient } from 'gas-client';
-import type * as server from '../server/App';
+import type * as server from '../server/Main';
 import './App.css';
 
 const { serverFunctions } = new GASClient<typeof server>();

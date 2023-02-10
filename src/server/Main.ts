@@ -53,7 +53,6 @@ const getDataFromGAS = (): GoogleAppsScript.Content.TextOutput | string => {
   const ret = values.map((row) => {
     return row as User[];
   });
-  // eslint-disable-next-line @typescript-eslint/no-base-to-string, @typescript-eslint/restrict-template-expressions
 
   const retObj = JSON.stringify({
     result: ret,
@@ -61,10 +60,10 @@ const getDataFromGAS = (): GoogleAppsScript.Content.TextOutput | string => {
 
   console.log(`return: ${retObj}`);
 
-  // return ContentService.createTextOutput(retObj).setMimeType(
-  //   ContentService.MimeType.JSON
-  // ) as unknown as string;
-  return retObj;
+  return ContentService.createTextOutput(retObj).setMimeType(
+    ContentService.MimeType.JSON
+  );
+  // return retObj;
 };
 
 // Exposed to GAS global function
