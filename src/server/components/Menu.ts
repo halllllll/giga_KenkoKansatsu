@@ -1,4 +1,4 @@
-import { ss } from './Const';
+import { ss, ssApp } from '../Config/Const';
 /**
  * Sheetでの操作部分
  * シートの初期化などをする
@@ -6,17 +6,18 @@ import { ss } from './Const';
  */
 
 const onOpen = (): void => {
-  const ssUi = SpreadsheetApp.getUi();
-  const menu = ssUi.createMenu(
-    `${SpreadsheetApp.getActive().getName() ?? 'カスタム'} メニュー`
-  );
+  const menu = ssApp
+    .getUi()
+    .createMenu(
+      `${SpreadsheetApp.getActive().getName() ?? 'カスタム'} メニュー`
+    );
   menu.addItem('初期化', 'initEnv_');
   menu.addToUi();
 };
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const initEnv_ = (): void => {
-  const ssUi = SpreadsheetApp.getUi();
+  const ssUi = ssApp.getUi();
   const response = ssUi.prompt(
     'CAUTION',
     'すべてのデータを初期化します。\n（この操作は取り消せません。アーカイブを残しておきたいときは、初期化する前にSpreadSheetごとコピーを作成しておいてください）',
@@ -40,5 +41,8 @@ const init_ = (): void => {
     return sheet.clear();
   });
 };
+
+global.initEnv_ = initEnv_;
+global.init_ = init_;
 
 export { onOpen };

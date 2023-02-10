@@ -1,17 +1,15 @@
 // Formを司る何か
 
-import { ss } from './Const';
-import { MemberSheetName, type Student, type Role } from './SheetData';
+import { ss } from '../Config/Const';
+import { MemberSheetName, type Student, type Role } from '../Config/SheetData';
 
 type FormRegister = {
   Students: Student[];
 };
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const PrepareForm = async (): Promise<FormRegister> => {
+const PrepareForm = (): FormRegister => {
   const sheetName: string = MemberSheetName;
-  // eslint-disable-next-line @typescript-eslint/await-thenable
-  const studentSheet = await ss.getSheetByName(sheetName);
+  const studentSheet = ss.getSheetByName(sheetName);
 
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   const students = studentSheet!

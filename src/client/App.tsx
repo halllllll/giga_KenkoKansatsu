@@ -13,8 +13,7 @@ const App: FC = () => {
     await serverFunctions.affectCountToA1(count);
   };
 
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-  const [data, setData] = useState<any | string>('');
+  const [data, setData] = useState<string>('');
   const handleGetDataFromGAS = async () => {
     interface User {
       username: string;

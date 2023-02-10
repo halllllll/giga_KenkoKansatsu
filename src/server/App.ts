@@ -1,5 +1,6 @@
-import { ss } from './Const';
-import { PrepareForm } from './Form';
+import { ss } from './Config/Const';
+import { PrepareForm } from './components/Form';
+import { onOpen } from './components/Menu';
 
 export const doGet = (): GoogleAppsScript.HTML.HtmlOutput => {
   return HtmlService.createHtmlOutputFromFile('index.html')
@@ -65,5 +66,15 @@ const getDataFromGAS = (): GoogleAppsScript.Content.TextOutput | string => {
   // ) as unknown as string;
   return retObj;
 };
-// expose for frontend (gas-client)
+
+// Exposed to GAS global function
+// (and for gas-client)
+global.affectCountToA1 = affectCountToA1;
+global.getSpreadSheetName = getSpreadSheetName;
+global.getDataFromGAS = getDataFromGAS;
+global.onOpen = onOpen;
+global.doGet = doGet;
+global.PrepareForm = PrepareForm;
+
+// expose for frontend (gas-client)(in dev env, not for production)
 export { affectCountToA1, getSpreadSheetName, getDataFromGAS, PrepareForm };
