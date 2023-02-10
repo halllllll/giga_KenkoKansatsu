@@ -8,8 +8,6 @@ export const doGet = (): GoogleAppsScript.HTML.HtmlOutput => {
     .setTitle(getSpreadSheetName() ?? 'Vite + React on GAS');
 };
 
-//
-
 const affectCountToA1 = (count: number): void => {
   const sheet = ss.getSheetByName('シート1');
   const range = sheet?.getRange('A1');
