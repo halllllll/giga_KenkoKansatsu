@@ -4,7 +4,7 @@ import { onOpen } from './components/Menu';
 
 export const doGet = (): GoogleAppsScript.HTML.HtmlOutput => {
   return HtmlService.createHtmlOutputFromFile('index.html')
-    .addMetaTag('viewport', 'width=device-width, initial-scale=1')
+    .addMetaTag('viewport', 'width=device-width, initial-scale=1.0')
     .setTitle(getSpreadSheetName() ?? 'Vite + React on GAS');
 };
 
@@ -14,7 +14,7 @@ const affectCountToA1 = (count: number): void => {
   range?.setValue(count);
 };
 
-const getSpreadSheetName = (): string | null => {
+const getSpreadSheetName = (): string => {
   return ss.getName();
 };
 

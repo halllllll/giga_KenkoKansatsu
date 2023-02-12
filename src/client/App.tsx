@@ -1,7 +1,10 @@
 import { type FC, useState, useEffect } from 'react';
+import { Container, Button } from '@chakra-ui/react';
 import { GASClient } from 'gas-client';
 import type * as server from '../server/Main';
 import './App.css';
+import Header from './components/Header';
+import Info from './components/Info';
 
 const { serverFunctions } = new GASClient<typeof server>();
 
@@ -13,88 +16,47 @@ const App: FC = () => {
     await serverFunctions.affectCountToA1(count);
   };
 
-  const [data, setData] = useState<string>('');
-  const handleGetDataFromGAS = async () => {
-    interface User {
-      username: string;
-      password: string;
-      isLocal: number;
-      schoolCode: string;
-      schoolName: string;
-      familyName: string;
-      givenName: string;
-      familyKanaName: string;
-      givenKanaName: string;
-      renewName: string;
-      renewPassword: string;
-      renewClass: string;
-      termName: string;
-      className: string;
-      classRole: string;
-      TekitouName: string;
-    }
-    const ret = (await serverFunctions.getDataFromGAS()) as string;
-    console.log('OK!!!!');
-    console.log(`return? ${ret}`);
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    const obj = JSON.parse(ret);
-    console.log('obj:');
-    console.log(obj);
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
-    const users: User[] = obj.result;
-    setData(users[0].TekitouName);
-  };
-
-  const [title, setTitle] = useState<string | null>('');
+  const [title, setTitle] = useState<string>(document.title);
+  // 取得する時間にかなり差があるので別々に取得するためにuseEffectをわけた
   useEffect(() => {
-    const getTitle = async () => {
-      const [spreadsheettitle, FormElements] = await Promise.all([
-        serverFunctions.getSpreadSheetName(),
-        serverFunctions.PrepareForm(),
-      ]);
-      console.log(`get spread sheet title: ${spreadsheettitle ?? '(null)'}`);
-      setTitle(spreadsheettitle);
+    const knock = async () => {
+      const [FormElements] = await Promise.all([serverFunctions.PrepareForm()]);
       console.log('got form data!');
       console.log(FormElements, FormElements.Students);
     };
-    void getTitle();
+    void knock();
+  }, []);
+
+  useEffect(() => {
+    const knock = async () => {
+      const spreadsheettitle = await serverFunctions.getSpreadSheetName();
+      console.log(`get spread sheet title: ${spreadsheettitle ?? '(null)'}`);
+      setTitle(spreadsheettitle);
+    };
+    void knock();
   }, []);
 
   return (
     <div className="App">
-      <h1>{title !== '' ? title : 'Vite + React on GAS'}</h1>
-      <div className="card">
-        <button
+      <Header headerTitle={title} />
+      <Container>
+        {/** TODO: information area */}
+        <Info message={''} hasUrl={false} url={''} />
+        <Button
           onClick={() => {
             setCount((count: number) => count + 1);
           }}
         >
           count is {count}
-        </button>
-        <div className="card">
-          <button
-            onClick={async () => {
-              await handleButtonClick();
-            }}
-          >
-            SpreadSheetにカウントを反映する
-          </button>
-        </div>
-        <div className="card">
-          <button
-            onClick={async () => {
-              await handleGetDataFromGAS();
-              console.log('done');
-            }}
-          >
-            SpreadSheetからFormを構成するデータを取得する
-          </button>
-        </div>
-        <div>{data ?? 'OK'}</div>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
+        </Button>
+        <Button
+          onClick={async () => {
+            await handleButtonClick();
+          }}
+        >
+          SpreadSheetにカウントを反映する
+        </Button>
+      </Container>
     </div>
   );
 };

@@ -37,6 +37,7 @@ const getInquiryData = async (): Promise<InquiryItem> => {
       reject(new Error('not found form sheet error'));
     } else {
       const inquiryArr = formSheet.getDataRange().getValues() as string[][];
+      // カラム方向でのデータがほしいので転置
       const inquiry = inquiryArr.reduce(
         (preVal, curVal, curIdx) => {
           if (curIdx === 0) return preVal;

@@ -1,9 +1,4 @@
 import { ss, ssApp } from '../Config/Const';
-/**
- * Sheetでの操作部分
- * シートの初期化などをする
- * （サーバー側のビルドのやり方がわからず、変数や関数の依存関係が解決されない？ので、SpreadSheetのカスタムメニューは独立して作ってる
- */
 
 const onOpen = (): void => {
   const menu = ssApp
