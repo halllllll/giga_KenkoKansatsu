@@ -1,21 +1,21 @@
 // Formを司る何か
 
-import { ss } from '../Config/Const';
+import { ss } from "../Config/Const";
 import {
   MemberSheetName,
   FormSheetName,
   type Student,
   type InquiryItem,
   type Role,
-} from '../Config/SheetData';
+} from "../Config/SheetData";
 
-type FormRegister = {
+export type FormRegister = {
   Students: Student[];
   InquiryItems: InquiryItem;
 };
 
 const PrepareForm = async (): Promise<FormRegister> => {
-  console.log('用意しちゃうぜ〜！');
+  console.log("用意しちゃうぜ〜！");
   const [studentsValues, inquiryValues] = await Promise.all([
     getStudentsData(),
     getInquiryData(),
@@ -34,7 +34,7 @@ const getInquiryData = async (): Promise<InquiryItem> => {
     const sheetName: string = FormSheetName;
     const formSheet = ss.getSheetByName(sheetName);
     if (formSheet === null) {
-      reject(new Error('not found form sheet error'));
+      reject(new Error("not found form sheet error"));
     } else {
       const inquiryArr = formSheet.getDataRange().getValues() as string[][];
       // カラム方向でのデータがほしいので転置
@@ -43,7 +43,7 @@ const getInquiryData = async (): Promise<InquiryItem> => {
           if (curIdx === 0) return preVal;
 
           return preVal.map((x, idx) =>
-            curVal[idx] === '' ? x : [...x, curVal[idx]]
+            curVal[idx] === "" ? x : [...x, curVal[idx]]
           );
         },
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
@@ -64,7 +64,7 @@ const getStudentsData = async (): Promise<Student[]> => {
     const sheetName: string = MemberSheetName;
     const studentSheet = ss.getSheetByName(sheetName);
     if (studentSheet === null) {
-      reject(new Error('not found student sheet error'));
+      reject(new Error("not found student sheet error"));
     } else {
       const students: Student[] = studentSheet
         .getDataRange()
