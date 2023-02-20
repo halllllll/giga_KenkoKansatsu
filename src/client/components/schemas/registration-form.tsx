@@ -27,7 +27,6 @@ const schema = yup.object().shape({
     })
     .nullable()
     .required("クラスを選んでね"),
-
   status: yup.string(),
 });
 

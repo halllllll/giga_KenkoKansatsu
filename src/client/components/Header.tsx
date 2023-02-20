@@ -1,5 +1,5 @@
-import { type FC } from 'react';
-import { Heading } from '@chakra-ui/react';
+import { type FC } from "react";
+import { Heading } from "@chakra-ui/react";
 
 type HeaderProps = {
   headerTitle: string;
