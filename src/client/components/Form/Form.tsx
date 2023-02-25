@@ -16,71 +16,10 @@ import { type OptionBase } from "chakra-react-select";
 import { format } from "date-fns";
 import { ja } from "date-fns/locale";
 import { useForm, type SubmitHandler } from "react-hook-form";
+import { type Actions } from "@/client/reducer/FormReducer";
 import { type InquiryItem, type Student } from "@/server/Config/SheetData";
-import { FormShema } from "../schemas/registration-form";
 import ControlledSelect from "./controlled-select";
-
-const _conditionOptionsTest = [
-  {
-    label: "不定愁訴",
-    value: "不定愁訴",
-  },
-  {
-    label: "網膜剥離",
-    value: "網膜剥離",
-  },
-  {
-    label: "開放骨折",
-    value: "開放骨折",
-  },
-  {
-    label: "鼻血",
-    value: "鼻血",
-  },
-  {
-    label: "心臓爆発",
-    value: "心臓爆発",
-  },
-  {
-    label: "アルコール中毒",
-    value: "アルコール中毒",
-  },
-  {
-    label: "人面疽",
-    value: "人面疽",
-  },
-  {
-    label: "タンスの角に小指",
-    value: "開放骨折",
-  },
-  {
-    label: "食欲不振",
-    value: "食欲不振",
-  },
-];
-
-const _attendanceOptionsTest = [
-  {
-    label: "出席停止",
-    value: "出席停止",
-  },
-  {
-    label: "病欠",
-    value: "病欠",
-  },
-  {
-    label: "自己欠",
-    value: "自己欠",
-  },
-  {
-    label: "忌引",
-    value: "忌引",
-  },
-  {
-    label: "遅刻",
-    value: "遅刻",
-  },
-];
+import { FormShema } from "./schemas/registration-form";
 
 // for chakra-react-select
 interface Grade extends OptionBase {
@@ -113,8 +52,8 @@ export interface FormValues {
   grade: Grade | null;
   className: ClassName | null;
   name: Name | null;
-  attendance: string;
-  condition: string[] | null;
+  attendance: Attendance;
+  condition: Condition[] | null;
   status: string;
 }
 
@@ -124,18 +63,19 @@ const formDefaultValues: FormValues = {
   grade: null,
   className: null,
   name: null,
-  attendance: "",
-  condition: null,
+  attendance: { label: "", value: "" },
+  condition: [],
   status: "",
 };
 
 type FormProps = {
   readonly students: Student[];
   readonly inquiryItem: InquiryItem | null;
+  dispatch: React.Dispatch<Actions>;
 };
 
 const DataForm: FC<FormProps> = (props) => {
-  const { students, inquiryItem } = props;
+  const { students, inquiryItem, dispatch } = props;
 
   // 選択肢・選択した値を管理
   const [gradeOptionValue, setGradeOptionValue] = useState<Grade | null>(null);
@@ -228,17 +168,20 @@ const DataForm: FC<FormProps> = (props) => {
   });
 
   const onSubmit: SubmitHandler<FormValues> = (data) => {
-    console.log("yo", data);
-    console.log("students?");
-    console.log(students);
+    console.log("registered: ", data);
+    // 登録
+    dispatch({
+      type: "ADD",
+      payload: data,
+    });
     // 連続して登録する場合、シチュエーション的にほとんどの場合は名前とstatusのみ変更
     reset({
       grade: gradeOptionValue,
       name: null,
       className: classNameOptionValue,
       status: "",
-      attendance: "",
-      condition: null,
+      attendance: { label: "", value: "" },
+      condition: [],
     });
     setNameOptionValue(null);
   };
@@ -319,7 +262,7 @@ const DataForm: FC<FormProps> = (props) => {
             id="name"
             control={control}
             label="名前"
-            placeholder="名前を選ぼう！"
+            placeholder="名前を検索しよう！"
             options={nameOptions}
             value={nameOptionValue}
             rules={{
@@ -403,10 +346,10 @@ const DataForm: FC<FormProps> = (props) => {
               type="submit"
               disabled={isSubmitting}
               isLoading={isSubmitting}
-              loadingText="送信中"
+              loadingText="登録中"
               spinnerPlacement="start"
             >
-              送信
+              登録
             </Button>
           </ButtonGroup>
         </HStack>

@@ -1,9 +1,9 @@
 // どういうシートがあり、どのシートにどのようなデータがあり、どんなデータ構造や型で提供するかをキメる
-const MemberSheetName = 'Member';
-const StoreSheetName = 'Store';
-const FormSheetName = 'Form Items';
+const MemberSheetName = "Member";
+const StoreSheetName = "Store";
+const FormSheetName = "Form Items";
 
-type Role = '児童生徒' | '先生' | 'その他';
+type Role = "児童生徒" | "先生" | "管理者";
 
 // record
 interface Student {

@@ -18,7 +18,7 @@ const schema = yup.object().shape({
       value: yup.string().required(),
     })
     .nullable()
-    .required("名前を選んでね"),
+    .required("名前を検索・選択してね"),
   className: yup
     .object()
     .shape({

@@ -16,13 +16,13 @@ export type FormRegister = {
 
 const PrepareForm = async (): Promise<FormRegister> => {
   console.log("用意しちゃうぜ〜！");
-  const [studentsValues, inquiryValues] = await Promise.all([
-    getStudentsData(),
+  const [allValues, inquiryValues] = await Promise.all([
+    getMemberData(),
     getInquiryData(),
   ]);
 
   const ret = {
-    Students: studentsValues,
+    Students: allValues.filter((row) => row.Role === "児童生徒"),
     InquiryItems: inquiryValues,
   };
 
@@ -59,7 +59,7 @@ const getInquiryData = async (): Promise<InquiryItem> => {
   });
 };
 
-const getStudentsData = async (): Promise<Student[]> => {
+const getMemberData = async (): Promise<Student[]> => {
   return await new Promise<Student[]>((resolve, reject) => {
     const sheetName: string = MemberSheetName;
     const studentSheet = ss.getSheetByName(sheetName);
