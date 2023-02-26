@@ -1,6 +1,8 @@
+import { type FormValues } from "@/client/components/Form/Form";
+import { PrepareForm } from "./Behavior/Form";
+import { onOpen } from "./Behavior/Menu";
+import { SaveAnswers } from "./Behavior/Post";
 import { ss } from "./Config/Const";
-import { PrepareForm } from "./components/Form";
-import { onOpen } from "./components/Menu";
 
 export const doGet = (): GoogleAppsScript.HTML.HtmlOutput => {
   return HtmlService.createHtmlOutputFromFile("index.html")
@@ -16,6 +18,14 @@ const affectCountToA1 = (count: number): void => {
 
 const getSpreadSheetName = (): string => {
   return ss.getName();
+};
+
+const postFormValues = (data: string): boolean => {
+  // parse
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+  const formData: FormValues[] = JSON.parse(data);
+
+  return SaveAnswers(formData);
 };
 
 export interface User {
@@ -37,40 +47,13 @@ export interface User {
   TekitouName: string;
 }
 
-// const getDataFromGAS = (): GoogleAppsScript.Content.TextOutput | string => {
-//   const sheet = ss.getSheetByName("TestData");
-//   if (sheet === null) {
-//     const ret = JSON.stringify({ result: "nothing" });
-
-//     return ContentService.createTextOutput(ret).setMimeType(
-//       ContentService.MimeType.JSON
-//     );
-//   }
-
-//   const values = sheet.getDataRange().getValues();
-//   const ret = values.map((row) => {
-//     return row as User[];
-//   });
-
-//   const retObj = JSON.stringify({
-//     result: ret,
-//   });
-
-//   console.log(`return: ${retObj}`);
-
-//   return ContentService.createTextOutput(retObj).setMimeType(
-//     ContentService.MimeType.JSON
-//   );
-//   // return retObj;
-// };
-
 // Exposed to GAS global function
-// (and for gas-client)
 global.affectCountToA1 = affectCountToA1;
 global.getSpreadSheetName = getSpreadSheetName;
 global.onOpen = onOpen;
 global.doGet = doGet;
 global.PrepareForm = PrepareForm;
+global.postFormValues = postFormValues;
 
-// expose for frontend (gas-client)(in dev env, not for production)
-export { affectCountToA1, getSpreadSheetName, PrepareForm };
+// Exposed to frontend (gas-client)
+export { affectCountToA1, getSpreadSheetName, PrepareForm, postFormValues };

@@ -51,6 +51,7 @@ export interface FormValues {
   registerDate: string;
   grade: Grade | null;
   className: ClassName | null;
+  classNumber: number | null;
   name: Name | null;
   attendance: Attendance;
   condition: Condition[] | null;
@@ -62,6 +63,7 @@ const formDefaultValues: FormValues = {
   registerDate: format(new Date(), "yyyy-MM-dd", { locale: ja }),
   grade: null,
   className: null,
+  classNumber: null,
   name: null,
   attendance: { label: "", value: "" },
   condition: [],

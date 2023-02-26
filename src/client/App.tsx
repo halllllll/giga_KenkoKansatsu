@@ -6,13 +6,15 @@ import { type Student, type InquiryItem } from "@/server/Config/SheetData";
 import type * as server from "../server/Main";
 import "./App.css";
 import CandidatesArea from "./components/Candidate/components/CandidatesArea";
+import Footer from "./components/Footer/Footer";
 import Form, { type FormValues } from "./components/Form/Form";
+import SendButton from "./components/Form/Send/SendButton";
 import Header from "./components/Header/Header";
 import Info from "./components/Info/Info";
 
 import { FormReducer } from "./reducer/FormReducer";
 
-const { serverFunctions } = new GASClient<typeof server>();
+export const { serverFunctions } = new GASClient<typeof server>();
 
 const candidates: FormValues[] = [];
 
@@ -36,8 +38,8 @@ const _formStudentElementsTest: Student[] = [
   {
     Grade: "2",
     Class: "スリザリン",
-    Name: "Nakagawa",
-    Kana: "なかがわ",
+    Name: "Bernardin",
+    Kana: "べるなるだん",
     Number: 16,
     Role: "児童生徒",
   },
@@ -148,8 +150,8 @@ const _formStudentElementsTest: Student[] = [
   {
     Grade: "4",
     Class: "レイブンクロー",
-    Name: "Tanaka",
-    Kana: "たなか",
+    Name: "Leclère",
+    Kana: "れくれーる",
     Number: 1,
     Role: "児童生徒",
   },
@@ -201,20 +203,186 @@ const _formStudentElementsTest: Student[] = [
     Number: 13,
     Role: "児童生徒",
   },
+  {
+    Grade: "2",
+    Class: "グリフィンドール",
+    Name: "Mia",
+    Kana: "みあ",
+    Number: 12,
+    Role: "児童生徒",
+  },
+  {
+    Grade: "3",
+    Class: "スリザリン",
+    Name: "Nathan",
+    Kana: "ねいさん",
+    Number: 7,
+    Role: "児童生徒",
+  },
+  {
+    Grade: "1",
+    Class: "ハッフルパフ",
+    Name: "Erika",
+    Kana: "えりか",
+    Number: 14,
+    Role: "児童生徒",
+  },
+  {
+    Grade: "4",
+    Class: "レイブンクロー",
+    Name: "Gina",
+    Kana: "じーな",
+    Number: 9,
+    Role: "児童生徒",
+  },
+  {
+    Grade: "2",
+    Class: "ハッフルパフ",
+    Name: "Ryan",
+    Kana: "らいあん",
+    Number: 15,
+    Role: "児童生徒",
+  },
+  {
+    Grade: "3",
+    Class: "レイブンクロー",
+    Name: "Isabella",
+    Kana: "いざべら",
+    Number: 3,
+    Role: "児童生徒",
+  },
+  {
+    Grade: "1",
+    Class: "グリフィンドール",
+    Name: "Jack",
+    Kana: "じゃっく",
+    Number: 17,
+    Role: "児童生徒",
+  },
+  {
+    Grade: "4",
+    Class: "スリザリン",
+    Name: "Lana",
+    Kana: "らな",
+    Number: 8,
+    Role: "児童生徒",
+  },
+  {
+    Grade: "2",
+    Class: "レイブンクロー",
+    Name: "Drew",
+    Kana: "どりゅう",
+    Number: 11,
+    Role: "児童生徒",
+  },
+  {
+    Grade: "3",
+    Class: "グリフィンドール",
+    Name: "Emma",
+    Kana: "えんま",
+    Number: 19,
+    Role: "児童生徒",
+  },
+  {
+    Grade: "2",
+    Class: "レイブンクロー",
+    Name: "Dubois",
+    Kana: "でゅぼわ",
+    Number: 12,
+    Role: "児童生徒",
+  },
+  {
+    Grade: "3",
+    Class: "グリフィンドール",
+    Name: "Leveque",
+    Kana: "るうべーく",
+    Number: 17,
+    Role: "児童生徒",
+  },
+  {
+    Grade: "4",
+    Class: "スリザリン",
+    Name: "Durand",
+    Kana: "でゅらん",
+    Number: 3,
+    Role: "児童生徒",
+  },
+  {
+    Grade: "1",
+    Class: "ハッフルパフ",
+    Name: "Fournier",
+    Kana: "ふーるにえ",
+    Number: 8,
+    Role: "児童生徒",
+  },
+  {
+    Grade: "2",
+    Class: "グリフィンドール",
+    Name: "Gautier",
+    Kana: "ごーてぃえ",
+    Number: 11,
+    Role: "児童生徒",
+  },
+  {
+    Grade: "3",
+    Class: "スリザリン",
+    Name: "Moreau",
+    Kana: "もろー",
+    Number: 15,
+    Role: "児童生徒",
+  },
+  {
+    Grade: "1",
+    Class: "レイブンクロー",
+    Name: "Rousseau",
+    Kana: "るーそー",
+    Number: 19,
+    Role: "児童生徒",
+  },
+  {
+    Grade: "4",
+    Class: "レイブンクロー",
+    Name: "Leroy",
+    Kana: "るろわ",
+    Number: 7,
+    Role: "児童生徒",
+  },
+  {
+    Grade: "2",
+    Class: "ハッフルパフ",
+    Name: "Dupont",
+    Kana: "でゅぽん",
+    Number: 14,
+    Role: "児童生徒",
+  },
+  {
+    Grade: "3",
+    Class: "レイブンクロー",
+    Name: "Blanchard",
+    Kana: "ぶらんしゃーる",
+    Number: 10,
+    Role: "児童生徒",
+  },
 ];
 
 const _inquryItemsTest: InquiryItem = {
   Condition: [
     "不定愁訴",
-    "網膜剥離",
-    "開放骨折",
+    "修行",
+    "遠征",
     "鼻血",
-    "心臓爆発",
-    "アルコール中毒",
+    "腹痛",
+    "激辛料理",
     "人面疽",
     "タンスの角に小指",
-    "開放骨折",
+    "咳",
     "食欲不振",
+    "筋肉痛",
+    "深爪",
+    "虫歯",
+    "寝違え",
+    "寝癖",
+    "ボランティア",
   ],
   Attendance: ["出席停止", "病欠", "自己欠", "忌引", "遅刻"],
 };
@@ -232,18 +400,10 @@ const App: FC = () => {
   // titleとForm用のデータとで取得する時間にかなり差があるので別々に取得するためにuseEffectをわけた
   useEffect(() => {
     const knock = async () => {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       const [FormElements] = await Promise.all([serverFunctions.PrepareForm()]);
       setStudentElements(FormElements.Students);
       setInquiryItem(FormElements.InquiryItems);
-      // 更新されるタイミングがあるのでここで呼んでも空
-      // console.log(formStudentElements);
-      // 以下のように無理やりやる方法はある
-      // setInquiryItem((a) => {
-      //   console.log("get inquiry items insane way");
-      //   console.log(a);
-
-      //   return a;
-      // });
     };
     void knock();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -261,23 +421,30 @@ const App: FC = () => {
   return (
     <div className="App">
       <Header headerTitle={title} />
-      <Container maxW="3xl">
+      <Container maxW="4xl">
         {/** TODO: information area */}
         <Info message={""} hasUrl={false} url={""} />
         <Form
-          students={_formStudentElementsTest}
-          inquiryItem={_inquryItemsTest}
+          students={formStudentElements}
+          inquiryItem={inquiryItem}
           dispatch={candidateDispatch}
         />
         {candidateStates.length > 0 ? (
-          <CandidatesArea
-            dispatch={candidateDispatch}
-            candidates={candidateStates}
-          />
+          <>
+            <CandidatesArea
+              dispatch={candidateDispatch}
+              candidates={candidateStates}
+            />
+            <SendButton
+              dispatch={candidateDispatch}
+              formValues={candidateStates}
+            />
+          </>
         ) : (
           <></>
         )}
       </Container>
+      <Footer />
     </div>
   );
 };

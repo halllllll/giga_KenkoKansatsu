@@ -22,9 +22,12 @@ const PrepareForm = async (): Promise<FormRegister> => {
   ]);
 
   const ret = {
-    Students: allValues.filter((row) => row.Role === "児童生徒"),
+    Students: allValues.filter(
+      (row) => row.Role === "児童生徒" || row.Role === "Student"
+    ),
     InquiryItems: inquiryValues,
   };
+  console.log("準備できたぜ〜〜〜");
 
   return ret;
 };
@@ -64,6 +67,7 @@ const getMemberData = async (): Promise<Student[]> => {
     const sheetName: string = MemberSheetName;
     const studentSheet = ss.getSheetByName(sheetName);
     if (studentSheet === null) {
+      console.error(`can't find the sheet named [${MemberSheetName}]`);
       reject(new Error("not found student sheet error"));
     } else {
       const students: Student[] = studentSheet

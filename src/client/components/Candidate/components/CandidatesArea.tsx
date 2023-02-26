@@ -2,6 +2,7 @@ import { type FC } from "react";
 import {
   Center,
   Box,
+  Button,
   Text,
   Table,
   TableCaption,
@@ -9,6 +10,7 @@ import {
   Tbody,
   Td,
   Tr,
+  VStack,
 } from "@chakra-ui/react";
 import { type Actions } from "@/client/reducer/FormReducer";
 import { type FormValues } from "../../Form/Form";
@@ -19,7 +21,7 @@ type CandidateProps = {
   candidates: FormValues[];
 };
 
-const CandidatesArea: FC<CandidateProps> = ({ candidates }) => {
+const CandidatesArea: FC<CandidateProps> = ({ candidates, dispatch }) => {
   // view用にする
   const candidatesItems: ViewData[] = candidates.map((c, idx) => {
     return {
@@ -27,6 +29,7 @@ const CandidatesArea: FC<CandidateProps> = ({ candidates }) => {
       registerDate: c.registerDate,
       grade: c.grade,
       className: c.className,
+      classNumber: c.classNumber,
       name: c.name,
       attendance: c.attendance,
       condition: c.condition,
@@ -46,28 +49,49 @@ const CandidatesArea: FC<CandidateProps> = ({ candidates }) => {
         fontWeight="extrabold"
         borderRadius="md"
       >
-        <Center h="100%">投稿予定のアカウント</Center>
+        <Center h="100%">反映予定のアカウント</Center>
       </Box>
       <TableContainer whiteSpace="unset">
-        <Table variant="simple" colorScheme="cyan">
+        <Table variant="simple" colorScheme="gray">
           <TableCaption placement="top"></TableCaption>
           <Tbody>
             {candidatesItems.map((item) => {
               return (
                 <Tr key={item.viewIndex}>
                   <Td>{item.name?.value} さん</Td>
-                  <Td fontWeight="extrabold">{item.attendance.value}</Td>
-                  <Td>
-                    <Text>
-                      【出欠・遅刻】
-                      <br />
-                      {item.condition?.map((v) => v.value).join("、")}
-                    </Text>
-                    <Text>
-                      【症状など】
-                      <br />
-                      {item.status}
-                    </Text>
+                  <Td fontWeight="extrabold" p="0">
+                    {item.attendance.value}
+                  </Td>
+                  <Td w="xl">
+                    <VStack align="flex-start">
+                      <Text>
+                        【出欠・遅刻】
+                        <br />
+                        {item.condition?.map((v) => v.value).join("、")}
+                      </Text>
+                      <Text>
+                        【症状など】
+                        <br />
+                        {item.status}
+                      </Text>
+                    </VStack>
+                  </Td>
+                  <Td w="min-content" padding="0">
+                    <Button
+                      variant="solid"
+                      color="whiteAlpha.900"
+                      bgColor="orange.300"
+                      onClick={() => {
+                        dispatch({
+                          type: "DELETE",
+                          payload: {
+                            index: item.viewIndex,
+                          },
+                        });
+                      }}
+                    >
+                      削除
+                    </Button>
                   </Td>
                 </Tr>
               );
