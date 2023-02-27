@@ -42,7 +42,9 @@ const Header: FC<HeaderProps> = ({ headerTitle, spreadsheetLink }) => {
             >
               SpreadSheetを開く
             </MenuItem>
-            <MenuItem icon={<InfoOutlineIcon />}>使い方をみる</MenuItem>
+            <MenuItem icon={<InfoOutlineIcon />}>
+              【未実装】使い方をみる
+            </MenuItem>
             <MenuItem icon={<ChatIcon />}>【DEV】リリースノート</MenuItem>
           </MenuList>
         </Menu>

@@ -316,7 +316,7 @@ const DataForm: FC<FormProps> = (props) => {
               name="condition"
               id="condition"
               control={control}
-              label="症状など"
+              label="症状・理由"
               placeholder="なんでかな？（複数可）"
               options={conditionOptions}
             />

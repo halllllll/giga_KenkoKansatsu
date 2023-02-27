@@ -70,7 +70,7 @@ const CandidatesArea: FC<CandidateProps> = ({ candidates, dispatch }) => {
                         {item.condition?.map((v) => v.value).join("、")}
                       </Text>
                       <Text>
-                        【症状など】
+                        【症状・理由】
                         <br />
                         {item.status}
                       </Text>
