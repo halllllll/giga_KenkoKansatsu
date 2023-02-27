@@ -395,6 +395,7 @@ const App: FC = () => {
   );
   // 各種state
   const [title, setTitle] = useState<string>(document.title);
+  const [sheetUrl, setSheetUrl] = useState<string>("");
   const [formStudentElements, setStudentElements] = useState<Student[]>([]);
   const [inquiryItem, setInquiryItem] = useState<InquiryItem | null>(null);
   // titleとForm用のデータとで取得する時間にかなり差があるので別々に取得するためにuseEffectをわけた
@@ -411,16 +412,20 @@ const App: FC = () => {
 
   useEffect(() => {
     const knock = async () => {
-      const spreadsheettitle = await serverFunctions.getSpreadSheetName();
+      const [spreadsheettitle, spreadsheetUrl] = await Promise.all([
+        serverFunctions.getSpreadSheetName(),
+        serverFunctions.getSpreadSheetUrl(),
+      ]);
       console.log(`get spread sheet title: ${spreadsheettitle ?? "(null)"}`);
       setTitle(spreadsheettitle);
+      setSheetUrl(spreadsheetUrl);
     };
     void knock();
   }, []);
 
   return (
     <div className="App">
-      <Header headerTitle={title} />
+      <Header headerTitle={title} spreadsheetLink={sheetUrl} />
       <Container maxW="4xl">
         {/** TODO: information area */}
         <Info message={""} hasUrl={false} url={""} />

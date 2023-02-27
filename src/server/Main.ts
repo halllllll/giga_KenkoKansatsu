@@ -10,14 +10,12 @@ export const doGet = (): GoogleAppsScript.HTML.HtmlOutput => {
     .setTitle(getSpreadSheetName() ?? "Vite + React on GAS");
 };
 
-const affectCountToA1 = (count: number): void => {
-  const sheet = ss.getSheetByName("シート1");
-  const range = sheet?.getRange("A1");
-  range?.setValue(count);
-};
-
 const getSpreadSheetName = (): string => {
   return ss.getName();
+};
+
+const getSpreadSheetUrl = (): string => {
+  return ss.getUrl();
 };
 
 const postFormValues = (data: string): boolean => {
@@ -48,12 +46,12 @@ export interface User {
 }
 
 // Exposed to GAS global function
-global.affectCountToA1 = affectCountToA1;
 global.getSpreadSheetName = getSpreadSheetName;
+global.getSpreadSheetUrl = getSpreadSheetUrl;
 global.onOpen = onOpen;
 global.doGet = doGet;
 global.PrepareForm = PrepareForm;
 global.postFormValues = postFormValues;
 
 // Exposed to frontend (gas-client)
-export { affectCountToA1, getSpreadSheetName, PrepareForm, postFormValues };
+export { getSpreadSheetName, getSpreadSheetUrl, PrepareForm, postFormValues };
