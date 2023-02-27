@@ -444,7 +444,7 @@ const App: FC = () => {
           <></>
         )}
       </Container>
-      <Footer />
+      <Footer footerTitle={title} />
     </div>
   );
 };
