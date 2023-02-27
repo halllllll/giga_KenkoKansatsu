@@ -34,7 +34,12 @@ const Header: FC<HeaderProps> = ({ headerTitle, spreadsheetLink }) => {
         <Menu>
           <MenuButton as={IconButton} icon={<HamburgerIcon />} />
           <MenuList>
-            <MenuItem icon={<AttachmentIcon />} as="a" href={spreadsheetLink}>
+            <MenuItem
+              icon={<AttachmentIcon />}
+              as="a"
+              href={spreadsheetLink}
+              target="_blank"
+            >
               SpreadSheetを開く
             </MenuItem>
             <MenuItem icon={<InfoOutlineIcon />}>使い方をみる</MenuItem>
