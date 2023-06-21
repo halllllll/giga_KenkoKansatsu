@@ -19,7 +19,7 @@ import { useForm, type SubmitHandler } from "react-hook-form";
 import { type Actions } from "@/client/reducer/FormReducer";
 import { type InquiryItem, type Student } from "@/server/Config/SheetData";
 import ControlledSelect from "./controlled-select";
-import { FormShema } from "./schemas/registration-form";
+import { FormSchema } from "./schemas/registration-form";
 
 // for chakra-react-select
 interface Grade extends OptionBase {
@@ -165,7 +165,7 @@ const DataForm: FC<FormProps> = (props) => {
   } = useForm<FormValues>({
     mode: "all",
     criteriaMode: "all",
-    resolver: yupResolver(FormShema),
+    resolver: yupResolver(FormSchema),
     defaultValues: formDefaultValues,
   });
 

@@ -32,4 +32,4 @@ const schema = yup.object().shape({
 
 // type FormValueSchema = InferType<typeof schema>
 
-export { schema as FormShema };
+export { schema as FormSchema };

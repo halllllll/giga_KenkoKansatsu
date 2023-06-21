@@ -3,7 +3,7 @@ import { Container } from "@chakra-ui/react";
 import { GASClient } from "gas-client";
 
 import { type Student, type InquiryItem } from "@/server/Config/SheetData";
-import type * as server from "../server/Main";
+import type * as server from "@/server/Main";
 import "./App.css";
 import CandidatesArea from "./components/Candidate/components/CandidatesArea";
 import Footer from "./components/Footer/Footer";
@@ -11,6 +11,8 @@ import Form, { type FormValues } from "./components/Form/Form";
 import SendButton from "./components/Form/Send/SendButton";
 import Header from "./components/Header/Header";
 import Info from "./components/Info/Info";
+
+import { useSheetNameAndUrl } from "./hooks/useSheetNameAndUrl";
 
 import { FormReducer } from "./reducer/FormReducer";
 
@@ -394,8 +396,9 @@ const App: FC = () => {
     candidates
   );
   // 各種state
-  const [title, setTitle] = useState<string>(document.title);
-  const [sheetUrl, setSheetUrl] = useState<string>("");
+  // const [title, setTitle] = useState<string>(document.title);
+  // const [sheetUrl, setSheetUrl] = useState<string>("");
+  const { sheetName, sheetUrl } = useSheetNameAndUrl();
   const [formStudentElements, setStudentElements] = useState<Student[]>([]);
   const [inquiryItem, setInquiryItem] = useState<InquiryItem | null>(null);
   // titleとForm用のデータとで取得する時間にかなり差があるので別々に取得するためにuseEffectをわけた
@@ -407,25 +410,24 @@ const App: FC = () => {
       setInquiryItem(FormElements.InquiryItems);
     };
     void knock();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  useEffect(() => {
-    const knock = async () => {
-      const [spreadsheettitle, spreadsheetUrl] = await Promise.all([
-        serverFunctions.getSpreadSheetName(),
-        serverFunctions.getSpreadSheetUrl(),
-      ]);
-      console.log(`get spread sheet title: ${spreadsheettitle ?? "(null)"}`);
-      setTitle(spreadsheettitle);
-      setSheetUrl(spreadsheetUrl);
-    };
-    void knock();
-  }, []);
+  // useEffect(() => {
+  //   const knock = async () => {
+  //     const [spreadsheettitle, spreadsheetUrl] = await Promise.all([
+  //       serverFunctions.getSpreadSheetName(),
+  //       serverFunctions.getSpreadSheetUrl(),
+  //     ]);
+  //     console.log(`get spread sheet title: ${spreadsheettitle ?? "(null)"}`);
+  //     setTitle(spreadsheettitle);
+  //     setSheetUrl(spreadsheetUrl);
+  //   };
+  //   void knock();
+  // }, []);
 
   return (
     <div className="App">
-      <Header headerTitle={title} spreadsheetLink={sheetUrl} />
+      <Header headerTitle={sheetName} spreadsheetLink={sheetUrl} />
       <Container maxW="4xl">
         {/** TODO: information area */}
         <Info message={""} hasUrl={false} url={""} />
@@ -449,7 +451,7 @@ const App: FC = () => {
           <></>
         )}
       </Container>
-      <Footer footerTitle={title} />
+      <Footer footerTitle={sheetName} />
     </div>
   );
 };
