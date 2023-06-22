@@ -5,16 +5,17 @@ import { GASClient } from "gas-client";
 import { type Student, type InquiryItem } from "@/server/Config/SheetData";
 import type * as server from "@/server/Main";
 import "./App.css";
-import CandidatesArea from "./components/Candidate/components/CandidatesArea";
-import Footer from "./components/Footer/Footer";
-import Form, { type FormValues } from "./components/Form/Form";
-import SendButton from "./components/Form/Send/SendButton";
-import Header from "./components/Header/Header";
-import Info from "./components/Info/Info";
+import { CandidatesArea } from "@/client/components/Index";
+import { Footer } from "@/client/components/Index";
+import { Form, FormValues } from "@/client/components/Index";
+import { SendButton } from "@/client/components/Index";
+import { Header } from "@/client/components/Index";
+import { Info } from "@/client/components/Index";
 
 import { useSheetNameAndUrl } from "./hooks/useSheetNameAndUrl";
 
 import { FormReducer } from "./reducer/FormReducer";
+import { useMemberData } from "./hooks/useMemberData";
 
 export const { serverFunctions } = new GASClient<typeof server>();
 
@@ -396,34 +397,8 @@ const App: FC = () => {
     candidates
   );
   // 各種state
-  // const [title, setTitle] = useState<string>(document.title);
-  // const [sheetUrl, setSheetUrl] = useState<string>("");
   const { sheetName, sheetUrl } = useSheetNameAndUrl();
-  const [formStudentElements, setStudentElements] = useState<Student[]>([]);
-  const [inquiryItem, setInquiryItem] = useState<InquiryItem | null>(null);
-  // titleとForm用のデータとで取得する時間にかなり差があるので別々に取得するためにuseEffectをわけた
-  useEffect(() => {
-    const knock = async () => {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      const [FormElements] = await Promise.all([serverFunctions.PrepareForm()]);
-      setStudentElements(FormElements.Students);
-      setInquiryItem(FormElements.InquiryItems);
-    };
-    void knock();
-  }, []);
-
-  // useEffect(() => {
-  //   const knock = async () => {
-  //     const [spreadsheettitle, spreadsheetUrl] = await Promise.all([
-  //       serverFunctions.getSpreadSheetName(),
-  //       serverFunctions.getSpreadSheetUrl(),
-  //     ]);
-  //     console.log(`get spread sheet title: ${spreadsheettitle ?? "(null)"}`);
-  //     setTitle(spreadsheettitle);
-  //     setSheetUrl(spreadsheetUrl);
-  //   };
-  //   void knock();
-  // }, []);
+  const { formStudentElements, inquiryItem } = useMemberData();
 
   return (
     <div className="App">

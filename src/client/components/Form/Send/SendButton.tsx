@@ -2,8 +2,8 @@ import { type FC } from "react";
 import { Center, Box, Button, useDisclosure } from "@chakra-ui/react";
 import { type SubmitHandler, useForm } from "react-hook-form";
 import { type Actions } from "@/client/reducer/FormReducer";
-import ScreenSpinner from "../../FullScreen/Spinner";
-import { type FormValues } from "../Form";
+import { ScreenSpinner } from "@/client/components/Index";
+import { type FormValues } from "@/client/components/Index";
 
 type SendFormProps = {
   dispatch: React.Dispatch<Actions>;
