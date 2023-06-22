@@ -1,5 +1,4 @@
-import { serverFunctions } from "../App";
-import { type FormValues } from "../components/Form/Form";
+import { type FormValues } from "@/client/components/Index";
 
 export type Actions =
   | {
@@ -13,9 +12,17 @@ export type Actions =
       payload: FormValues;
     }
   | {
-      type: "POST";
-      payload: FormValues[];
-      isSubmitting: boolean;
+      type: "SUBMIT_START";
+      // TODO: something
+      processing: boolean;
+    }
+  | {
+      type: "SUBMIT_SUCCESS";
+      // TODO: something
+    }
+  | {
+      type: "SUBMIT_FAILURE";
+      // TODO: something
     };
 
 export const FormReducer = (
@@ -44,19 +51,9 @@ export const FormReducer = (
 
       return [...curData, addData];
     }
-    case "POST": {
-      const result = serverFunctions.postFormValues(JSON.stringify(curData));
-      let ret: FormValues[] = [];
-      result
-        .then((res) => {
-          console.log(`result: `, res);
-        })
-        .catch((err) => {
-          console.error(err);
-          ret = curData;
-        });
-
-      return ret;
+    case "SUBMIT_START": {
+      // TODO: somethiing
+      return curData;
     }
     default:
       return curData;
