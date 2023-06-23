@@ -23,6 +23,10 @@ const SendButton: FC<SendFormProps> = ({ formValues, dispatch }) => {
   const onPostSubmit: SubmitHandler<FormValues> = async () => {
     console.log(`post -> `);
     console.dir(formValues);
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
 
     // dispatchでは非同期処理をさせず、ハンドラで行う（dispatchには処理の開始と終了を伝える）
     dispatch({
@@ -43,34 +47,6 @@ const SendButton: FC<SendFormProps> = ({ formValues, dispatch }) => {
         type: "SUBMIT_FAILURE",
       });
     }
-
-    // void serverFunctions
-    //   .postFormValues(JSON.stringify(formValues))
-    //   .then((result) => {
-    //     console.log(result);
-    //     dispatch({
-    //       type: "SUBMIT_SUCCESS",
-    //     });
-    //   })
-    //   .catch((err) => {
-    //     console.error(err);
-    //     dispatch({
-    //       type: "SUBMIT_FAILURE",
-    //     });
-    //   });
-
-    // dispatchでPromiseをいい感じにする方法がわからない
-    // とりあえずスピナー優先で、まったく不要だけどsetTimeoutしとく
-    // return await new Promise((resolve, _reject) => {
-    //   setTimeout(() => {
-    //     dispatch({
-    //       type: "POST",
-    //       payload: formValues,
-    //       isSubmitting,
-    //     });
-    //     resolve("DONE");
-    //   }, 1500);
-    // });
   };
 
   return (

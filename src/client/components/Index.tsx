@@ -7,5 +7,6 @@ export {
 export { default as SendButton } from "@/client/components/Form/Send/SendButton";
 export { default as Header } from "@/client/components/Header/Header";
 export { default as Info } from "@/client/components/Info/Info";
-export { default as ScreenSpinner } from "@/client/components/FullScreen/Spinner";
+export { default as ScreenSpinner } from "@/client/components/Screen/Spinner";
+export { default as Modal } from "@/client/components/Screen/Modal";
 export { type ViewData } from "@/client/components/Candidate/CandidateInfo";
