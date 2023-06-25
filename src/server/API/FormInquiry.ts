@@ -1,21 +1,20 @@
 // Formを司る何か
 
-import { ss } from "../Config/Const";
+import { ss } from "@/server/Config/Const";
 import {
   MemberSheetName,
   FormSheetName,
   type Student,
   type InquiryItem,
   type Role,
-} from "../Config/SheetData";
+} from "@/server/Config/SheetData";
 
 export type FormRegister = {
   Students: Student[];
   InquiryItems: InquiryItem;
 };
 
-const PrepareForm = async (): Promise<FormRegister> => {
-  console.log("用意しちゃうぜ〜！");
+const _PrepareForm = async (): Promise<FormRegister> => {
   const [allValues, inquiryValues] = await Promise.all([
     getMemberData(),
     getInquiryData(),
@@ -27,7 +26,6 @@ const PrepareForm = async (): Promise<FormRegister> => {
     ),
     InquiryItems: inquiryValues,
   };
-  console.log("準備できたぜ〜〜〜");
 
   return ret;
 };
@@ -91,4 +89,4 @@ const getMemberData = async (): Promise<Student[]> => {
   });
 };
 
-export { PrepareForm };
+export { getInquiryData, getMemberData };

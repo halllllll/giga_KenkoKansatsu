@@ -170,7 +170,6 @@ const DataForm: FC<FormProps> = (props) => {
   });
 
   const onSubmit: SubmitHandler<FormValues> = (data) => {
-    console.log("registered: ", data);
     // 登録
     dispatch({
       type: "ADD",

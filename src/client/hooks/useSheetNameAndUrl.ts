@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { serverFunctions } from "@/client/App";
+import { serverFunctions } from "../API/serverFunctions";
 
 type sheetNameAndUrlResult = {
   sheetName: string;

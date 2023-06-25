@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
-import { serverFunctions } from "@/client/App";
+
 import { type Student, type InquiryItem } from "@/server/Config/SheetData";
+import { FormInquiryAPI, FormMemberAPI } from "../API/initialAccessFormData";
 
 type MemberDataResult = {
   formStudentElements: Student[];
@@ -13,10 +14,10 @@ export const useMemberData = (): MemberDataResult => {
 
   useEffect(() => {
     const knock = async () => {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      const [FormElements] = await Promise.all([serverFunctions.PrepareForm()]);
-      setStudentElements(FormElements.Students);
-      setInquiryItem(FormElements.InquiryItems);
+      const [FormElementsStudents, FormElementsInquiryItems] =
+        await Promise.all([FormMemberAPI(), FormInquiryAPI()]);
+      setStudentElements(FormElementsStudents);
+      setInquiryItem(FormElementsInquiryItems);
     };
     void knock();
   }, []);

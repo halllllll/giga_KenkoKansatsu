@@ -1,13 +1,13 @@
 import { type FormValues } from "@/client/components/Form/Form";
-import { PrepareForm } from "./Behavior/Form";
-import { onOpen } from "./Behavior/Menu";
-import { SaveAnswers } from "./Behavior/Post";
+import { getInquiryData, getMemberData } from "./API/FormInquiry";
+import { onOpen } from "./API/Menu";
+import { SaveAnswers } from "./API/Post";
 import { ss } from "./Config/Const";
 
 export const doGet = (): GoogleAppsScript.HTML.HtmlOutput => {
   return HtmlService.createHtmlOutputFromFile("index.html")
     .addMetaTag("viewport", "width=device-width, initial-scale=1.0")
-    .setTitle(getSpreadSheetName() ?? "Vite + React on GAS");
+    .setTitle(getSpreadSheetName() ?? "GIGA-KenkoKansatsu");
 };
 
 const getSpreadSheetName = (): string => {
@@ -26,32 +26,22 @@ const postFormValues = (data: string): boolean => {
   return SaveAnswers(formData);
 };
 
-export interface User {
-  username: string;
-  password: string;
-  isLocal: number;
-  schoolCode: string;
-  schoolName: string;
-  familyName: string;
-  givenName: string;
-  familyKanaName: string;
-  givenKanaName: string;
-  renewName: string;
-  renewPassword: string;
-  renewClass: string;
-  termName: string;
-  className: string;
-  classRole: string;
-  TekitouName: string;
-}
-
 // Exposed to GAS global function
 global.getSpreadSheetName = getSpreadSheetName;
 global.getSpreadSheetUrl = getSpreadSheetUrl;
 global.onOpen = onOpen;
 global.doGet = doGet;
-global.PrepareForm = PrepareForm;
+// global.PrepareForm = PrepareForm;
+global.getInquiryData = getInquiryData;
+global.getMemberData = getMemberData;
 global.postFormValues = postFormValues;
 
 // Exposed to frontend (gas-client)
-export { getSpreadSheetName, getSpreadSheetUrl, PrepareForm, postFormValues };
+export {
+  getSpreadSheetName,
+  getSpreadSheetUrl,
+  // PrepareForm,
+  getMemberData,
+  postFormValues,
+  getInquiryData,
+};
