@@ -1,7 +1,7 @@
 import { type FormValues } from "@/client/components/Form/Form";
 import { getInquiryData, getMemberData } from "./API/FormInquiry";
 import { onOpen } from "./API/Menu";
-import { SaveAnswers } from "./API/Post";
+import { SaveAnswers, postFormValues2 } from "./API/Post";
 import { getSpreadSheetName, getSpreadSheetUrl } from "./API/SheetInfo";
 
 export const doGet = (): GoogleAppsScript.HTML.HtmlOutput => {
@@ -10,6 +10,7 @@ export const doGet = (): GoogleAppsScript.HTML.HtmlOutput => {
     .setTitle(getSpreadSheetName() ?? "GIGA-KenkoKansatsu");
 };
 
+// TODO: delete
 const postFormValues = (data: string): boolean => {
   // parse
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
@@ -18,22 +19,28 @@ const postFormValues = (data: string): boolean => {
   return SaveAnswers(formData);
 };
 
-// Exposed to GAS global function
-global.getSpreadSheetName = getSpreadSheetName;
-global.getSpreadSheetUrl = getSpreadSheetUrl;
+/*
+  Exposed to GAS global function
+*/
+// standard
 global.onOpen = onOpen;
 global.doGet = doGet;
-// global.PrepareForm = PrepareForm;
+
+// These functions are invoked when the front-end is first accessed
+global.getSpreadSheetName = getSpreadSheetName;
+global.getSpreadSheetUrl = getSpreadSheetUrl;
 global.getInquiryData = getInquiryData;
 global.getMemberData = getMemberData;
-global.postFormValues = postFormValues;
+global.postFormValues2 = postFormValues2;
 
-// Exposed to frontend (gas-client)
+global.postFormValues = postFormValues; // TODO: abandaned
+
+// Export to frontend (gas-client)
 export {
   getSpreadSheetName,
   getSpreadSheetUrl,
-  // PrepareForm,
   getMemberData,
   postFormValues,
+  postFormValues2,
   getInquiryData,
 };

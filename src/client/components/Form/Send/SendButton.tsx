@@ -33,6 +33,7 @@ const SendButton: FC<SendFormProps> = ({ formValues, dispatch }) => {
       type: "SUBMIT_START",
       processing: isSubmitting,
     });
+    // TODO: useEffect
     const result = await serverFunctions.postFormValues(
       JSON.stringify(formValues)
     );
@@ -40,11 +41,13 @@ const SendButton: FC<SendFormProps> = ({ formValues, dispatch }) => {
       console.log("ok~!");
       dispatch({
         type: "SUBMIT_SUCCESS",
+        processing: isSubmitting,
       });
     } else {
       console.log("omg...");
       dispatch({
         type: "SUBMIT_FAILURE",
+        processing: isSubmitting,
       });
     }
   };

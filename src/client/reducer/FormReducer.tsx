@@ -19,10 +19,12 @@ export type Actions =
   | {
       type: "SUBMIT_SUCCESS";
       // TODO: something
+      processing: boolean;
     }
   | {
       type: "SUBMIT_FAILURE";
       // TODO: something
+      processing: boolean;
     };
 
 export const FormReducer = (
@@ -53,6 +55,14 @@ export const FormReducer = (
     }
     case "SUBMIT_START": {
       // TODO: somethiing
+      return curData;
+    }
+    case "SUBMIT_SUCCESS": {
+      // TODO: something
+      return curData;
+    }
+    case "SUBMIT_FAILURE": {
+      // TODO: something
       return curData;
     }
     default:

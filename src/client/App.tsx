@@ -1,6 +1,5 @@
 import { type FC, useReducer } from "react";
 import { Container } from "@chakra-ui/react";
-import { isGASEnvironment } from "gas-client/src/utils/is-gas-environment";
 
 import "./App.css";
 import {
@@ -28,12 +27,6 @@ const App: FC = () => {
   // 各種state
   const { sheetName, sheetUrl } = useSheetNameAndUrl();
   const { formStudentElements, inquiryItem } = useMemberData();
-
-  if (isGASEnvironment()) {
-    console.log("in PROD ENV");
-  } else {
-    console.log("in DEV ENV");
-  }
 
   return (
     <div className="App">
