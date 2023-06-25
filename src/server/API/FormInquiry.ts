@@ -14,22 +14,6 @@ export type FormRegister = {
   InquiryItems: InquiryItem;
 };
 
-const _PrepareForm = async (): Promise<FormRegister> => {
-  const [allValues, inquiryValues] = await Promise.all([
-    getMemberData(),
-    getInquiryData(),
-  ]);
-
-  const ret = {
-    Students: allValues.filter(
-      (row) => row.Role === "児童生徒" || row.Role === "Student"
-    ),
-    InquiryItems: inquiryValues,
-  };
-
-  return ret;
-};
-
 const getInquiryData = async (): Promise<InquiryItem> => {
   return await new Promise((resolve, reject) => {
     const sheetName: string = FormSheetName;

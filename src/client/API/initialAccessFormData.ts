@@ -1,8 +1,6 @@
 /* eslint-disable import/extensions */
-import { isGASEnvironment } from "gas-client/src/utils/is-gas-environment";
 import { type Student, type InquiryItem } from "@/server/Config/SheetData";
-import { serverFunctions } from "./serverFunctions";
-// import { type FormRegister } from "@/server/API/FormInquiry";
+import { serverFunctions, isGASEnvironment } from "./serverFunctions";
 
 const FormInquiryAPI = async (): Promise<InquiryItem> => {
   if (isGASEnvironment()) {

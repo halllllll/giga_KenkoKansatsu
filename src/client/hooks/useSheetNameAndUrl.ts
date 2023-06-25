@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { serverFunctions } from "../API/serverFunctions";
+import { SheetNameAPI, SheetUrlAPI } from "@/client/API/getSheetInfo";
 
 type sheetNameAndUrlResult = {
   sheetName: string;
@@ -13,8 +13,8 @@ export const useSheetNameAndUrl = (): sheetNameAndUrlResult => {
   useEffect(() => {
     const knock = async () => {
       const [spreadsheettitle, spreadsheetUrl] = await Promise.all([
-        serverFunctions.getSpreadSheetName(),
-        serverFunctions.getSpreadSheetUrl(),
+        SheetNameAPI(),
+        SheetUrlAPI(),
       ]);
       console.log(`get spread sheet title: ${spreadsheettitle ?? "(null)"}`);
       setSheetName(spreadsheettitle);

@@ -1,7 +1,10 @@
 import { useState, useEffect } from "react";
 
 import { type Student, type InquiryItem } from "@/server/Config/SheetData";
-import { FormInquiryAPI, FormMemberAPI } from "../API/initialAccessFormData";
+import {
+  FormInquiryAPI,
+  FormMemberAPI,
+} from "@/client/API/initialAccessFormData";
 
 type MemberDataResult = {
   formStudentElements: Student[];
