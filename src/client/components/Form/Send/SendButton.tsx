@@ -19,6 +19,7 @@ const SendButton: FC<SendFormProps> = ({ formValues }) => {
     handleSubmit,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     formState: { errors, isSubmitting },
+    reset,
   } = useForm<FormValues>({});
 
   const onPostSubmit: SubmitHandler<FormValues> = async () => {
@@ -40,6 +41,17 @@ const SendButton: FC<SendFormProps> = ({ formValues }) => {
       ),
       await postFormValueDataAPI(formValues),
     ]);
+    switch (result.status) {
+      case "success": {
+        reset();
+        break;
+      }
+      case "error": {
+        // TODO: view
+        console.error(result.error);
+        break;
+      }
+    }
     console.log(`result ... ${JSON.stringify(result)}`);
   };
 

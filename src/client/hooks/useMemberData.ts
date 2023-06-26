@@ -7,13 +7,13 @@ import {
 } from "@/client/API/initialAccessFormData";
 
 type MemberDataResult = {
-  formStudentElements: Student[];
-  inquiryItem: InquiryItem | null;
+  formStudents: Student[];
+  formInquiryItems: InquiryItem | null;
 };
 
 export const useMemberData = (): MemberDataResult => {
-  const [formStudentElements, setStudentElements] = useState<Student[]>([]);
-  const [inquiryItem, setInquiryItem] = useState<InquiryItem | null>(null);
+  const [formStudents, setStudentElements] = useState<Student[]>([]);
+  const [formInquiryItems, setInquiryItem] = useState<InquiryItem | null>(null);
 
   useEffect(() => {
     const knock = async () => {
@@ -25,5 +25,5 @@ export const useMemberData = (): MemberDataResult => {
     void knock();
   }, []);
 
-  return { formStudentElements, inquiryItem };
+  return { formStudents, formInquiryItems };
 };

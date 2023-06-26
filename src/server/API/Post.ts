@@ -1,7 +1,9 @@
-import { type FormValues } from "@/client/components/Form/Form";
-import { ss, AnswerSheetHeaders } from "../Config/Const";
-import { StoreSheetName } from "../Config/SheetData";
-import { InvalidSheetError } from "../Config/errors";
+import { type FormValues } from "@/client/components/Form/FormContent";
+import { ss, AnswerSheetHeaders } from "@/server/Config/Const";
+import { StoreSheetName } from "@/server/Config/SheetData";
+import { type postDataRequest } from "@/client/API/postData";
+import { InvalidSheetError } from "@/server/Config/errors";
+
 const storeSheet = ss.getSheetByName(StoreSheetName);
 
 type postDataResult = {
@@ -10,9 +12,9 @@ type postDataResult = {
   data?: string;
 };
 
-const postFormValues = (data: string): postDataResult => {
+const postFormValues = (data: postDataRequest): postDataResult => {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-  const formValues: FormValues[] = JSON.parse(data);
+  const formValues: FormValues[] = data.req;
   const ret: postDataResult = { status: null };
   try {
     // validation

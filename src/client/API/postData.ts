@@ -2,12 +2,19 @@ import { type FormValues } from "@/client/components/Index";
 import { type postDataResult } from "@/server/API/Post";
 import { serverFunctions, isGASEnvironment } from "./serverFunctions";
 
+type postDataRequest = {
+  req: FormValues[];
+};
+
 const postFormValueDataAPI = async (
   data: FormValues[]
 ): Promise<postDataResult> => {
   if (isGASEnvironment()) {
-    // 受け取るときはオブジェクトでいいが、投げるときはstring型にすることにする
-    const ret = await serverFunctions.postFormValues(JSON.stringify(data));
+    const req: postDataRequest = {
+      req: data,
+    };
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+    const ret: postDataResult = await serverFunctions.postFormValues(req);
 
     return ret;
   } else {
@@ -19,4 +26,4 @@ const postFormValueDataAPI = async (
   }
 };
 
-export { postFormValueDataAPI };
+export { postFormValueDataAPI, type postDataRequest };

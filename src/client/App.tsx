@@ -3,13 +3,11 @@ import { Container } from "@chakra-ui/react";
 
 import "./App.css";
 import {
-  CandidatesArea,
   Footer,
-  Form,
   type FormValues,
-  SendButton,
   Header,
   Info,
+  Form,
 } from "@/client/components/Index";
 
 import { useMemberData } from "./hooks/useMemberData";
@@ -26,7 +24,7 @@ const App: FC = () => {
   );
   // 各種state
   const { sheetName, sheetUrl } = useSheetNameAndUrl();
-  const { formStudentElements, inquiryItem } = useMemberData();
+  const { formStudents, formInquiryItems } = useMemberData();
 
   return (
     <div className="App">
@@ -35,22 +33,11 @@ const App: FC = () => {
         {/** TODO: information area */}
         <Info message={""} hasUrl={false} url={""} />
         <Form
-          students={formStudentElements}
-          inquiryItem={inquiryItem}
-          dispatch={candidateDispatch}
+          formStudents={formStudents}
+          formInquiryItems={formInquiryItems}
+          candidatesState={candidateStates}
+          candidateDispatch={candidateDispatch}
         />
-        {candidateStates.length > 0 && (
-          <>
-            <CandidatesArea
-              dispatch={candidateDispatch}
-              candidates={candidateStates}
-            />
-            <SendButton
-              dispatch={candidateDispatch}
-              formValues={candidateStates}
-            />
-          </>
-        )}
       </Container>
       <Footer footerTitle={sheetName} />
     </div>
