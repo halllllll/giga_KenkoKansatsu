@@ -6,14 +6,15 @@ const postFormValueDataAPI = async (
   data: FormValues[]
 ): Promise<postDataResult> => {
   if (isGASEnvironment()) {
-    const ret = await serverFunctions.postFormValues2(JSON.stringify(data));
+    // 受け取るときはオブジェクトでいいが、投げるときはstring型にすることにする
+    const ret = await serverFunctions.postFormValues(JSON.stringify(data));
 
-    return JSON.parse(ret) as postDataResult;
+    return ret;
   } else {
     return await new Promise((resolve) => {
       setTimeout(() => {
-        resolve({ success: true, error: null, msg: "" });
-      }, 1500);
+        resolve({ status: "success" });
+      }, 3000);
     });
   }
 };

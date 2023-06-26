@@ -4,14 +4,15 @@ import { type SubmitHandler, useForm } from "react-hook-form";
 import { ScreenSpinner } from "@/client/components/Index";
 import { type FormValues } from "@/client/components/Index";
 import { type Actions } from "@/client/reducer/FormReducer";
-import { serverFunctions } from "@/client/API/serverFunctions";
+import { type postDataResult } from "@/server/API/Post";
+import { postFormValueDataAPI } from "@/client/API/postData";
 
 type SendFormProps = {
   dispatch: React.Dispatch<Actions>;
   formValues: FormValues[];
 };
 
-const SendButton: FC<SendFormProps> = ({ formValues, dispatch }) => {
+const SendButton: FC<SendFormProps> = ({ formValues }) => {
   const { onClose } = useDisclosure();
 
   const {
@@ -28,28 +29,18 @@ const SendButton: FC<SendFormProps> = ({ formValues, dispatch }) => {
       behavior: "smooth",
     });
 
-    // dispatchでは非同期処理をさせず、ハンドラで行う（dispatchには処理の開始と終了を伝える）
-    dispatch({
-      type: "SUBMIT_START",
-      processing: isSubmitting,
-    });
-    // TODO: useEffect
-    const result = await serverFunctions.postFormValues(
-      JSON.stringify(formValues)
-    );
-    if (result) {
-      console.log("ok~!");
-      dispatch({
-        type: "SUBMIT_SUCCESS",
-        processing: isSubmitting,
-      });
-    } else {
-      console.log("omg...");
-      dispatch({
-        type: "SUBMIT_FAILURE",
-        processing: isSubmitting,
-      });
-    }
+    const result = await Promise.race<postDataResult>([
+      new Promise((resolve, _reject) =>
+        setTimeout(() => {
+          const ret: postDataResult = {
+            status: "error",
+          };
+          resolve(ret);
+        }, 5000)
+      ),
+      await postFormValueDataAPI(formValues),
+    ]);
+    console.log(`result ... ${JSON.stringify(result)}`);
   };
 
   return (
