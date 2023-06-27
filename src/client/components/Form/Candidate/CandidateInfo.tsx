@@ -1,4 +1,4 @@
-import { type FormValues } from "@/client/components/Index";
+import { type FormValues } from "../form-select-data";
 
 export interface ViewData extends FormValues {
   viewIndex: number;

@@ -1,4 +1,4 @@
-import { useState, useEffect, type FC, type SyntheticEvent } from "react";
+import { type FC, type SyntheticEvent } from "react";
 import {
   Box,
   Button,
@@ -12,52 +12,63 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { type OptionBase } from "chakra-react-select";
+// import { type OptionBase } from "chakra-react-select";
 import { format } from "date-fns";
 import { ja } from "date-fns/locale";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { type Actions } from "@/client/reducer/FormReducer";
 import { type InquiryItem, type Student } from "@/server/Config/SheetData";
 import ControlledSelect from "./controlled-select";
+import {
+  type Attendance,
+  type ClassName,
+  type Condition,
+  type Grade,
+  type Name,
+  type FormValues,
+} from "./form-select-data";
+import { useOptionsOfForm } from "./hooks/useOptionsOfForm";
 import { FormSchema } from "./schemas/registration-form";
+
+// experimental
 
 // for chakra-react-select
 // TODO: devide logic
-interface Grade extends OptionBase {
-  label: string;
-  value: string;
-}
-interface ClassName extends OptionBase {
-  label: string;
-  value: string;
-}
+// interface Grade extends OptionBase {
+//   label: string;
+//   value: string;
+// }
+// interface ClassName extends OptionBase {
+//   label: string;
+//   value: string;
+// }
 
-interface Name extends OptionBase {
-  label: string;
-  value: string;
-  kana: string;
-}
+// interface Name extends OptionBase {
+//   label: string;
+//   value: string;
+//   kana: string;
+// }
 
-interface Attendance extends OptionBase {
-  label: string;
-  value: string;
-}
+// interface Attendance extends OptionBase {
+//   label: string;
+//   value: string;
+// }
 
-interface Condition extends OptionBase {
-  label: string;
-  value: string;
-}
+// interface Condition extends OptionBase {
+//   label: string;
+//   value: string;
+// }
 
-export interface FormValues {
-  registerDate: string;
-  grade: Grade | null;
-  className: ClassName | null;
-  classNumber: number | null;
-  name: Name | null;
-  attendance: Attendance;
-  condition: Condition[] | null;
-  status: string;
-}
+// export interface FormValues {
+//   registerDate: string;
+//   grade: Grade | null;
+//   className: ClassName | null;
+//   classNumber: number | null;
+//   name: Name | null;
+//   attendance: Attendance;
+//   condition: Condition[] | null;
+//   status: string;
+// }
 
 // あらかじめDefaultValuesをきめておけば、reset()に流用できる
 const formDefaultValues: FormValues = {
@@ -80,82 +91,98 @@ type FormProps = {
 const FormContent: FC<FormProps> = (props) => {
   const { students, inquiryItem, dispatch } = props;
 
-  // 選択肢・選択した値を管理
-  // TODO: devide logic
-  const [gradeOptionValue, setGradeOptionValue] = useState<Grade | null>(null);
-  const [classNameOptionValue, setClassNameOptionValue] =
-    useState<ClassName | null>(null);
-  const [nameOptionValue, setNameOptionValue] = useState<Name | null>(null);
-
-  const [gradeOptions, setGradeOptions] = useState<Grade[]>([]);
-  const [classNameOptions, setClassNameOptions] = useState<ClassName[]>([]);
-  const [nameOptions, setNameOptions] = useState<Name[]>([]);
-  const [attendanceOptions, setAttendanceOptions] = useState<Attendance[]>();
-  const [conditionOptions, setConditionOptions] = useState<Condition[]>([]);
-
-  // TODO: devide logic
-  useEffect(() => {
-    // labelで候補の絞り込み
-    // 全部undefined -> 全候補をそのまま設定
-    /** thank chat GPT */
-
-    const targetStudents = students.filter((student) => {
-      return (
-        (gradeOptionValue?.value == null ||
-          student.Grade === gradeOptionValue.value) &&
-        (classNameOptionValue?.value == null ||
-          student.Class === classNameOptionValue.value) &&
-        (nameOptionValue?.value == null ||
-          student.Name === nameOptionValue.value)
-      );
-    });
-    // それぞれの項目用にデータ整形
-    const gradeOptions: Grade[] = [
-      ...new Set([...targetStudents].map((sd) => sd.Grade)),
-    ]
-      .map((d) => {
-        return { label: `${d} 年生`, value: d };
-      })
-      .sort((a, b) => (a.value >= b.value ? 1 : -1));
-
-    const classNameOptions: ClassName[] = [
-      ...new Set([...targetStudents].map((sd) => sd.Class)),
-    ]
-      .map((d) => {
-        return { label: `${d} 組`, value: d };
-      })
-      .sort((a, b) => (a.value >= b.value ? 1 : -1));
-
-    const nameOptions: Name[] = targetStudents
-      .map((d) => {
-        return {
-          label: d.Name,
-          value: `${d.Name}`,
-          kana: d.Kana,
-        };
-      })
-      .sort((a, b) => (a.value >= b.value ? 1 : -1));
-
-    const attendance: Attendance[] = inquiryItem?.Attendance.map((a) => {
-      return { label: a, value: a };
-    }) ?? [{ label: "", value: "" }];
-
-    const conditions: Condition[] = inquiryItem?.Condition.map((c) => {
-      return { label: c, value: c };
-    }) ?? [{ label: "", value: "" }];
-
-    setGradeOptions(gradeOptions);
-    setClassNameOptions(classNameOptions);
-    setNameOptions(nameOptions);
-    setAttendanceOptions(attendance);
-    setConditionOptions(conditions);
-  }, [
-    gradeOptionValue,
-    classNameOptionValue,
-    nameOptionValue,
+  // experimental
+  const {
+    setGrade,
+    setClassName,
+    setName,
+    gradeOptions,
+    classNameOptions,
+    nameOptions,
+    attendanceOptions,
+    conditionOptions,
+  } = useOptionsOfForm({
     students,
     inquiryItem,
-  ]);
+  });
+
+  // 選択肢・選択した値を管理
+  // TODO: devide logic
+
+  // const [gradeOptionValue, setGradeOptionValue] = useState<Grade | null>(null);
+  // const [classNameOptionValue, setClassNameOptionValue] =
+  //   useState<ClassName | null>(null);
+  // const [nameOptionValue, setNameOptionValue] = useState<Name | null>(null);
+
+  // const [gradeOptions, setGradeOptions] = useState<Grade[]>([]);
+  // const [classNameOptions, setClassNameOptions] = useState<ClassName[]>([]);
+  // const [nameOptions, setNameOptions] = useState<Name[]>([]);
+  // const [attendanceOptions, setAttendanceOptions] = useState<Attendance[]>();
+  // const [conditionOptions, setConditionOptions] = useState<Condition[]>([]);
+
+  // // TODO: devide logic
+  // useEffect(() => {
+  //   // labelで候補の絞り込み
+  //   // 全部undefined -> 全候補をそのまま設定
+  //   /** thank chat GPT */
+
+  //   const targetStudents = students.filter((student) => {
+  //     return (
+  //       (gradeOptionValue?.value == null ||
+  //         student.Grade === gradeOptionValue.value) &&
+  //       (classNameOptionValue?.value == null ||
+  //         student.Class === classNameOptionValue.value) &&
+  //       (nameOptionValue?.value == null ||
+  //         student.Name === nameOptionValue.value)
+  //     );
+  //   });
+  //   // それぞれの項目用にデータ整形
+  //   const gradeOptions: Grade[] = [
+  //     ...new Set([...targetStudents].map((sd) => sd.Grade)),
+  //   ]
+  //     .map((d) => {
+  //       return { label: `${d} 年生`, value: d };
+  //     })
+  //     .sort((a, b) => (a.value >= b.value ? 1 : -1));
+
+  //   const classNameOptions: ClassName[] = [
+  //     ...new Set([...targetStudents].map((sd) => sd.Class)),
+  //   ]
+  //     .map((d) => {
+  //       return { label: `${d} 組`, value: d };
+  //     })
+  //     .sort((a, b) => (a.value >= b.value ? 1 : -1));
+
+  //   const nameOptions: Name[] = targetStudents
+  //     .map((d) => {
+  //       return {
+  //         label: d.Name,
+  //         value: `${d.Name}`,
+  //         kana: d.Kana,
+  //       };
+  //     })
+  //     .sort((a, b) => (a.value >= b.value ? 1 : -1));
+
+  //   const attendance: Attendance[] = inquiryItem?.Attendance.map((a) => {
+  //     return { label: a, value: a };
+  //   }) ?? [{ label: "", value: "" }];
+
+  //   const conditions: Condition[] = inquiryItem?.Condition.map((c) => {
+  //     return { label: c, value: c };
+  //   }) ?? [{ label: "", value: "" }];
+
+  //   setGradeOptions(gradeOptions);
+  //   setClassNameOptions(classNameOptions);
+  //   setNameOptions(nameOptions);
+  //   setAttendanceOptions(attendance);
+  //   setConditionOptions(conditions);
+  // }, [
+  //   gradeOptionValue,
+  //   classNameOptionValue,
+  //   nameOptionValue,
+  //   students,
+  //   inquiryItem,
+  // ]);
 
   // useForm用
   const {
@@ -180,23 +207,23 @@ const FormContent: FC<FormProps> = (props) => {
     });
     // 連続して登録する場合、シチュエーション的にほとんどの場合は名前とstatusのみ変更
     reset({
-      grade: gradeOptionValue,
+      grade: getValues().grade, // TODO: alter getValules().grade?
       name: null,
-      className: classNameOptionValue,
+      className: getValues().className, // TODO: alter getValues().classname?
       status: "",
       attendance: { label: "", value: "" },
       condition: [],
     });
-    setNameOptionValue(null);
+    setName(null);
   };
 
   // 全部リセット
   const onReset = (e: SyntheticEvent) => {
     e.stopPropagation();
     reset(formDefaultValues);
-    setGradeOptionValue(null);
-    setNameOptionValue(null);
-    setClassNameOptionValue(null);
+    setGrade(null);
+    setName(null);
+    setClassName(null);
   };
 
   return (
@@ -239,10 +266,10 @@ const FormContent: FC<FormProps> = (props) => {
               label="学年"
               placeholder="学年を選ぼう！"
               options={gradeOptions}
-              value={gradeOptionValue}
+              value={gradeOptions}
               rules={{
                 onChange: () => {
-                  setGradeOptionValue(getValues().grade);
+                  setGrade(getValues().grade);
                 },
               }}
             />
@@ -253,10 +280,10 @@ const FormContent: FC<FormProps> = (props) => {
               label="クラス"
               placeholder="クラスを選ぼう！"
               options={classNameOptions}
-              value={classNameOptionValue}
+              value={classNameOptions}
               rules={{
                 onChange: () => {
-                  setClassNameOptionValue(getValues().className);
+                  setClassName(getValues().className);
                 },
               }}
             />
@@ -268,10 +295,10 @@ const FormContent: FC<FormProps> = (props) => {
             label="名前"
             placeholder="名前を検索しよう！"
             options={nameOptions}
-            value={nameOptionValue}
+            value={nameOptions}
             rules={{
               onChange: () => {
-                setNameOptionValue(getValues().name);
+                setName(getValues().name);
               },
             }}
             formatOptionLabel={(option: Name) => {

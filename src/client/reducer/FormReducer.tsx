@@ -1,4 +1,4 @@
-import { type FormValues } from "@/client/components/Index";
+import { type FormValues } from "@/client/components/Form/form-select-data";
 
 export type Actions =
   | {

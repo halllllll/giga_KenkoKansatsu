@@ -1,7 +1,7 @@
-import { type FormValues } from "@/client/components/Form/FormContent";
 import { ss, AnswerSheetHeaders } from "@/server/Config/Const";
 import { StoreSheetName } from "@/server/Config/SheetData";
 import { type postDataRequest } from "@/client/API/postData";
+import { type FormValues } from "@/client/components/Form/form-select-data";
 import { InvalidSheetError } from "@/server/Config/errors";
 
 const storeSheet = ss.getSheetByName(StoreSheetName);

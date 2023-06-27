@@ -12,8 +12,9 @@ import {
   Tr,
   VStack,
 } from "@chakra-ui/react";
-import { type FormValues, type ViewData } from "@/client/components/Index";
+import { type ViewData } from "@/client/components/Index";
 import { type Actions } from "@/client/reducer/FormReducer";
+import { type FormValues } from "../../form-select-data";
 
 type CandidateProps = {
   dispatch: React.Dispatch<Actions>;

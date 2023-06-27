@@ -2,9 +2,9 @@ import { type FC } from "react";
 import { Center, Box, Button, useDisclosure } from "@chakra-ui/react";
 import { type SubmitHandler, useForm } from "react-hook-form";
 import { ScreenSpinner } from "@/client/components/Index";
-import { type FormValues } from "@/client/components/Index";
 import { type Actions } from "@/client/reducer/FormReducer";
 import { type postDataResult } from "@/server/API/Post";
+import { type FormValues } from "../form-select-data";
 import { postFormValueDataAPI } from "@/client/API/postData";
 
 type SendFormProps = {

@@ -2,13 +2,8 @@ import { type FC, useReducer } from "react";
 import { Container } from "@chakra-ui/react";
 
 import "./App.css";
-import {
-  Footer,
-  type FormValues,
-  Header,
-  Info,
-  Form,
-} from "@/client/components/Index";
+import { Footer, Header, Info, Form } from "@/client/components/Index";
+import { type FormValues } from "./components/Form/form-select-data";
 
 import { useMemberData } from "./hooks/useMemberData";
 import { useSheetNameAndUrl } from "./hooks/useSheetNameAndUrl";
