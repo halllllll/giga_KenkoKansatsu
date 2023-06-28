@@ -2,19 +2,16 @@ import { type postDataResult } from "@/server/API/Post";
 import { type FormValues } from "../components/Form/form-select-data";
 import { serverFunctions, isGASEnvironment } from "./serverFunctions";
 
-type postDataRequest = {
-  req: FormValues[];
-};
+type postDataRequest = string;
 
 const postFormValueDataAPI = async (
   data: FormValues[]
 ): Promise<postDataResult> => {
   if (isGASEnvironment()) {
-    const req: postDataRequest = {
-      req: data,
-    };
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    const ret: postDataResult = await serverFunctions.postFormValues(req);
+    const ret: postDataResult = await serverFunctions.postFormValues(
+      JSON.stringify(data)
+    );
 
     return ret;
   } else {

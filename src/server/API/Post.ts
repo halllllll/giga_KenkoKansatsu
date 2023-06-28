@@ -14,7 +14,7 @@ type postDataResult = {
 
 const postFormValues = (data: postDataRequest): postDataResult => {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-  const formValues: FormValues[] = data.req;
+  const formValues: FormValues[] = JSON.parse(data) as FormValues[];
   const ret: postDataResult = { status: null };
   try {
     // validation
