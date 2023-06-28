@@ -30,46 +30,6 @@ import {
 import { useOptionsOfForm } from "./hooks/useOptionsOfForm";
 import { FormSchema } from "./schemas/registration-form";
 
-// experimental
-
-// for chakra-react-select
-// TODO: devide logic
-// interface Grade extends OptionBase {
-//   label: string;
-//   value: string;
-// }
-// interface ClassName extends OptionBase {
-//   label: string;
-//   value: string;
-// }
-
-// interface Name extends OptionBase {
-//   label: string;
-//   value: string;
-//   kana: string;
-// }
-
-// interface Attendance extends OptionBase {
-//   label: string;
-//   value: string;
-// }
-
-// interface Condition extends OptionBase {
-//   label: string;
-//   value: string;
-// }
-
-// export interface FormValues {
-//   registerDate: string;
-//   grade: Grade | null;
-//   className: ClassName | null;
-//   classNumber: number | null;
-//   name: Name | null;
-//   attendance: Attendance;
-//   condition: Condition[] | null;
-//   status: string;
-// }
-
 // あらかじめDefaultValuesをきめておけば、reset()に流用できる
 const formDefaultValues: FormValues = {
   registerDate: format(new Date(), "yyyy-MM-dd", { locale: ja }),
@@ -106,84 +66,6 @@ const FormContent: FC<FormProps> = (props) => {
     inquiryItem,
   });
 
-  // 選択肢・選択した値を管理
-  // TODO: devide logic
-
-  // const [gradeOptionValue, setGradeOptionValue] = useState<Grade | null>(null);
-  // const [classNameOptionValue, setClassNameOptionValue] =
-  //   useState<ClassName | null>(null);
-  // const [nameOptionValue, setNameOptionValue] = useState<Name | null>(null);
-
-  // const [gradeOptions, setGradeOptions] = useState<Grade[]>([]);
-  // const [classNameOptions, setClassNameOptions] = useState<ClassName[]>([]);
-  // const [nameOptions, setNameOptions] = useState<Name[]>([]);
-  // const [attendanceOptions, setAttendanceOptions] = useState<Attendance[]>();
-  // const [conditionOptions, setConditionOptions] = useState<Condition[]>([]);
-
-  // // TODO: devide logic
-  // useEffect(() => {
-  //   // labelで候補の絞り込み
-  //   // 全部undefined -> 全候補をそのまま設定
-  //   /** thank chat GPT */
-
-  //   const targetStudents = students.filter((student) => {
-  //     return (
-  //       (gradeOptionValue?.value == null ||
-  //         student.Grade === gradeOptionValue.value) &&
-  //       (classNameOptionValue?.value == null ||
-  //         student.Class === classNameOptionValue.value) &&
-  //       (nameOptionValue?.value == null ||
-  //         student.Name === nameOptionValue.value)
-  //     );
-  //   });
-  //   // それぞれの項目用にデータ整形
-  //   const gradeOptions: Grade[] = [
-  //     ...new Set([...targetStudents].map((sd) => sd.Grade)),
-  //   ]
-  //     .map((d) => {
-  //       return { label: `${d} 年生`, value: d };
-  //     })
-  //     .sort((a, b) => (a.value >= b.value ? 1 : -1));
-
-  //   const classNameOptions: ClassName[] = [
-  //     ...new Set([...targetStudents].map((sd) => sd.Class)),
-  //   ]
-  //     .map((d) => {
-  //       return { label: `${d} 組`, value: d };
-  //     })
-  //     .sort((a, b) => (a.value >= b.value ? 1 : -1));
-
-  //   const nameOptions: Name[] = targetStudents
-  //     .map((d) => {
-  //       return {
-  //         label: d.Name,
-  //         value: `${d.Name}`,
-  //         kana: d.Kana,
-  //       };
-  //     })
-  //     .sort((a, b) => (a.value >= b.value ? 1 : -1));
-
-  //   const attendance: Attendance[] = inquiryItem?.Attendance.map((a) => {
-  //     return { label: a, value: a };
-  //   }) ?? [{ label: "", value: "" }];
-
-  //   const conditions: Condition[] = inquiryItem?.Condition.map((c) => {
-  //     return { label: c, value: c };
-  //   }) ?? [{ label: "", value: "" }];
-
-  //   setGradeOptions(gradeOptions);
-  //   setClassNameOptions(classNameOptions);
-  //   setNameOptions(nameOptions);
-  //   setAttendanceOptions(attendance);
-  //   setConditionOptions(conditions);
-  // }, [
-  //   gradeOptionValue,
-  //   classNameOptionValue,
-  //   nameOptionValue,
-  //   students,
-  //   inquiryItem,
-  // ]);
-
   // useForm用
   const {
     register,
@@ -207,9 +89,9 @@ const FormContent: FC<FormProps> = (props) => {
     });
     // 連続して登録する場合、シチュエーション的にほとんどの場合は名前とstatusのみ変更
     reset({
-      grade: getValues().grade, // TODO: alter getValules().grade?
+      grade: getValues().grade,
       name: null,
-      className: getValues().className, // TODO: alter getValues().classname?
+      className: getValues().className,
       status: "",
       attendance: { label: "", value: "" },
       condition: [],
