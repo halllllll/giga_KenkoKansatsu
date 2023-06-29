@@ -1,4 +1,4 @@
-import { type SyntheticEvent, type FC } from "react";
+import { type SyntheticEvent, type FC, useEffect, useState } from "react";
 import {
   Box,
   Button,
@@ -37,7 +37,6 @@ import {
   type Condition,
   type Grade,
 } from "./form-select-data";
-import { useOptionsOfForm } from "./hooks/useOptionsOfForm";
 import { FormSchema } from "./schemas/registration-form";
 import { postFormValueDataAPI } from "@/client/API/postData";
 
@@ -53,6 +52,10 @@ type FormProps = {
  *
  *  TODO: integrate FORM experiences.
  *  - ONLY 1 `useForm`
+ *  - DEVIDING components for FAST rendering for options.
+ *  - Adaptable Thought, especially future-features.
+ *  - Good Filtering for options.
+ *  - Nice and Flexible Behavior "modal", "spinner" or so.
  *
  */
 
@@ -71,20 +74,80 @@ const FormRoot: FC<FormProps> = (props) => {
     condition: [],
     status: "",
   };
-  // TODO: MORE BETTER temporary-customhook
-  const {
-    setGrade,
-    setClassName,
-    setName,
-    gradeOptions,
-    classNameOptions,
-    nameOptions,
-    attendanceOptions,
-    conditionOptions,
-  } = useOptionsOfForm({
-    students: formStudents,
-    inquiryItem: formInquiryItems,
-  });
+
+  /**
+   *
+   * TODO: MORE BETTER temporary-customhook
+   *
+   */
+  // 選択肢・選択した値を管理
+  // 選択された値
+  const [curGrade, setCurGrade] = useState<Grade | null>(null);
+  const [curClassName, setCurClassName] = useState<ClassName | null>(null);
+  const [curName, setCurName] = useState<Name | null>(null);
+
+  // // 選択肢
+  const [gradeOptions, setGradeOptions] = useState<Grade[]>([]);
+  const [classNameOptions, setClassNameOptions] = useState<ClassName[]>([]);
+  const [nameOptions, setNameOptions] = useState<Name[]>([]);
+  const [attendanceOptions, setAttendanceOptions] = useState<
+    Attendance[] | null
+  >(null);
+  const [conditionOptions, setConditionOptions] = useState<Condition[]>([]);
+
+  useEffect(() => {
+    // labelで候補の絞り込み
+    // 全部undefined -> 全候補をそのまま設定
+    /** thank chat GPT */
+
+    const targetStudents = formStudents.filter((student) => {
+      return (
+        (curGrade?.value == null || student.Grade === curGrade.value) &&
+        (curClassName?.value == null || student.Class === curClassName.value) &&
+        (curName?.value == null || student.Name === curName.value)
+      );
+    });
+    // それぞれの項目用にデータ整形
+    const gradeOptions: Grade[] = [
+      ...new Set([...targetStudents].map((sd) => sd.Grade)),
+    ]
+      .map((d) => {
+        return { label: `${d} 年生`, value: d };
+      })
+      .sort((a, b) => (a.value >= b.value ? 1 : -1));
+
+    const classNameOptions: ClassName[] = [
+      ...new Set([...targetStudents].map((sd) => sd.Class)),
+    ]
+      .map((d) => {
+        return { label: `${d} 組`, value: d };
+      })
+      .sort((a, b) => (a.value >= b.value ? 1 : -1));
+
+    const nameOptions: Name[] = targetStudents
+      .map((d) => {
+        return {
+          label: d.Name,
+          value: `${d.Name}`,
+          kana: d.Kana,
+        };
+      })
+      .sort((a, b) => (a.value >= b.value ? 1 : -1));
+
+    const attendance: Attendance[] = formInquiryItems?.Attendance.map((a) => {
+      return { label: a, value: a };
+    }) ?? [{ label: "", value: "" }];
+
+    const conditions: Condition[] = formInquiryItems?.Condition.map((c) => {
+      return { label: c, value: c };
+    }) ?? [{ label: "", value: "" }];
+
+    setGradeOptions(gradeOptions);
+    setClassNameOptions(classNameOptions);
+    setNameOptions(nameOptions);
+    setAttendanceOptions(attendance);
+    setConditionOptions(conditions);
+  }, [curGrade, curClassName, curName, formStudents, formInquiryItems]);
 
   /**
    * Form部分
@@ -119,16 +182,16 @@ const FormRoot: FC<FormProps> = (props) => {
       attendance: { label: "", value: "" },
       condition: [],
     });
-    setName(null);
+    setCurName(null);
   };
 
   // 全部リセット
   const onReset = (e: SyntheticEvent) => {
     e.stopPropagation();
     reset1(formDefaultValues);
-    setGrade(null);
-    setName(null);
-    setClassName(null);
+    setCurGrade(null);
+    setCurName(null);
+    setCurClassName(null);
   };
 
   /**
@@ -236,7 +299,7 @@ const FormRoot: FC<FormProps> = (props) => {
                 value={gradeOptions}
                 rules={{
                   onChange: () => {
-                    setGrade(getValues().grade);
+                    setCurGrade(getValues().grade);
                   },
                 }}
               />
@@ -250,7 +313,7 @@ const FormRoot: FC<FormProps> = (props) => {
                 value={classNameOptions}
                 rules={{
                   onChange: () => {
-                    setClassName(getValues().className);
+                    setCurClassName(getValues().className);
                   },
                 }}
               />
@@ -265,7 +328,7 @@ const FormRoot: FC<FormProps> = (props) => {
               value={nameOptions}
               rules={{
                 onChange: () => {
-                  setName(getValues().name);
+                  setCurName(getValues().name);
                 },
               }}
               formatOptionLabel={(option: Name) => {
