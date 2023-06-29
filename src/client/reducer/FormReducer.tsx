@@ -10,6 +10,9 @@ export type Actions =
   | {
       type: "ADD";
       payload: FormValues;
+    }
+  | {
+      type: "RESET";
     };
 
 export const FormReducer = (
@@ -38,6 +41,10 @@ export const FormReducer = (
 
       return [...curData, addData];
     }
+    case "RESET": {
+      return [];
+    }
+
     default:
       return curData;
   }

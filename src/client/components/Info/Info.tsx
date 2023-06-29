@@ -40,7 +40,7 @@ const InfoBlock: FC<InfoBlockProps> = ({ message, hasUrl, url }) => {
         <Alert status="warning">
           <AlertIcon />
           <Box>
-            <AlertTitle>STATUS - Development: ver 2023-06-21</AlertTitle>
+            <AlertTitle>STATUS - Development: ver 2023-06-23</AlertTitle>
             <AlertDescription>
               {devMsg}
               <br />
