@@ -28,6 +28,7 @@ import { type Actions } from "@/client/reducer/FormReducer";
 import { type postDataResult } from "@/server/API/Post";
 import { type InquiryItem, type Student } from "@/server/Config/SheetData";
 import { ScreenSpinner, type ViewData } from "../Index";
+import SendingModal from "../Screen/Modal";
 import ControlledSelect from "./controlled-select";
 import {
   type ClassName,
@@ -215,13 +216,17 @@ const FormRoot: FC<FormProps> = (props) => {
   /**
    * send button用
    */
-  // Form部分とは別のuseFormを使っている（sendHandlerのためだけに（多分））
-  const { onClose } = useDisclosure();
+  const { onClose, onOpen, isOpen } = useDisclosure();
 
   const {
     handleSubmit: handleSubmit2,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    formState: { errors: errors2, isSubmitting: isSubmitting2 },
+    formState: {
+      errors: _errors2,
+      isSubmitting: isSubmitting2,
+      isSubmitted: isSubmitted2,
+      isSubmitSuccessful: _isSubmitSuccessful2,
+    },
     reset: reset2,
   } = useForm<FormValues>({});
   const onPostSubmit: SubmitHandler<FormValues> = async () => {
@@ -237,18 +242,25 @@ const FormRoot: FC<FormProps> = (props) => {
             status: "error",
           };
           resolve(ret);
-        }, 5000)
+        }, 15000)
       ),
       await postFormValueDataAPI(candidatesState),
     ]);
+
+    onOpen();
+    console.log("おんおん");
     switch (result.status) {
       case "success": {
         reset2();
+        candidateDispatch({
+          type: "RESET",
+        });
+        console.log("ヌー");
         break;
       }
       case "error": {
         // TODO: view
-        console.error(result.error);
+        console.error("ラララ", result.error);
         break;
       }
     }
@@ -257,6 +269,8 @@ const FormRoot: FC<FormProps> = (props) => {
 
   return (
     <>
+      {isSubmitting2 && <ScreenSpinner />}
+      {isSubmitted2 && <SendingModal isOpen={isOpen} onClose={onClose} />}
       <Box
         my={3}
         px={5}
@@ -419,7 +433,6 @@ const FormRoot: FC<FormProps> = (props) => {
           </HStack>
         </form>
       </Box>
-
       {candidatesState.length > 0 && (
         <>
           <Box>
@@ -485,7 +498,6 @@ const FormRoot: FC<FormProps> = (props) => {
             </TableContainer>
           </Box>
           <Box mt="10">
-            <ScreenSpinner onClose={onClose} isOpen={isSubmitting2} />
             <Box h="maxContent">
               <form onSubmit={handleSubmit2(onPostSubmit)}>
                 <Center h="100%">

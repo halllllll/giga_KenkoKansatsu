@@ -1,4 +1,4 @@
-import { useState, useEffect, type FC } from "react";
+import { type FC } from "react";
 import {
   Modal,
   ModalContent,
@@ -10,22 +10,13 @@ import {
 
 type ModalProps = {
   // resp: RegisterResponse | undefined;
+  isOpen: boolean;
+  onClose: () => void;
 };
 
-const sendingModal: FC<ModalProps> = ({}) => {
-  const [isOpen, setIsOpen] = useState(false);
-
-  useEffect(() => {
-    setIsOpen(true);
-  }, []);
-
+const SendingModal: FC<ModalProps> = ({ isOpen, onClose }) => {
   return (
-    <Modal
-      isOpen={isOpen}
-      onClose={() => {
-        setIsOpen(false);
-      }}
-    >
+    <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
       <ModalContent py="4">
         <ModalHeader>{"hhhhhh"}</ModalHeader>
@@ -36,4 +27,4 @@ const sendingModal: FC<ModalProps> = ({}) => {
   );
 };
 
-export default sendingModal;
+export default SendingModal;
