@@ -93,7 +93,7 @@ const FormRoot: FC<FormProps> = (props) => {
   const [curClassName, setCurClassName] = useState<ClassName | null>(null);
   const [curName, setCurName] = useState<Name | null>(null);
 
-  const defferredCurName = useDeferredValue(curName);
+  // const defferredCurName = useDeferredValue(curName);
 
   // // 選択肢
   const [gradeOptions, setGradeOptions] = useState<Grade[]>([]);
@@ -105,6 +105,24 @@ const FormRoot: FC<FormProps> = (props) => {
   const [conditionOptions, setConditionOptions] = useState<Condition[]>([]);
 
   const defferredNameOptions = useDeferredValue(nameOptions);
+  /**
+   * Form部分
+   * useForm用 ここから
+   */
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors, isSubmitting: isAdding },
+    control,
+    setValue,
+    getValues,
+  } = useForm<FormValues>({
+    mode: "all",
+    criteriaMode: "all",
+    resolver: yupResolver(FormSchema),
+    defaultValues: formDefaultValues,
+  });
 
   useEffect(() => {
     // labelで候補の絞り込み
@@ -114,8 +132,7 @@ const FormRoot: FC<FormProps> = (props) => {
       return (
         (curGrade?.value == null || student.Grade === curGrade.value) &&
         (curClassName?.value == null || student.Class === curClassName.value) &&
-        (defferredCurName?.value == null ||
-          student.Name === defferredCurName.value)
+        (curName?.value == null || student.Name === curName.value)
       );
     });
     // それぞれの項目用にデータ整形
@@ -153,8 +170,16 @@ const FormRoot: FC<FormProps> = (props) => {
       return { label: c, value: c };
     }) ?? [{ label: "", value: "" }];
 
-
-
+    // filtering only one
+    if (gradeOptions.length === 1) {
+      setValue("grade", gradeOptions[0]);
+    }
+    if (classNameOptions.length === 1) {
+      setValue("className", classNameOptions[0]);
+    }
+    if (nameOptions.length === 1) {
+      setValue("name", nameOptions[0]);
+    }
     setGradeOptions(gradeOptions);
     setClassNameOptions(classNameOptions);
     setNameOptions(nameOptions);
@@ -163,28 +188,11 @@ const FormRoot: FC<FormProps> = (props) => {
   }, [
     curGrade,
     curClassName,
-    defferredCurName,
+    curName,
     formStudents,
     formInquiryItems,
+    setValue,
   ]);
-
-  /**
-   * Form部分
-   * useForm用 ここから
-   */
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { errors, isSubmitting: isAdding },
-    control,
-    getValues,
-  } = useForm<FormValues>({
-    mode: "all",
-    criteriaMode: "all",
-    resolver: yupResolver(FormSchema),
-    defaultValues: formDefaultValues,
-  });
 
   const onAdd: SubmitHandler<FormValues> = (data) => {
     // 登録
@@ -537,7 +545,6 @@ const FormRoot: FC<FormProps> = (props) => {
                   送信する
                 </Button>
               </Center>
-              {/* </form> */}
             </Box>
           </Box>
         </>
