@@ -159,7 +159,7 @@ const FormRoot: FC<FormProps> = (props) => {
     register,
     handleSubmit,
     reset,
-    formState: { errors: errors1, isSubmitting: isSubmitting1 },
+    formState: { errors, isSubmitting: isAdding },
     control,
     getValues,
   } = useForm<FormValues>({
@@ -294,7 +294,7 @@ const FormRoot: FC<FormProps> = (props) => {
               <FormControl
                 my="5"
                 id="registerDate"
-                isInvalid={!(errors1.registerDate?.message == null)}
+                isInvalid={!(errors.registerDate?.message == null)}
               >
                 <FormLabel>日付</FormLabel>
                 <Input
@@ -303,7 +303,7 @@ const FormRoot: FC<FormProps> = (props) => {
                   {...register("registerDate")}
                   type="date"
                 />
-                {(errors1.registerDate?.message !== null && (
+                {(errors.registerDate?.message !== null && (
                   <FormErrorMessage>日付を選んでね</FormErrorMessage>
                 )) ?? <> </>}
               </FormControl>
@@ -405,7 +405,7 @@ const FormRoot: FC<FormProps> = (props) => {
           </VStack>
           <FormControl
             id="status"
-            isInvalid={!(errors1.status?.message == null)}
+            isInvalid={!(errors.status?.message == null)}
           >
             <FormLabel>備考</FormLabel>
             <Textarea
@@ -421,7 +421,7 @@ const FormRoot: FC<FormProps> = (props) => {
                 colorScheme="orange"
                 variant="solid"
                 onClick={onReset}
-                disabled={isSubmitting1}
+                disabled={isAdding}
               >
                 リセット
               </Button>
@@ -430,8 +430,8 @@ const FormRoot: FC<FormProps> = (props) => {
                 colorScheme="blue"
                 variant="solid"
                 type="submit"
-                disabled={isSubmitting1}
-                isLoading={isSubmitting1}
+                disabled={isAdding}
+                isLoading={isAdding}
                 loadingText="登録中"
                 spinnerPlacement="start"
               >
