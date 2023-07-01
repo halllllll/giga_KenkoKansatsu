@@ -5,14 +5,16 @@ import "./App.css";
 import { Footer, Header, Info, FormRoot } from "@/client/components/Index";
 import { type FormValues } from "./components/Form/form-select-data";
 
+import { Ctx } from "./context";
 import { useMemberData } from "./hooks/useMemberData";
 import { useSheetNameAndUrl } from "./hooks/useSheetNameAndUrl";
 import { CandidateReducer } from "./reducer/candidateReducer";
 
+// 送信予定（登録後）のフォームのデータ
 const candidates: FormValues[] = [];
 
 const App: FC = () => {
-  // reducer 用意
+  // 送信予定reducer 用意
   const [candidateStates, candidateDispatch] = useReducer(
     CandidateReducer,
     candidates
@@ -21,20 +23,30 @@ const App: FC = () => {
   const { sheetName, sheetUrl } = useSheetNameAndUrl();
   const { formStudents, formInquiryItems } = useMemberData();
 
+  // 使い回すcontext
+
   return (
     <div className="App">
-      <Header headerTitle={sheetName} spreadsheetLink={sheetUrl} />
-      <Container maxW="4xl">
-        {/** TODO: information area */}
-        <Info message={""} hasUrl={false} url={""} />
-        <FormRoot
-          formStudents={formStudents}
-          formInquiryItems={formInquiryItems}
-          candidatesState={candidateStates}
-          candidateDispatch={candidateDispatch}
-        />
-      </Container>
-      <Footer footerTitle={sheetName} />
+      <Ctx.Provider
+        value={{
+          students: formStudents,
+          inquiries: formInquiryItems,
+          accessedUser: "",
+        }}
+      >
+        <Header headerTitle={sheetName} spreadsheetLink={sheetUrl} />
+        <Container maxW="4xl">
+          {/** TODO: information area */}
+          <Info message={""} hasUrl={false} url={""} />
+          <FormRoot
+            formStudents={formStudents}
+            formInquiryItems={formInquiryItems}
+            candidatesState={candidateStates}
+            candidateDispatch={candidateDispatch}
+          />
+        </Container>
+        <Footer footerTitle={sheetName} />
+      </Ctx.Provider>
     </div>
   );
 };

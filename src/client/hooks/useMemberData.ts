@@ -8,12 +8,15 @@ import {
 
 type MemberDataResult = {
   formStudents: Student[];
-  formInquiryItems: InquiryItem | null;
+  formInquiryItems: InquiryItem;
 };
 
 export const useMemberData = (): MemberDataResult => {
   const [formStudents, setStudentElements] = useState<Student[]>([]);
-  const [formInquiryItems, setInquiryItem] = useState<InquiryItem | null>(null);
+  const [formInquiryItems, setInquiryItem] = useState<InquiryItem>({
+    Attendance: [],
+    Condition: [],
+  });
 
   useEffect(() => {
     const knock = async () => {

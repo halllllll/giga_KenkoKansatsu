@@ -20,9 +20,9 @@ type useFormOptionsResult = {
   conditionOptions: Condition[];
 };
 
-type FormOptionsProps = {
+export type FormOptionsProps = {
   students: Student[];
-  inquiryItem: InquiryItem | null;
+  inquiryItem: InquiryItem;
 };
 
 export const useOptionsOfForm = (
@@ -84,11 +84,11 @@ export const useOptionsOfForm = (
       })
       .sort((a, b) => (a.value >= b.value ? 1 : -1));
 
-    const attendance: Attendance[] = inquiryItem?.Attendance.map((a) => {
+    const attendance: Attendance[] = inquiryItem.Attendance.map((a) => {
       return { label: a, value: a };
     }) ?? [{ label: "", value: "" }];
 
-    const conditions: Condition[] = inquiryItem?.Condition.map((c) => {
+    const conditions: Condition[] = inquiryItem.Condition.map((c) => {
       return { label: c, value: c };
     }) ?? [{ label: "", value: "" }];
 

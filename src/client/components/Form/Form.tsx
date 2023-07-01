@@ -68,18 +68,6 @@ const FormRoot: FC<FormProps> = (props) => {
   const { formStudents, formInquiryItems, candidateDispatch, candidatesState } =
     props;
 
-  // あらかじめDefaultValuesをきめておけば、reset()に流用できる
-  const formDefaultValues: FormValues = {
-    registerDate: format(new Date(), "yyyy-MM-dd", { locale: ja }),
-    grade: null,
-    className: null,
-    classNumber: null,
-    name: null,
-    attendance: { label: "", value: "" },
-    condition: [],
-    status: "",
-  };
-
   /**
    *
    * TODO: MORE BETTER temporary-customhook
@@ -107,6 +95,18 @@ const FormRoot: FC<FormProps> = (props) => {
    * Form部分
    * useForm用 ここから
    */
+  // あらかじめDefaultValuesをきめておけば、reset()に流用できる
+  const formDefaultValues: FormValues = {
+    registerDate: format(new Date(), "yyyy-MM-dd", { locale: ja }),
+    grade: null,
+    className: null,
+    classNumber: null,
+    name: null,
+    attendance: { label: "", value: "" },
+    condition: [],
+    status: "",
+  };
+
   const {
     register,
     handleSubmit,
