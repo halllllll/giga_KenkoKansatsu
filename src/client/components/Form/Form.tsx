@@ -61,8 +61,6 @@ type FormProps = {
  *  TODO: integrate FORM experiences.
  *  - DEVIDING components for FAST rendering for options.
  *  - Adaptable Thought, especially future-features.
- *  - Good Filtering for options.
- *  - Nice and Flexible Behavior "modal", "spinner" or so.
  *
  */
 
