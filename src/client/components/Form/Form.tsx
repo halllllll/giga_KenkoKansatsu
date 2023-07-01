@@ -156,9 +156,9 @@ const FormRoot: FC<FormProps> = (props) => {
    * useForm用 ここから
    */
   const {
-    register: register1,
-    handleSubmit: handleSubmit1,
-    reset: reset1,
+    register,
+    handleSubmit,
+    reset,
     formState: { errors: errors1, isSubmitting: isSubmitting1 },
     control,
     getValues,
@@ -169,14 +169,14 @@ const FormRoot: FC<FormProps> = (props) => {
     defaultValues: formDefaultValues,
   });
 
-  const onSubmit: SubmitHandler<FormValues> = (data) => {
+  const onAdd: SubmitHandler<FormValues> = (data) => {
     // 登録
     candidateDispatch({
       type: "ADD",
       payload: data,
     });
     // 連続して登録する場合、シチュエーション的にほとんどの場合は名前とstatusのみ変更
-    reset1({
+    reset({
       grade: getValues().grade,
       name: null,
       className: getValues().className,
@@ -190,7 +190,7 @@ const FormRoot: FC<FormProps> = (props) => {
   // 全部リセット
   const onReset = (e: SyntheticEvent) => {
     e.stopPropagation();
-    reset1(formDefaultValues);
+    reset(formDefaultValues);
     setCurGrade(null);
     setCurName(null);
     setCurClassName(null);
@@ -220,14 +220,11 @@ const FormRoot: FC<FormProps> = (props) => {
   const { onClose, onOpen, isOpen } = useDisclosure();
 
   const [modalMessage, setModalMessage] = useState<ModalMessage>(null);
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
 
-  const {
-    handleSubmit: handleSubmit2,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    formState: { isSubmitting: isSubmitting2, isSubmitted: isSubmitted2 },
-    reset: reset2,
-  } = useForm<FormValues>({});
-  const onPostSubmit: SubmitHandler<FormValues> = async () => {
+  const onPostSubmit = async () => {
+    setIsSubmitting(true);
     window.scrollTo({
       top: 0,
       behavior: "smooth",
@@ -246,11 +243,13 @@ const FormRoot: FC<FormProps> = (props) => {
       ),
       postFormValueDataAPI(candidatesState),
     ]);
+    setIsSubmitting(false);
+    setIsSubmitted(true);
 
     onOpen();
     switch (result.status) {
       case "success": {
-        reset2();
+        reset(formDefaultValues);
         candidateDispatch({
           type: "RESET",
         });
@@ -261,7 +260,6 @@ const FormRoot: FC<FormProps> = (props) => {
         break;
       }
       case "error": {
-        // TODO: view
         console.error(result.error);
         setModalMessage({
           headerText: result.error?.name ?? "Error",
@@ -274,8 +272,8 @@ const FormRoot: FC<FormProps> = (props) => {
 
   return (
     <>
-      {isSubmitting2 && <ScreenSpinner />}
-      {isSubmitted2 && (
+      {isSubmitting && <ScreenSpinner />}
+      {isSubmitted && (
         <SendingModal
           isOpen={isOpen}
           onClose={onClose}
@@ -290,7 +288,7 @@ const FormRoot: FC<FormProps> = (props) => {
         borderRadius="lg"
         boxShadow="base"
       >
-        <form onSubmit={handleSubmit1(onSubmit)}>
+        <form onSubmit={handleSubmit(onAdd)}>
           <HStack>
             <Box width="max-content">
               <FormControl
@@ -302,7 +300,7 @@ const FormRoot: FC<FormProps> = (props) => {
                 <Input
                   size="lg"
                   variant="flushed"
-                  {...register1("registerDate")}
+                  {...register("registerDate")}
                   type="date"
                 />
                 {(errors1.registerDate?.message !== null && (
@@ -413,7 +411,7 @@ const FormRoot: FC<FormProps> = (props) => {
             <Textarea
               maxHeight={200}
               placeholder="備考があれば書いてね"
-              {...register1("status")}
+              {...register("status")}
             />
           </FormControl>
           <HStack alignItems="center" justifyContent="center">
@@ -509,21 +507,21 @@ const FormRoot: FC<FormProps> = (props) => {
           </Box>
           <Box mt="10">
             <Box h="maxContent">
-              <form onSubmit={handleSubmit2(onPostSubmit)}>
-                <Center h="100%">
-                  <Button
-                    colorScheme="teal"
-                    variant="solid"
-                    type="submit"
-                    disabled={isSubmitting2}
-                    isLoading={isSubmitting2}
-                    loadingText="送信中..."
-                    spinnerPlacement="start"
-                  >
-                    送信する
-                  </Button>
-                </Center>
-              </form>
+              <Center h="100%">
+                <Button
+                  colorScheme="teal"
+                  variant="solid"
+                  type="button"
+                  onClick={onPostSubmit}
+                  disabled={isSubmitting}
+                  isLoading={isSubmitting}
+                  loadingText="送信中..."
+                  spinnerPlacement="start"
+                >
+                  送信する
+                </Button>
+              </Center>
+              {/* </form> */}
             </Box>
           </Box>
         </>
