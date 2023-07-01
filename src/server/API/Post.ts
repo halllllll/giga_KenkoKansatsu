@@ -9,7 +9,8 @@ const storeSheet = ss.getSheetByName(StoreSheetName);
 type postDataResult = {
   status: null | "success" | "error";
   error?: Error;
-  data?: string;
+  message?: string;
+  data?: any;
 };
 
 const postFormValues = (data: postDataRequest): postDataResult => {

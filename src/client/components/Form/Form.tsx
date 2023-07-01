@@ -28,7 +28,7 @@ import { type Actions } from "@/client/reducer/FormReducer";
 import { type postDataResult } from "@/server/API/Post";
 import { type InquiryItem, type Student } from "@/server/Config/SheetData";
 import { ScreenSpinner, type ViewData } from "../Index";
-import SendingModal from "../Screen/Modal";
+import SendingModal, { type ModalMessage } from "../Screen/Modal";
 import ControlledSelect from "./controlled-select";
 import {
   type ClassName,
@@ -40,6 +40,7 @@ import {
 } from "./form-select-data";
 import { FormSchema } from "./schemas/registration-form";
 import { postFormValueDataAPI } from "@/client/API/postData";
+import { TimeoutError } from "@/client/errors";
 
 type FormProps = {
   readonly formStudents: Student[];
@@ -218,15 +219,12 @@ const FormRoot: FC<FormProps> = (props) => {
    */
   const { onClose, onOpen, isOpen } = useDisclosure();
 
+  const [modalMessage, setModalMessage] = useState<ModalMessage>(null);
+
   const {
     handleSubmit: handleSubmit2,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    formState: {
-      errors: _errors2,
-      isSubmitting: isSubmitting2,
-      isSubmitted: isSubmitted2,
-      isSubmitSuccessful: _isSubmitSuccessful2,
-    },
+    formState: { isSubmitting: isSubmitting2, isSubmitted: isSubmitted2 },
     reset: reset2,
   } = useForm<FormValues>({});
   const onPostSubmit: SubmitHandler<FormValues> = async () => {
@@ -240,37 +238,50 @@ const FormRoot: FC<FormProps> = (props) => {
         setTimeout(() => {
           const ret: postDataResult = {
             status: "error",
+            error: new TimeoutError("time out"),
+            message: "時間がかかりすぎています。やり直してください。",
           };
           resolve(ret);
         }, 15000)
       ),
-      await postFormValueDataAPI(candidatesState),
+      postFormValueDataAPI(candidatesState),
     ]);
 
     onOpen();
-    console.log("おんおん");
     switch (result.status) {
       case "success": {
         reset2();
         candidateDispatch({
           type: "RESET",
         });
-        console.log("ヌー");
+        setModalMessage({
+          headerText: "送信完了",
+          bodyText: `${candidatesState.length} 件送信しました。お疲れ様です！`,
+        });
         break;
       }
       case "error": {
         // TODO: view
-        console.error("ラララ", result.error);
+        console.error(result.error);
+        setModalMessage({
+          headerText: result.error?.name ?? "Error",
+          bodyText: result.message ?? "some error occured",
+        });
         break;
       }
     }
-    console.log(`result ... ${JSON.stringify(result)}`);
   };
 
   return (
     <>
       {isSubmitting2 && <ScreenSpinner />}
-      {isSubmitted2 && <SendingModal isOpen={isOpen} onClose={onClose} />}
+      {isSubmitted2 && (
+        <SendingModal
+          isOpen={isOpen}
+          onClose={onClose}
+          message={modalMessage}
+        />
+      )}
       <Box
         my={3}
         px={5}
@@ -295,9 +306,8 @@ const FormRoot: FC<FormProps> = (props) => {
                   type="date"
                 />
                 {(errors1.registerDate?.message !== null && (
-                  // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
                   <FormErrorMessage>日付を選んでね</FormErrorMessage>
-                )) || <> </>}
+                )) ?? <> </>}
               </FormControl>
             </Box>
           </HStack>
