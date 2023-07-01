@@ -1,6 +1,6 @@
 import { type FormValues } from "@/client/components/Form/form-select-data";
 
-export type Actions =
+export type CandidateAction =
   | {
       type: "DELETE";
       payload: {
@@ -15,9 +15,9 @@ export type Actions =
       type: "RESET";
     };
 
-export const FormReducer = (
+export const candidateReducer = (
   curData: FormValues[],
-  action: Actions
+  action: CandidateAction
 ): FormValues[] => {
   switch (action.type) {
     case "DELETE": {

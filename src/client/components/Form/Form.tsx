@@ -24,7 +24,6 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { format } from "date-fns";
 import ja from "date-fns/locale/ja";
 import { useForm, type SubmitHandler } from "react-hook-form";
-import { type Actions } from "@/client/reducer/FormReducer";
 import { type postDataResult } from "@/server/API/Post";
 import { type InquiryItem, type Student } from "@/server/Config/SheetData";
 import { ScreenSpinner, type ViewData } from "../Index";
@@ -41,19 +40,19 @@ import {
 import { FormSchema } from "./schemas/registration-form";
 import { postFormValueDataAPI } from "@/client/API/postData";
 import { TimeoutError } from "@/client/errors";
+import { type CandidateAction } from "@/client/reducer/candidateReducer";
 
 type FormProps = {
   readonly formStudents: Student[];
   readonly formInquiryItems: InquiryItem | null;
   readonly candidatesState: FormValues[];
-  candidateDispatch: React.Dispatch<Actions>;
+  candidateDispatch: React.Dispatch<CandidateAction>;
 };
 
 // experimental
 /**
  *
  *  TODO: integrate FORM experiences.
- *  - ONLY 1 `useForm`
  *  - DEVIDING components for FAST rendering for options.
  *  - Adaptable Thought, especially future-features.
  *  - Good Filtering for options.
@@ -100,7 +99,6 @@ const FormRoot: FC<FormProps> = (props) => {
   useEffect(() => {
     // labelで候補の絞り込み
     // 全部undefined -> 全候補をそのまま設定
-    /** thank chat GPT */
 
     const targetStudents = formStudents.filter((student) => {
       return (
@@ -220,11 +218,11 @@ const FormRoot: FC<FormProps> = (props) => {
   const { onClose, onOpen, isOpen } = useDisclosure();
 
   const [modalMessage, setModalMessage] = useState<ModalMessage>(null);
-  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
-  const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
 
+  type submitStateType = "idle" | "isSubmitting" | "isSubmitted";
+  const [submitState, setSubmitState] = useState<submitStateType>("idle");
   const onPostSubmit = async () => {
-    setIsSubmitting(true);
+    setSubmitState("isSubmitting");
     window.scrollTo({
       top: 0,
       behavior: "smooth",
@@ -243,8 +241,7 @@ const FormRoot: FC<FormProps> = (props) => {
       ),
       postFormValueDataAPI(candidatesState),
     ]);
-    setIsSubmitting(false);
-    setIsSubmitted(true);
+    setSubmitState("isSubmitted");
 
     onOpen();
     switch (result.status) {
@@ -272,8 +269,8 @@ const FormRoot: FC<FormProps> = (props) => {
 
   return (
     <>
-      {isSubmitting && <ScreenSpinner />}
-      {isSubmitted && (
+      {submitState === "isSubmitting" && <ScreenSpinner />}
+      {submitState === "isSubmitted" && (
         <SendingModal
           isOpen={isOpen}
           onClose={onClose}
@@ -513,8 +510,8 @@ const FormRoot: FC<FormProps> = (props) => {
                   variant="solid"
                   type="button"
                   onClick={onPostSubmit}
-                  disabled={isSubmitting}
-                  isLoading={isSubmitting}
+                  disabled={submitState === "isSubmitting"}
+                  isLoading={submitState === "isSubmitting"}
                   loadingText="送信中..."
                   spinnerPlacement="start"
                 >
