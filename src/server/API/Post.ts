@@ -23,8 +23,10 @@ const postFormValues = (data: postDataRequest): postDataResult => {
       throw new InvalidSheetError(`NOT Found "${StoreSheetName}" Sheet`);
     }
     const answerValues = storeSheet.getDataRange().getDisplayValues();
-    const header = answerValues[0];
-    if (!header.every((header) => AnswerSheetHeaders.includes(header))) {
+    const headers = answerValues[0];
+    if (!headers.every((header) => AnswerSheetHeaders.includes(header))) {
+      console.error("wrong headers!!!");
+      console.error(`header of ${StoreSheetName} : ${headers.join(", ")}`);
       throw new InvalidSheetError("INVALID sheet architecture");
     }
 
@@ -49,6 +51,9 @@ const postFormValues = (data: postDataRequest): postDataResult => {
     ret.status = "error";
     if (err instanceof InvalidSheetError) {
       ret.error = err;
+      ret.message = `header of ${
+        storeSheet?.getName() ?? "<undefined sheet>"
+      } archtecture is weired.`;
       console.error(err);
     } else {
       ret.error = new Error("undefined error");

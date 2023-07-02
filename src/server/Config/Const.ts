@@ -14,7 +14,7 @@ const MemberSheetHeaders = [
 // Answerシート ヘッダー用
 const AnswerSheetHeaders = [
   "TIMESTAMP",
-  "投稿者（未実装）",
+  "投稿者",
   "日付",
   "学年",
   "クラス名",
