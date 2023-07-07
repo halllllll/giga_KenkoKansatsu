@@ -1,14 +1,70 @@
-import { FormErrorMessage, FormLabel, FormControl } from "@chakra-ui/react";
+import {
+  FormErrorMessage,
+  FormLabel,
+  FormControl,
+  Box,
+} from "@chakra-ui/react";
 import {
   Select,
   type Props as SelectProps,
   type GroupBase,
+  type MenuListProps,
 } from "chakra-react-select";
 import {
   useController,
   type FieldValues,
   type UseControllerProps,
 } from "react-hook-form";
+
+import { FixedSizeList } from "react-window";
+
+const MENU_LIST_ITEM_HEIGHT = 35;
+const MenuList: any = <
+  Option = unknown,
+  IsMulti extends boolean = boolean,
+  Group extends GroupBase<Option> = GroupBase<Option>
+>({
+  options,
+  getValue,
+  maxHeight,
+  children,
+}: MenuListProps<Option, IsMulti, Group>) => {
+  if (!Array.isArray(children)) {
+    return null;
+  }
+
+  const [selectedOption] = getValue();
+  const initialScrollOffset =
+    options.indexOf(selectedOption) * MENU_LIST_ITEM_HEIGHT;
+
+  return (
+    <FixedSizeList
+      style={{
+        border: "1px solid #ccc",
+        borderRadius: "10px",
+        overflow: "auto",
+      }}
+      key={children.length} // ???
+      width="auto"
+      height={Math.min(maxHeight, children.length * MENU_LIST_ITEM_HEIGHT)}
+      itemCount={children.length}
+      itemSize={MENU_LIST_ITEM_HEIGHT}
+      initialScrollOffset={initialScrollOffset}
+    >
+      {({ index, style }) => (
+        <Box
+          style={{
+            ...style,
+            backgroundColor: "white",
+          }}
+        >
+          {children[index]}
+          {console.log(`children length: ${children.length}`)}
+        </Box>
+      )}
+    </FixedSizeList>
+  );
+};
 
 interface ControlledSelectProps<
   FormValues extends FieldValues = FieldValues,
@@ -60,6 +116,7 @@ const ControlledSelect: any = <
         onBlur={onBlur}
         value={value}
         name={name}
+        components={{ MenuList }}
       />
       {error?.message === undefined ? (
         "　"

@@ -15,7 +15,7 @@ export type CandidateAction =
       type: "RESET";
     };
 
-export const candidateReducer = (
+export const CandidateReducer = (
   curData: FormValues[],
   action: CandidateAction
 ): FormValues[] => {

@@ -36,14 +36,18 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "7.43.1",
+    "react-window": "^1.8.9",
     "yup": "^1.2.0"
   },
   "devDependencies": {
     "@types/eslint": "^8.40.2",
+    "@types/eslint-config-prettier": "^6.11.0",
     "@types/google-apps-script": "^1.0.64",
+    "@types/lint-staged": "^13.2.0",
     "@types/prettier": "^2.7.3",
     "@types/react": "^18.2.13",
     "@types/react-dom": "^18.2.6",
+    "@types/react-window": "^1.8.5",
     "@typescript-eslint/eslint-plugin": "^5.60.0",
     "@vitejs/plugin-react": "^4.0.1",
     "clasp": "^1.0.0",

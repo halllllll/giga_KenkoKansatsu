@@ -1,4 +1,10 @@
-import { type SyntheticEvent, type FC, useEffect, useState } from "react";
+import {
+  type SyntheticEvent,
+  type FC,
+  useEffect,
+  useState,
+  useDeferredValue,
+} from "react";
 import {
   Box,
   Button,
@@ -87,6 +93,8 @@ const FormRoot: FC<FormProps> = (props) => {
   const [curClassName, setCurClassName] = useState<ClassName | null>(null);
   const [curName, setCurName] = useState<Name | null>(null);
 
+  const defferredCurName = useDeferredValue(curName);
+
   // // 選択肢
   const [gradeOptions, setGradeOptions] = useState<Grade[]>([]);
   const [classNameOptions, setClassNameOptions] = useState<ClassName[]>([]);
@@ -96,6 +104,8 @@ const FormRoot: FC<FormProps> = (props) => {
   >(null);
   const [conditionOptions, setConditionOptions] = useState<Condition[]>([]);
 
+  const defferredNameOptions = useDeferredValue(nameOptions);
+
   useEffect(() => {
     // labelで候補の絞り込み
     // 全部undefined -> 全候補をそのまま設定
@@ -104,7 +114,8 @@ const FormRoot: FC<FormProps> = (props) => {
       return (
         (curGrade?.value == null || student.Grade === curGrade.value) &&
         (curClassName?.value == null || student.Class === curClassName.value) &&
-        (curName?.value == null || student.Name === curName.value)
+        (defferredCurName?.value == null ||
+          student.Name === defferredCurName.value)
       );
     });
     // それぞれの項目用にデータ整形
@@ -142,12 +153,20 @@ const FormRoot: FC<FormProps> = (props) => {
       return { label: c, value: c };
     }) ?? [{ label: "", value: "" }];
 
+
+
     setGradeOptions(gradeOptions);
     setClassNameOptions(classNameOptions);
     setNameOptions(nameOptions);
     setAttendanceOptions(attendance);
     setConditionOptions(conditions);
-  }, [curGrade, curClassName, curName, formStudents, formInquiryItems]);
+  }, [
+    curGrade,
+    curClassName,
+    defferredCurName,
+    formStudents,
+    formInquiryItems,
+  ]);
 
   /**
    * Form部分
@@ -343,8 +362,8 @@ const FormRoot: FC<FormProps> = (props) => {
               control={control}
               label="名前"
               placeholder="名前を検索しよう！"
-              options={nameOptions}
-              value={nameOptions}
+              options={defferredNameOptions}
+              // value={defferredNameOptions}
               rules={{
                 onChange: () => {
                   setCurName(getValues().name);
@@ -367,7 +386,7 @@ const FormRoot: FC<FormProps> = (props) => {
                 // eslint-disable-next-line @typescript-eslint/no-unsafe-return
                 dropdownIndicator: (provided: any) => ({
                   ...provided,
-                  bg: "transparent",
+                  // bg: "transparent",
                   px: 2,
                   cursor: "inherit",
                 }),

@@ -1,4 +1,4 @@
-export { default as CandidatesArea } from "@/client/components/Form/Candidate/components/CandidatesArea";
+export { default as CandidatesArea } from "@/client/components/Form/Candidate/CandidatesArea";
 export { default as Footer } from "@/client/components/Footer/Footer";
 export { default as FormRoot } from "@/client/components/Form/Form";
 export { default as Header } from "@/client/components/Header/Header";

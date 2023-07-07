@@ -13,11 +13,11 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { type ViewData } from "@/client/components/Index";
-import { type Actions } from "@/client/reducer/FormReducer";
-import { type FormValues } from "../../form-select-data";
+import { type FormValues } from "../form-select-data";
+import { type CandidateAction } from "@/client/reducer/candidateReducer";
 
 type CandidateProps = {
-  dispatch: React.Dispatch<Actions>;
+  dispatch: React.Dispatch<CandidateAction>;
   candidates: FormValues[];
 };
 

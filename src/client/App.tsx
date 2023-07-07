@@ -7,14 +7,14 @@ import { type FormValues } from "./components/Form/form-select-data";
 
 import { useMemberData } from "./hooks/useMemberData";
 import { useSheetNameAndUrl } from "./hooks/useSheetNameAndUrl";
-import { candidateReducer } from "./reducer/candidateReducer";
+import { CandidateReducer } from "./reducer/candidateReducer";
 
 const candidates: FormValues[] = [];
 
 const App: FC = () => {
   // reducer 用意
   const [candidateStates, candidateDispatch] = useReducer(
-    candidateReducer,
+    CandidateReducer,
     candidates
   );
   // 各種state
