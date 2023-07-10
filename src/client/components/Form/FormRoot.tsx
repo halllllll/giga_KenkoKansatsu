@@ -30,9 +30,9 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { format } from "date-fns";
 import ja from "date-fns/locale/ja";
 import { useForm, type SubmitHandler } from "react-hook-form";
+import { ScreenSpinner, type ViewData } from "@/client/components/Index";
 import { type postDataResult } from "@/server/API/Post";
 import { type InquiryItem, type Student } from "@/server/Config/SheetData";
-import { ScreenSpinner, type ViewData } from "../Index";
 import SendingModal, { type ModalMessage } from "../Screen/Modal";
 import ControlledSelect from "./controlled-select";
 import {
@@ -79,8 +79,6 @@ const FormRoot: FC<FormProps> = (props) => {
   const [curClassName, setCurClassName] = useState<ClassName | null>(null);
   const [curName, setCurName] = useState<Name | null>(null);
 
-  // const defferredCurName = useDeferredValue(curName);
-
   // // 選択肢
   const [gradeOptions, setGradeOptions] = useState<Grade[]>([]);
   const [classNameOptions, setClassNameOptions] = useState<ClassName[]>([]);
@@ -107,14 +105,18 @@ const FormRoot: FC<FormProps> = (props) => {
     status: "",
   };
 
+  /**
+   * Form部分
+   * useForm用 ここから
+   */
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors, isSubmitting: isAdding },
     control,
-    setValue,
     getValues,
+    setValue,
   } = useForm<FormValues>({
     mode: "all",
     criteriaMode: "all",
@@ -168,16 +170,16 @@ const FormRoot: FC<FormProps> = (props) => {
       return { label: c, value: c };
     }) ?? [{ label: "", value: "" }];
 
-    // filtering only one
-    if (gradeOptions.length === 1) {
-      setValue("grade", gradeOptions[0]);
-    }
     if (classNameOptions.length === 1) {
       setValue("className", classNameOptions[0]);
+    }
+    if (gradeOptions.length === 1) {
+      setValue("grade", gradeOptions[0]);
     }
     if (nameOptions.length === 1) {
       setValue("name", nameOptions[0]);
     }
+
     setGradeOptions(gradeOptions);
     setClassNameOptions(classNameOptions);
     setNameOptions(nameOptions);
@@ -506,8 +508,9 @@ const FormRoot: FC<FormProps> = (props) => {
                         <Td w="min-content" padding="0">
                           <Button
                             variant="solid"
-                            color="whiteAlpha.900"
-                            bgColor="orange.300"
+                            // color="whiteAlpha.900"
+                            // bgColor="orange.300"
+                            colorScheme="orange"
                             onClick={() => {
                               candidateDispatch({
                                 type: "DELETE",

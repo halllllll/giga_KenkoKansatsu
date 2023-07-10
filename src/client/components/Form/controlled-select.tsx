@@ -42,9 +42,8 @@ const MenuList: any = <
       style={{
         border: "1px solid #ccc",
         borderRadius: "10px",
-        overflow: "auto",
+        // overflow: "auto",
       }}
-      key={children.length} // ???
       width="auto"
       height={Math.min(maxHeight, children.length * MENU_LIST_ITEM_HEIGHT)}
       itemCount={children.length}
@@ -59,7 +58,6 @@ const MenuList: any = <
           }}
         >
           {children[index]}
-          {console.log(`children length: ${children.length}`)}
         </Box>
       )}
     </FixedSizeList>
