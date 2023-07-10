@@ -277,7 +277,7 @@ const FormRoot: FC<FormProps> = (props) => {
         });
         setModalMessage({
           headerText: "送信完了",
-          bodyText: `${candidatesState.length} 件送信しました。お疲れ様です！`,
+          bodyText: `${candidatesState.length} 件送信しました。ありがとうございます！`,
         });
         break;
       }
