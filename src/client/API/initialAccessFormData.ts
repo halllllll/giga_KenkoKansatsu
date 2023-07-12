@@ -25,8 +25,9 @@ const FormInquiryAPI = async (): Promise<getInquiryDataResult> => {
 const FormMemberAPI = async (): Promise<Student[]> => {
   if (isGASEnvironment()) {
     const ret = await serverFunctions.getMemberData();
+    // TODO: later
 
-    return ret;
+    return ret.data as Student[];
   } else {
     // in dev
     const data = await import("./stubs/formMember.json");

@@ -52,39 +52,64 @@ const getInquiryData = (): getInquiryDataResult => {
     ret.status = "error";
     if (err instanceof NothingFormSheetError) {
       ret.error = err;
+    } else {
+      ret.error = new Error("undefined error occured...");
+      ret.message = "!! 不明なエラーが発生 !!";
     }
 
     return ret;
   }
 };
 
-const getMemberData = async (): Promise<Student[]> => {
-  return await new Promise<Student[]>((resolve, reject) => {
-    const sheetName: string = MemberSheetName;
-    const studentSheet = ss.getSheetByName(sheetName);
+type getMemberDataResult = {
+  status: null | "success" | "error";
+  error?: Error;
+  message?: string;
+  data?: Student[];
+};
+
+const getMemberData = (): getMemberDataResult => {
+  const sheetName: string = MemberSheetName;
+  const studentSheet = ss.getSheetByName(sheetName);
+  const ret: getMemberDataResult = { status: null };
+  try {
     if (studentSheet === null) {
       console.error(`can't find the sheet named [${MemberSheetName}]`);
-      reject(new Error("not found student sheet error"));
-    } else {
-      const students: Student[] = studentSheet
-        .getDataRange()
-        .getValues()
-        .slice(1)
-        .map((row: Array<string | number | Role>) => {
-          const ret = {
-            Grade: row[0] as string,
-            Class: row[1] as string,
-            Number: row[2] as number,
-            Name: row[3] as string,
-            Kana: row[4] as string,
-            Role: row[5] as Role,
-          };
-
-          return ret;
-        });
-      resolve(students);
+      throw new NothingFormSheetError(`NOT Found "${MemberSheetName}" Sheet`);
     }
-  });
+    const students: Student[] = studentSheet
+      .getDataRange()
+      .getValues()
+      .slice(1)
+      .map((row: Array<string | number | Role>) => {
+        const tmp = {
+          Grade: row[0] as string,
+          Class: row[1] as string,
+          Number: row[2] as number,
+          Name: row[3] as string,
+          Kana: row[4] as string,
+          Role: row[5] as Role,
+        };
+
+        return tmp;
+      });
+    ret.data = students;
+    ret.status = "success";
+
+    return ret;
+  } catch (err) {
+    console.error(err);
+    ret.status = "error";
+    if (err instanceof NothingFormSheetError) {
+      ret.error = err;
+      ret.message = ""; // TODO: not need?
+    } else {
+      ret.error = new Error("undefined error occured...");
+      ret.message = "!! 不明なエラーが発生 !!";
+    }
+
+    return ret;
+  }
 };
 
 export { getInquiryData, getMemberData, type getInquiryDataResult };
