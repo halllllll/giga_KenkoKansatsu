@@ -11,14 +11,7 @@ const schema = yup.object().shape({
     })
     .nullable()
     .required("学年を選んでね"),
-  name: yup
-    .object()
-    .shape({
-      label: yup.string().required(),
-      value: yup.string().required(),
-    })
-    .nullable()
-    .required("名前を検索・選択してね"),
+  name: yup.string().required("名前を入力してください"),
   className: yup
     .object()
     .shape({
@@ -32,4 +25,4 @@ const schema = yup.object().shape({
 
 // type FormValueSchema = InferType<typeof schema>
 
-export { schema as FormSchema };
+export { schema as ParentFormSchema };

@@ -43,7 +43,7 @@ import {
   type Condition,
   type Grade,
 } from "./form-select-data";
-import { FormSchema } from "./schemas/registration-form";
+import { TeacherFormSchema } from "./schemas/registration-form-teacher";
 import { postFormValueDataAPI } from "@/client/API/postData";
 import { TimeoutError } from "@/client/errors";
 import { type CandidateAction } from "@/client/reducer/candidateReducer";
@@ -120,7 +120,7 @@ const FormRoot: FC<FormProps> = (props) => {
   } = useForm<FormValues>({
     mode: "all",
     criteriaMode: "all",
-    resolver: yupResolver(FormSchema),
+    resolver: yupResolver(TeacherFormSchema),
     defaultValues: formDefaultValues,
   });
 
@@ -371,7 +371,6 @@ const FormRoot: FC<FormProps> = (props) => {
               label="名前"
               placeholder="名前を検索しよう！"
               options={defferredNameOptions}
-              // value={defferredNameOptions}
               rules={{
                 onChange: () => {
                   setCurName(getValues().name);
