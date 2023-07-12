@@ -23,7 +23,16 @@ export const useMemberData = (): MemberDataResult => {
       const [FormElementsStudents, FormElementsInquiryItems] =
         await Promise.all([FormMemberAPI(), FormInquiryAPI()]);
       setStudentElements(FormElementsStudents);
-      setInquiryItem(FormElementsInquiryItems);
+      // TODO: validation (where? not here?)
+      if (
+        FormElementsInquiryItems.status === "success" &&
+        FormElementsInquiryItems.data !== undefined
+      ) {
+        setInquiryItem(FormElementsInquiryItems.data);
+      } else {
+        // TODO: error handling
+        console.error(FormElementsInquiryItems.error);
+      }
     };
     void knock();
   }, []);

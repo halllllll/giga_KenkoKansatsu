@@ -2,7 +2,10 @@ import { ss, AnswerSheetHeaders } from "@/server/Config/Const";
 import { StoreSheetName } from "@/server/Config/SheetData";
 import { type postDataRequest } from "@/client/API/postData";
 import { type FormValues } from "@/client/components/Form/form-select-data";
-import { InvalidSheetError } from "@/server/Config/errors";
+import {
+  InvalidSheetArchtectureError,
+  NothingFormSheetError,
+} from "@/server/Config/errors";
 
 const storeSheet = ss.getSheetByName(StoreSheetName);
 
@@ -20,14 +23,14 @@ const postFormValues = (data: postDataRequest): postDataResult => {
   try {
     // validation
     if (storeSheet === null) {
-      throw new InvalidSheetError(`NOT Found "${StoreSheetName}" Sheet`);
+      throw new NothingFormSheetError(`NOT Found "${StoreSheetName}" Sheet`);
     }
     const answerValues = storeSheet.getDataRange().getDisplayValues();
     const headers = answerValues[0];
     if (!headers.every((header) => AnswerSheetHeaders.includes(header))) {
       console.error("wrong headers!!!");
       console.error(`header of ${StoreSheetName} : ${headers.join(", ")}`);
-      throw new InvalidSheetError("INVALID sheet architecture");
+      throw new InvalidSheetArchtectureError("INVALID sheet architecture");
     }
 
     for (const formValue of formValues) {
@@ -44,12 +47,16 @@ const postFormValues = (data: postDataRequest): postDataResult => {
         formValue.condition?.map((val) => val.value).join(", "),
         formValue.status,
       ];
-      storeSheet?.appendRow(row);
+      storeSheet.appendRow(row);
     }
     ret.status = "success";
   } catch (err) {
     ret.status = "error";
-    if (err instanceof InvalidSheetError) {
+    if (err instanceof NothingFormSheetError) {
+      ret.error = err;
+      ret.message = `not found sheet named ${StoreSheetName}`;
+      console.error(err);
+    } else if (err instanceof InvalidSheetArchtectureError) {
       ret.error = err;
       ret.message = `header of ${
         storeSheet?.getName() ?? "<undefined sheet>"
