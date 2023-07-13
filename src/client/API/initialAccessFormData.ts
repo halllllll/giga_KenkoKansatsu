@@ -48,4 +48,7 @@ const FormMemberAPI = async (): Promise<Student[]> => {
   }
 };
 
+// TODO: あとでやる
+// const FormViewDataAPI = () => {};
+
 export { FormInquiryAPI, FormMemberAPI };

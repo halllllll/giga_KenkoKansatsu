@@ -2,7 +2,7 @@ import { type FC, useReducer } from "react";
 import { Container } from "@chakra-ui/react";
 
 import "./App.css";
-import { Footer, Header, Info, FormRoot } from "@/client/components/Index";
+import { Footer, Header, FormRoot } from "@/client/components/Index";
 import { type FormValues } from "./components/Form/form-select-data";
 
 import { Ctx } from "./context";

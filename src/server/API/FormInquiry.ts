@@ -10,17 +10,17 @@ import {
 } from "@/server/Config/SheetData";
 import { NothingFormSheetError } from "../Config/errors";
 
-type getInquiryDataResult = {
+type inquiryDataResult = {
   status: null | "success" | "error";
   error?: Error;
   message?: string;
   data?: InquiryItem;
 };
 
-const getInquiryData = (): getInquiryDataResult => {
+const getInquiryData = (): inquiryDataResult => {
   const sheetName: string = FormSheetName;
   const formSheet = ss.getSheetByName(sheetName);
-  const ret: getInquiryDataResult = { status: null };
+  const ret: inquiryDataResult = { status: null };
   try {
     if (formSheet === null) {
       throw new NothingFormSheetError(`NOT Found "${sheetName}" Sheet`);
@@ -61,17 +61,17 @@ const getInquiryData = (): getInquiryDataResult => {
   }
 };
 
-type getMemberDataResult = {
+type memberDataResult = {
   status: null | "success" | "error";
   error?: Error;
   message?: string;
   data?: Student[];
 };
 
-const getMemberData = (): getMemberDataResult => {
+const getMemberData = (): memberDataResult => {
   const sheetName: string = MemberSheetName;
   const studentSheet = ss.getSheetByName(sheetName);
-  const ret: getMemberDataResult = { status: null };
+  const ret: memberDataResult = { status: null };
   try {
     if (studentSheet === null) {
       console.error(`can't find the sheet named [${MemberSheetName}]`);
@@ -112,4 +112,9 @@ const getMemberData = (): getMemberDataResult => {
   }
 };
 
-export { getInquiryData, getMemberData, type getInquiryDataResult };
+export {
+  getInquiryData,
+  getMemberData,
+  type inquiryDataResult,
+  type memberDataResult,
+};
