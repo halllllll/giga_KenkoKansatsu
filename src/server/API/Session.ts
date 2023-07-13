@@ -1,11 +1,19 @@
 // アクセスしているユーザー（Googleアカウントにログインしているならばそれが決められた組織のものかどうか）
 // ここでは教育用アカウント（ed.jp or ac.jp）かそうでないかを想定
 
-export type AppUser = string | null;
+interface AccessUser {
+  userId: string | null;
+  isEducationUser: boolean;
+}
 
-export const AccessUser = (): AppUser => {
+const getAccessUser = (): AccessUser => {
   const user = Session.getActiveUser().getEmail();
   const pattern = /^.*@.+\.(ed\.jp|ac\.jp)$/i;
 
-  return pattern.test(user) ? user : null;
+  return {
+    userId: user !== "" ? user : null,
+    isEducationUser: pattern.test(user),
+  };
 };
+
+export { getAccessUser, type AccessUser };
