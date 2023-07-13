@@ -1,22 +1,25 @@
 /* eslint-disable import/extensions */
-import { type getInquiryDataResult } from "@/server/API/FormInquiry";
 import { type Student, type InquiryItem } from "@/server/Config/SheetData";
 import { serverFunctions, isGASEnvironment } from "./serverFunctions";
 
-const FormInquiryAPI = async (): Promise<getInquiryDataResult> => {
+const FormInquiryAPI = async (): Promise<InquiryItem> => {
   if (isGASEnvironment()) {
     const ret = await serverFunctions.getInquiryData();
+    if (ret.status === "success" && ret.data !== undefined) {
+      return ret.data;
+    } else {
+      // TODO: error handling
+      console.error(ret.error);
+    }
 
-    return ret;
+    return { Attendance: [], Condition: [] };
   } else {
     // in dev
-    const ret: getInquiryDataResult = { status: "success" };
     const data = await import("./stubs/formInquiries.json");
 
     return await new Promise((resolve) => {
       setTimeout(() => {
-        ret.data = data.Inquiries as unknown as InquiryItem;
-        resolve(ret);
+        resolve(data.Inquiries as unknown as InquiryItem);
       }, 1500);
     });
   }
@@ -25,9 +28,14 @@ const FormInquiryAPI = async (): Promise<getInquiryDataResult> => {
 const FormMemberAPI = async (): Promise<Student[]> => {
   if (isGASEnvironment()) {
     const ret = await serverFunctions.getMemberData();
-    // TODO: later
+    if (ret.status === "success" && ret.data !== undefined) {
+      return ret.data;
+    } else {
+      // TODO: error handling
+      console.error(ret.error);
+    }
 
-    return ret.data as Student[];
+    return [];
   } else {
     // in dev
     const data = await import("./stubs/formMember.json");
