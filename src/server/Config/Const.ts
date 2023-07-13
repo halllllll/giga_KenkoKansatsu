@@ -26,4 +26,7 @@ const AnswerSheetHeaders = [
   "備考",
 ];
 
-export { ss, ssApp, AnswerSheetHeaders, MemberSheetHeaders };
+// admin account
+const ADMIN_ACCOUNT: string[] = ["あとでやる"];
+
+export { ss, ssApp, AnswerSheetHeaders, MemberSheetHeaders, ADMIN_ACCOUNT };

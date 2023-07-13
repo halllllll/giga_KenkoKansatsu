@@ -1,6 +1,7 @@
-import { type InquiryItem, type Student } from "./SheetData";
+import { type InquiryItem, type Student } from "@/server/Config/SheetData";
 
 type EducatorView = {
+  userType: "educator";
   userId: string;
   InquiryItem: InquiryItem;
   Students: Student[];
@@ -8,11 +9,17 @@ type EducatorView = {
   PostHistory?: null; // TODO: posted history log
 };
 
+// TODO: admin behavior
+type AdminView = {
+  userType: "admin";
+};
+
 type GeneralView = {
+  userType: "general";
   InquiryItem: InquiryItem;
   Messages?: null; // TODO:
 };
 
-type FormViewResponse = EducatorView | GeneralView;
+type FormViewResponse = EducatorView | GeneralView | AdminView;
 
 export { type FormViewResponse };

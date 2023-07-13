@@ -1,4 +1,5 @@
 import { getInquiryData, getMemberData } from "./API/FormInquiry";
+import { genFormViewData } from "./API/FormView";
 import { onOpen } from "./API/Menu";
 import { postFormValues } from "./API/Post";
 import { getSpreadSheetName, getSpreadSheetUrl } from "./API/SheetInfo";
@@ -23,6 +24,8 @@ global.getInquiryData = getInquiryData;
 global.getMemberData = getMemberData;
 global.postFormValues = postFormValues;
 
+global.genFormViewData = genFormViewData; // test
+
 // Export to frontend (gas-client)
 export {
   getSpreadSheetName,
@@ -30,4 +33,5 @@ export {
   getMemberData,
   postFormValues,
   getInquiryData,
+  genFormViewData, // test
 };

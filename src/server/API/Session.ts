@@ -1,20 +1,33 @@
-// TODO: あとでやる
-// // アクセスしているユーザー（Googleアカウントにログインしているならばそれが決められた組織のものかどうか）
-// // ここでは教育用アカウント（ed.jp or ac.jp）かそうでないかを想定
+// アクセスしているユーザー（Googleアカウントにログインしているならばそれが決められた組織のものかどうか）
+// ここでは教育用アカウント（ed.jp or ac.jp）かそうでないかを想定
 
-// interface AccessUser {
-//   userId: string | null;
-//   userType: "";
-// }
+import { ADMIN_ACCOUNT } from "../Config/Const";
 
-// const getAccessUser = (): AccessUser => {
-//   const user = Session.getActiveUser().getEmail();
-//   const pattern = /^.*@.+\.(ed\.jp|ac\.jp)$/i;
+type AccessedUserType = "educator" | "admin" | "general";
 
-//   return {
-//     userId: user !== "" ? user : null,
-//     : pattern.test(user),
-//   };
-// };
+type AccessedUserResp = {
+  userType: AccessedUserType;
+  userId?: string;
+};
 
-// export { getAccessUser, type AccessUser };
+const getAccessUser = (): AccessedUserResp => {
+  const user = Session.getActiveUser().getEmail();
+  const pattern = /^.*@.+\.(ed\.jp|ac\.jp)$/i;
+
+  // TODO: for admin
+  if (ADMIN_ACCOUNT.includes(user)) {
+    return { userType: "admin", userId: user };
+  }
+
+  // とりあえずAdminは無視
+  return pattern.test(user)
+    ? {
+        userType: "educator",
+        userId: user,
+      }
+    : {
+        userType: "general",
+      };
+};
+
+export { getAccessUser, type AccessedUserType };
