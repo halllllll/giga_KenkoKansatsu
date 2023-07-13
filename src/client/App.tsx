@@ -21,7 +21,8 @@ const App: FC = () => {
   );
   // 各種state
   const { sheetName, sheetUrl } = useSheetNameAndUrl();
-  const { formStudents, formInquiryItems } = useMemberData();
+  const { formStudents, formInquiryItems, accessedUserId, accessedUserType } =
+    useMemberData();
 
   // 使い回すcontext
 
@@ -31,7 +32,7 @@ const App: FC = () => {
         value={{
           students: formStudents,
           inquiries: formInquiryItems,
-          accessedUser: "",
+          accessedUserId,
         }}
       >
         <Header headerTitle={sheetName} spreadsheetLink={sheetUrl} />
@@ -41,6 +42,7 @@ const App: FC = () => {
           <FormRoot
             formStudents={formStudents}
             formInquiryItems={formInquiryItems}
+            userType={accessedUserType}
             candidatesState={candidateStates}
             candidateDispatch={candidateDispatch}
           />

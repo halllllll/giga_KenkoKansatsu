@@ -1,14 +1,14 @@
 import { useState, useEffect } from "react";
 
+import { type UserType } from "@/server/Config/Response";
 import { type Student, type InquiryItem } from "@/server/Config/SheetData";
-import {
-  FormInquiryAPI,
-  FormMemberAPI,
-} from "@/client/API/initialAccessFormData";
+import { FormViewDataAPI } from "@/client/API/initialAccessFormData";
 
 type MemberDataResult = {
   formStudents: Student[];
   formInquiryItems: InquiryItem;
+  accessedUserId: string;
+  accessedUserType: UserType;
 };
 
 export const useMemberData = (): MemberDataResult => {
@@ -17,16 +17,30 @@ export const useMemberData = (): MemberDataResult => {
     Attendance: [],
     Condition: [],
   });
+  // TODO: matomo logic
+  const [accessedUserId, setAccessedUserId] = useState<string>("");
+  const [accessedUserType, setAccessedUserType] = useState<UserType>("general");
 
   useEffect(() => {
     const knock = async () => {
-      const [FormElementsStudents, FormElementsInquiryItems] =
-        await Promise.all([FormMemberAPI(), FormInquiryAPI()]);
-      setStudentElements(FormElementsStudents);
-      setInquiryItem(FormElementsInquiryItems);
+      const viewData = await FormViewDataAPI();
+
+      switch (viewData.userType) {
+        case "educator": {
+          setStudentElements(viewData.Students);
+          setInquiryItem(viewData.InquiryItem);
+          setAccessedUserId(viewData.userId);
+          setAccessedUserType(viewData.userType);
+          break;
+        }
+        case "general": {
+          setInquiryItem(viewData.InquiryItem);
+          break;
+        }
+      }
     };
     void knock();
   }, []);
 
-  return { formStudents, formInquiryItems };
+  return { formStudents, formInquiryItems, accessedUserId, accessedUserType };
 };

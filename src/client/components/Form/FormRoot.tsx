@@ -32,6 +32,7 @@ import ja from "date-fns/locale/ja";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { ScreenSpinner, type ViewData } from "@/client/components/Index";
 import { type postDataResult } from "@/server/API/Post";
+import { type UserType } from "@/server/Config/Response";
 import { type InquiryItem, type Student } from "@/server/Config/SheetData";
 import SendingModal, { type ModalMessage } from "../Screen/Modal";
 import ControlledSelect from "./controlled-select";
@@ -43,15 +44,18 @@ import {
   type Condition,
   type Grade,
 } from "./form-select-data";
+import { ParentFormSchema } from "./schemas/registration-form-parent";
 import { TeacherFormSchema } from "./schemas/registration-form-teacher";
 import { postFormValueDataAPI } from "@/client/API/postData";
 import { TimeoutError } from "@/client/errors";
 import { type CandidateAction } from "@/client/reducer/candidateReducer";
 
+// TODO: use useContext
 type FormProps = {
   readonly formStudents: Student[];
   readonly formInquiryItems: InquiryItem | null;
   readonly candidatesState: FormValues[];
+  readonly userType: UserType;
   candidateDispatch: React.Dispatch<CandidateAction>;
 };
 
@@ -65,9 +69,14 @@ type FormProps = {
  */
 
 const FormRoot: FC<FormProps> = (props) => {
-  const { formStudents, formInquiryItems, candidateDispatch, candidatesState } =
-    props;
-
+  const {
+    formStudents,
+    formInquiryItems,
+    candidateDispatch,
+    candidatesState,
+    userType,
+  } = props;
+  const schema = userType === "educator" ? TeacherFormSchema : ParentFormSchema;
   /**
    *
    * TODO: MORE BETTER temporary-customhook
@@ -120,7 +129,7 @@ const FormRoot: FC<FormProps> = (props) => {
   } = useForm<FormValues>({
     mode: "all",
     criteriaMode: "all",
-    resolver: yupResolver(TeacherFormSchema),
+    resolver: yupResolver(schema),
     defaultValues: formDefaultValues,
   });
 
@@ -179,10 +188,11 @@ const FormRoot: FC<FormProps> = (props) => {
     if (nameOptions.length === 1) {
       setValue("name", nameOptions[0]);
     }
-
     setGradeOptions(gradeOptions);
     setClassNameOptions(classNameOptions);
-    setNameOptions(nameOptions);
+    if (userType === "educator") {
+      setNameOptions(nameOptions);
+    }
     setAttendanceOptions(attendance);
     setConditionOptions(conditions);
   }, [
@@ -192,6 +202,7 @@ const FormRoot: FC<FormProps> = (props) => {
     formStudents,
     formInquiryItems,
     setValue,
+    userType,
   ]);
 
   const onAdd: SubmitHandler<FormValues> = (data) => {
@@ -364,46 +375,53 @@ const FormRoot: FC<FormProps> = (props) => {
                 }}
               />
             </HStack>
-            <ControlledSelect<FormValues, Name, false>
-              name="name"
-              id="name"
-              control={control}
-              label="名前"
-              placeholder="名前を検索しよう！"
-              options={defferredNameOptions}
-              rules={{
-                onChange: () => {
-                  setCurName(getValues().name);
-                },
-              }}
-              formatOptionLabel={(option: Name) => {
-                return (
-                  <Box style={{ display: "flex" }}>
-                    <Box>{option.label}</Box>
-                    <Box style={{ marginLeft: "10px", color: "#999" }}>
-                      {option.kana}
+            {userType === "educator" ? (
+              <ControlledSelect<FormValues, Name, false>
+                name="name"
+                id="name"
+                control={control}
+                label="名前"
+                placeholder="名前を検索しよう！"
+                options={defferredNameOptions}
+                rules={{
+                  onChange: () => {
+                    setCurName(getValues().name);
+                  },
+                }}
+                formatOptionLabel={(option: Name) => {
+                  return (
+                    <Box style={{ display: "flex" }}>
+                      <Box>{option.label}</Box>
+                      <Box style={{ marginLeft: "10px", color: "#999" }}>
+                        {option.kana}
+                      </Box>
                     </Box>
-                  </Box>
-                );
-              }}
-              getOptionLabel={(option: Name) =>
-                option.label + option.kana + option.value
-              }
-              chakraStyles={{
-                // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-                dropdownIndicator: (provided: any) => ({
-                  ...provided,
-                  // bg: "transparent",
-                  px: 2,
-                  cursor: "inherit",
-                }),
-                // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-                indicatorSeparator: (provided: any) => ({
-                  ...provided,
-                  display: "none",
-                }),
-              }}
-            />
+                  );
+                }}
+                getOptionLabel={(option: Name) =>
+                  option.label + option.kana + option.value
+                }
+                chakraStyles={{
+                  // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+                  dropdownIndicator: (provided: any) => ({
+                    ...provided,
+                    // bg: "transparent",
+                    px: 2,
+                    cursor: "inherit",
+                  }),
+                  // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+                  indicatorSeparator: (provided: any) => ({
+                    ...provided,
+                    display: "none",
+                  }),
+                }}
+              />
+            ) : (
+              // TODO: DO IT PARENT MODE
+              <>
+                <Input placeholder="名前入力"></Input>
+              </>
+            )}
             <HStack width="full">
               <Box minWidth="3xs">
                 <ControlledSelect<FormValues, Attendance, false>
