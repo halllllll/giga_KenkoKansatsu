@@ -37,7 +37,7 @@ const App: FC = () => {
         <Header headerTitle={sheetName} spreadsheetLink={sheetUrl} />
         <Container maxW="4xl">
           {/** TODO: information area */}
-          <Info message={""} hasUrl={false} url={""} />
+          {/* <Info message={""} hasUrl={false} url={""} /> */}
           <FormRoot
             formStudents={formStudents}
             formInquiryItems={formInquiryItems}
