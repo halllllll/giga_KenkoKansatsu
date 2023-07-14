@@ -12,6 +12,8 @@ type AccessedUserResp = {
 
 const getAccessUser = (): AccessedUserResp => {
   const user = Session.getActiveUser().getEmail();
+  console.log("Yo!");
+  console.log(`id is ${user}`);
   const pattern = /^.*@.+\.(ed\.jp|ac\.jp)$/i;
 
   // TODO: for admin

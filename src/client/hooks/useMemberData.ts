@@ -19,7 +19,8 @@ export const useMemberData = (): MemberDataResult => {
   });
   // TODO: matomo logic
   const [accessedUserId, setAccessedUserId] = useState<string>("");
-  const [accessedUserType, setAccessedUserType] = useState<UserType>("general");
+  const [accessedUserType, setAccessedUserType] =
+    useState<UserType>("educator"); // TODO: init
 
   useEffect(() => {
     const knock = async () => {

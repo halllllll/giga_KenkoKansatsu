@@ -1,9 +1,9 @@
 import { type FC, useReducer } from "react";
-import { Container } from "@chakra-ui/react";
-
+import { Box, Container, Text } from "@chakra-ui/react";
 import "./App.css";
 import { Footer, Header, FormRoot } from "@/client/components/Index";
 import { type FormValues } from "./components/Form/form-select-data";
+import InfoBlockForGeneral from "./components/Info/forGeneral";
 
 import { Ctx } from "./context";
 import { useMemberData } from "./hooks/useMemberData";
@@ -39,9 +39,17 @@ const App: FC = () => {
         <Container maxW="4xl">
           {/** TODO: information area */}
           {/* <Info message={""} hasUrl={false} url={""} /> */}
+          {accessedUserType === "general" ? (
+            <InfoBlockForGeneral />
+          ) : (
+            <Box py={4} paddingLeft={3}>
+              <Text>
+                {" "}
+                {accessedUserId && `こんにちわ、${accessedUserId} さん！`}
+              </Text>
+            </Box>
+          )}
           <FormRoot
-            formStudents={formStudents}
-            formInquiryItems={formInquiryItems}
             userType={accessedUserType}
             candidatesState={candidateStates}
             candidateDispatch={candidateDispatch}

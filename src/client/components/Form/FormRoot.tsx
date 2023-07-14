@@ -4,6 +4,7 @@ import {
   useEffect,
   useState,
   useDeferredValue,
+  useContext,
 } from "react";
 import {
   Box,
@@ -47,13 +48,12 @@ import {
 import { ParentFormSchema } from "./schemas/registration-form-parent";
 import { TeacherFormSchema } from "./schemas/registration-form-teacher";
 import { postFormValueDataAPI } from "@/client/API/postData";
+import { Ctx } from "@/client/context";
 import { TimeoutError } from "@/client/errors";
 import { type CandidateAction } from "@/client/reducer/candidateReducer";
 
 // TODO: use useContext
 type FormProps = {
-  readonly formStudents: Student[];
-  readonly formInquiryItems: InquiryItem | null;
   readonly candidatesState: FormValues[];
   readonly userType: UserType;
   candidateDispatch: React.Dispatch<CandidateAction>;
@@ -69,14 +69,17 @@ type FormProps = {
  */
 
 const FormRoot: FC<FormProps> = (props) => {
-  const {
-    formStudents,
-    formInquiryItems,
-    candidateDispatch,
-    candidatesState,
-    userType,
-  } = props;
+  const { candidateDispatch, candidatesState, userType } = props;
   const schema = userType === "educator" ? TeacherFormSchema : ParentFormSchema;
+
+  // propsではなくcontextで受け取る
+  const curCtx = useContext(Ctx);
+  const [formStudents, formInquiryItems, accessedUserId] = [
+    curCtx.students as Student[],
+    curCtx.inquiries as InquiryItem,
+    curCtx.accessedUserId as string,
+  ];
+
   /**
    *
    * TODO: MORE BETTER temporary-customhook
@@ -98,6 +101,7 @@ const FormRoot: FC<FormProps> = (props) => {
   const [conditionOptions, setConditionOptions] = useState<Condition[]>([]);
 
   const defferredNameOptions = useDeferredValue(nameOptions);
+
   /**
    * Form部分
    * useForm用 ここから
@@ -277,7 +281,7 @@ const FormRoot: FC<FormProps> = (props) => {
           resolve(ret);
         }, 15000)
       ),
-      postFormValueDataAPI(candidatesState),
+      postFormValueDataAPI(candidatesState, accessedUserId),
     ]);
     setSubmitState("isSubmitted");
 

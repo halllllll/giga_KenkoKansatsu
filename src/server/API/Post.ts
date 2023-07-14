@@ -1,6 +1,9 @@
 import { ss, AnswerSheetHeaders } from "@/server/Config/Const";
 import { StoreSheetName } from "@/server/Config/SheetData";
-import { type postDataRequest } from "@/client/API/postData";
+import {
+  type postDataRequestObj,
+  type postDataRequest,
+} from "@/client/API/postData";
 import { type FormValues } from "@/client/components/Form/form-select-data";
 import {
   InvalidSheetArchtectureError,
@@ -18,7 +21,9 @@ type postDataResult = {
 
 const postFormValues = (data: postDataRequest): postDataResult => {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-  const formValues: FormValues[] = JSON.parse(data) as FormValues[];
+  const requestObj: postDataRequestObj = JSON.parse(data) as postDataRequestObj;
+  const formValues: FormValues[] = requestObj.data;
+  const userId = requestObj?.userId; // TODO: ...
   const ret: postDataResult = { status: null };
   try {
     // validation
@@ -36,7 +41,7 @@ const postFormValues = (data: postDataRequest): postDataResult => {
     for (const formValue of formValues) {
       const row = [
         new Date(),
-        "（未実装）", // TODO
+        userId, // "（未実装）", // TODO
         new Date(formValue.registerDate),
         formValue.grade?.value,
         formValue.className?.value,
