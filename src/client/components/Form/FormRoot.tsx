@@ -1,45 +1,14 @@
-import {
-  type SyntheticEvent,
-  type FC,
-  useEffect,
-  useState,
-  useDeferredValue,
-  useContext,
-} from "react";
-import {
-  Box,
-  Button,
-  ButtonGroup,
-  Center,
-  FormControl,
-  FormErrorMessage,
-  FormLabel,
-  Grid,
-  GridItem,
-  HStack,
-  Input,
-  Switch,
-  Table,
-  TableCaption,
-  TableContainer,
-  Tbody,
-  Td,
-  Text,
-  Textarea,
-  Tr,
-  VStack,
-  useDisclosure,
-} from "@chakra-ui/react";
+import { type FC, useEffect, useState, useContext } from "react";
+import { useDisclosure } from "@chakra-ui/react";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { format } from "date-fns";
-import ja from "date-fns/locale/ja";
-import { useForm, type SubmitHandler } from "react-hook-form";
-import { ScreenSpinner, type ViewData } from "@/client/components/Index";
-import { type postDataResult } from "@/server/API/Post";
+import { useForm, type SubmitHandler, FormProvider } from "react-hook-form";
+import { ScreenSpinner } from "@/client/components/Index";
 import { type UserType } from "@/server/Config/Response";
 import { type InquiryItem, type Student } from "@/server/Config/SheetData";
 import SendingModal, { type ModalMessage } from "../Screen/Modal";
-import ControlledSelect from "./controlled-select";
+import CandidateArea from "./components/Candidate/CandidateArea";
+import Form from "./components/Form";
+import formDefaultValues from "./form-default-values";
 import {
   type ClassName,
   type Name,
@@ -50,9 +19,8 @@ import {
 } from "./form-select-data";
 import { ParentFormSchema } from "./schemas/registration-form-parent";
 import { TeacherFormSchema } from "./schemas/registration-form-teacher";
-import { postFormValueDataAPI } from "@/client/API/postData";
+import { type submitStateType } from "./submit-state";
 import { Ctx } from "@/client/context";
-import { TimeoutError } from "@/client/errors";
 import { type CandidateAction } from "@/client/reducer/candidateReducer";
 
 type FormProps = {
@@ -76,10 +44,9 @@ const FormRoot: FC<FormProps> = (props) => {
 
   // propsではなくcontextで受け取る
   const curCtx = useContext(Ctx);
-  const [formStudents, formInquiryItems, accessedUserId] = [
+  const [formStudents, formInquiryItems] = [
     curCtx.students as Student[],
     curCtx.inquiries as InquiryItem,
-    curCtx.accessedUserId as string,
   ];
 
   /**
@@ -93,7 +60,9 @@ const FormRoot: FC<FormProps> = (props) => {
   const [curClassName, setCurClassName] = useState<ClassName | null>(null);
   const [curName, setCurName] = useState<Name | null>(null);
 
-  // // 選択肢
+  // 期間
+
+  // 選択肢
   const [gradeOptions, setGradeOptions] = useState<Grade[]>([]);
   const [classNameOptions, setClassNameOptions] = useState<ClassName[]>([]);
   const [nameOptions, setNameOptions] = useState<Name[]>([]);
@@ -102,43 +71,30 @@ const FormRoot: FC<FormProps> = (props) => {
   >(null);
   const [conditionOptions, setConditionOptions] = useState<Condition[]>([]);
 
-  const defferredNameOptions = useDeferredValue(nameOptions);
-
   /**
    * Form部分
    * useForm用 ここから
    */
-  // あらかじめDefaultValuesをきめておけば、reset()に流用できる
-  const formDefaultValues: FormValues = {
-    registerDate: format(new Date(), "yyyy-MM-dd", { locale: ja }),
-    registerEndToDate: undefined,
-    grade: null,
-    className: null,
-    classNumber: null,
-    name: null,
-    attendance: { label: "", value: "" },
-    condition: [],
-    status: "",
-  };
-
-  /**
-   * Form部分
-   * useForm用 ここから
-   */
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { errors, isSubmitting: isAdding },
-    control,
-    getValues,
-    setValue,
-  } = useForm<FormValues>({
+  const methods = useForm<FormValues>({
     mode: "all",
     criteriaMode: "all",
     resolver: yupResolver(schema),
     defaultValues: formDefaultValues,
   });
+
+  // sets
+  // TODO: baaaad suji, terrible, miserable
+  const setValueHandlers = {
+    setGradeHandler: (): void => {
+      setCurGrade(methods.getValues().grade);
+    },
+    setClassNameHandler: (): void => {
+      setCurClassName(methods.getValues().className);
+    },
+    setNameHandler: (): void => {
+      setCurName(methods.getValues().name);
+    },
+  };
 
   useEffect(() => {
     // labelで候補の絞り込み
@@ -187,13 +143,13 @@ const FormRoot: FC<FormProps> = (props) => {
     }) ?? [{ label: "", value: "" }];
 
     if (classNameOptions.length === 1) {
-      setValue("className", classNameOptions[0]);
+      methods.setValue("className", classNameOptions[0]);
     }
     if (gradeOptions.length === 1) {
-      setValue("grade", gradeOptions[0]);
+      methods.setValue("grade", gradeOptions[0]);
     }
     if (nameOptions.length === 1) {
-      setValue("name", nameOptions[0]);
+      methods.setValue("name", nameOptions[0]);
     }
     setGradeOptions(gradeOptions);
     setClassNameOptions(classNameOptions);
@@ -208,7 +164,7 @@ const FormRoot: FC<FormProps> = (props) => {
     curName,
     formStudents,
     formInquiryItems,
-    setValue,
+    methods,
     userType,
   ]);
 
@@ -219,10 +175,10 @@ const FormRoot: FC<FormProps> = (props) => {
       payload: data,
     });
     // 連続して登録する場合、シチュエーション的にほとんどの場合は名前とstatusのみ変更
-    reset({
-      grade: getValues().grade,
+    methods.reset({
+      grade: methods.getValues().grade,
       name: null,
-      className: getValues().className,
+      className: methods.getValues().className,
       status: "",
       attendance: { label: "", value: "" },
       condition: [],
@@ -230,87 +186,28 @@ const FormRoot: FC<FormProps> = (props) => {
     setCurName(null);
   };
 
-  // 全部リセット
-  const onReset = (e: SyntheticEvent) => {
-    e.stopPropagation();
-    reset(formDefaultValues);
+  // 全部リセット(event.propagationは不要らしい)
+  const onReset = () => {
+    methods.reset(formDefaultValues);
     setCurGrade(null);
     setCurName(null);
     setCurClassName(null);
   };
 
   /**
-   * for candidate area
-   */
-  // view用にする
-  const candidatesItems: ViewData[] = candidatesState.map((c, idx) => {
-    return {
-      viewIndex: idx,
-      registerDate: c.registerDate,
-      registerEndToDate: c.registerEndToDate,
-      grade: c.grade,
-      className: c.className,
-      classNumber: c.classNumber,
-      name: c.name,
-      attendance: c.attendance,
-      condition: c.condition,
-      status: c.status,
-    };
-  });
-
-  /**
-   * send button用
+   * modal 用
    */
   const { onClose, onOpen, isOpen } = useDisclosure();
-
   const [modalMessage, setModalMessage] = useState<ModalMessage>(null);
-
-  type submitStateType = "idle" | "isSubmitting" | "isSubmitted";
+  const setModalHandler = (msg: ModalMessage) => {
+    setModalMessage(msg);
+  };
   const [submitState, setSubmitState] = useState<submitStateType>("idle");
-  const onPostSubmit = async () => {
-    setSubmitState("isSubmitting");
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
-
-    const result = await Promise.race<postDataResult>([
-      new Promise((resolve, _reject) =>
-        setTimeout(() => {
-          const ret: postDataResult = {
-            status: "error",
-            error: new TimeoutError("time out"),
-            message: "時間がかかりすぎています。やり直してください。",
-          };
-          resolve(ret);
-        }, 15000)
-      ),
-      postFormValueDataAPI(candidatesState, accessedUserId),
-    ]);
-    setSubmitState("isSubmitted");
-
-    onOpen();
-    switch (result.status) {
-      case "success": {
-        reset(formDefaultValues);
-        candidateDispatch({
-          type: "RESET",
-        });
-        setModalMessage({
-          headerText: "送信完了",
-          bodyText: `${candidatesState.length} 件送信しました。ありがとうございます！`,
-        });
-        break;
-      }
-      case "error": {
-        console.error(result.error);
-        setModalMessage({
-          headerText: result.error?.name ?? "Error",
-          bodyText: result.message ?? "some error occured",
-        });
-        break;
-      }
-    }
+  const submitStateHandler = (submitState: submitStateType) => {
+    setSubmitState(submitState);
+  };
+  const checkSubmitStateHandler = (submitStateType: submitStateType) => {
+    return submitState === submitStateType;
   };
 
   return (
@@ -323,276 +220,29 @@ const FormRoot: FC<FormProps> = (props) => {
           message={modalMessage}
         />
       )}
-      <Box
-        my={3}
-        px={5}
-        py={3}
-        borderWidth="1px"
-        borderRadius="lg"
-        boxShadow="base"
-      >
-        <form onSubmit={handleSubmit(onAdd)}>
-          <HStack>
-            <Box width="max-content">
-              <FormControl
-                my="5"
-                id="registerDate"
-                isInvalid={!(errors.registerDate?.message == null)}
-              >
-                <Grid gap={10} templateColumns="repeat(4, 1fr)">
-                  <GridItem>
-                    <VStack align="flex-start">
-                      <FormLabel>日付</FormLabel>
-                      <Input
-                        size="lg"
-                        variant="flushed"
-                        {...register("registerDate")}
-                        type="date"
-                      />
-                      {(errors.registerDate?.message !== null && (
-                        <FormErrorMessage>日付を選んでね</FormErrorMessage>
-                      )) ?? <> </>}
-                    </VStack>
-                  </GridItem>
-                  <GridItem>
-                    <VStack align="flex-start">
-                      <FormLabel htmlFor="endDate">期間を設定する</FormLabel>
-                      <Switch
-                        id="endDate"
-                        colorScheme="cyan"
-                        size="lg"
-                        onChange={(event) => {
-                          console.log(event.target.checked);
-                        }}
-                      />
-                    </VStack>
-                  </GridItem>
-                </Grid>
-              </FormControl>
-            </Box>
-          </HStack>
-          <VStack>
-            <HStack width="full">
-              <ControlledSelect<FormValues, Grade, false>
-                name="grade"
-                id="grade"
-                control={control}
-                label="学年"
-                placeholder="学年を選ぼう！"
-                options={gradeOptions}
-                value={gradeOptions}
-                rules={{
-                  onChange: () => {
-                    setCurGrade(getValues().grade);
-                  },
-                }}
-              />
-              <ControlledSelect<FormValues, ClassName, false>
-                name="className"
-                id="className"
-                control={control}
-                label="クラス"
-                placeholder="クラスを選ぼう！"
-                options={classNameOptions}
-                value={classNameOptions}
-                rules={{
-                  onChange: () => {
-                    setCurClassName(getValues().className);
-                  },
-                }}
-              />
-            </HStack>
-            {userType === "educator" ? (
-              <ControlledSelect<FormValues, Name, false>
-                name="name"
-                id="name"
-                control={control}
-                label="名前"
-                placeholder="名前を検索しよう！"
-                options={defferredNameOptions}
-                rules={{
-                  onChange: () => {
-                    setCurName(getValues().name);
-                  },
-                }}
-                formatOptionLabel={(option: Name) => {
-                  return (
-                    <Box style={{ display: "flex" }}>
-                      <Box>{option.label}</Box>
-                      <Box style={{ marginLeft: "10px", color: "#999" }}>
-                        {option.kana}
-                      </Box>
-                    </Box>
-                  );
-                }}
-                getOptionLabel={(option: Name) =>
-                  option.label + option.kana + option.value
-                }
-                chakraStyles={{
-                  // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-                  dropdownIndicator: (provided: any) => ({
-                    ...provided,
-                    // bg: "transparent",
-                    px: 2,
-                    cursor: "inherit",
-                  }),
-                  // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-                  indicatorSeparator: (provided: any) => ({
-                    ...provided,
-                    display: "none",
-                  }),
-                }}
-              />
-            ) : (
-              // TODO: DO IT PARENT MODE
-              <>
-                <Input placeholder="名前入力"></Input>
-              </>
-            )}
-            <HStack width="full">
-              <Box minWidth="3xs">
-                <ControlledSelect<FormValues, Attendance, false>
-                  name="attendance"
-                  id="attendance"
-                  control={control}
-                  label="出欠・遅刻"
-                  placeholder="どうしたの？"
-                  options={attendanceOptions}
-                />
-              </Box>
-              <ControlledSelect<FormValues, Condition, true>
-                isMulti
-                name="condition"
-                id="condition"
-                control={control}
-                label="症状・理由"
-                placeholder="なんでかな？（複数可）"
-                options={conditionOptions}
-              />
-            </HStack>
-          </VStack>
-          <FormControl
-            id="status"
-            isInvalid={!(errors.status?.message == null)}
-          >
-            <FormLabel>備考</FormLabel>
-            <Textarea
-              maxHeight={200}
-              placeholder="備考があれば書いてね"
-              {...register("status")}
-            />
-          </FormControl>
-          <HStack alignItems="center" justifyContent="center">
-            <ButtonGroup mt="5" w="xs" gap="4">
-              <Button
-                w="30%"
-                colorScheme="orange"
-                variant="solid"
-                onClick={onReset}
-                disabled={isAdding}
-              >
-                リセット
-              </Button>
-              <Button
-                w="70%"
-                colorScheme="blue"
-                variant="solid"
-                type="submit"
-                disabled={isAdding}
-                isLoading={isAdding}
-                loadingText="登録中"
-                spinnerPlacement="start"
-              >
-                登録
-              </Button>
-            </ButtonGroup>
-          </HStack>
-        </form>
-      </Box>
+      <FormProvider {...methods}>
+        <Form
+          onAdd={onAdd}
+          onReset={onReset}
+          classNameOptions={classNameOptions}
+          nameOptions={nameOptions}
+          gradeOptions={gradeOptions}
+          conditionOptions={conditionOptions}
+          attendanceOptions={attendanceOptions}
+          userType={userType}
+          setValueHandlers={setValueHandlers}
+        />
+      </FormProvider>
       {candidatesState.length > 0 && (
-        <>
-          <Box>
-            <Box
-              mt="10"
-              py="5"
-              h="fit-content"
-              bg="burlywood"
-              textColor="whitesmoke"
-              fontSize="lg"
-              fontWeight="extrabold"
-              borderRadius="md"
-            >
-              <Center h="100%">反映予定のアカウント</Center>
-            </Box>
-            <TableContainer whiteSpace="unset">
-              <Table variant="simple" colorScheme="gray">
-                <TableCaption placement="top"></TableCaption>
-                <Tbody>
-                  {candidatesItems.map((item) => {
-                    return (
-                      <Tr key={item.viewIndex}>
-                        <Td>{item.name?.value} さん</Td>
-                        <Td fontWeight="extrabold" p="0">
-                          {item.attendance.value}
-                        </Td>
-                        <Td w="xl">
-                          <VStack align="flex-start">
-                            <Text>
-                              【出欠・遅刻】
-                              <br />
-                              {item.condition?.map((v) => v.value).join("、")}
-                            </Text>
-                            <Text>
-                              【症状・理由】
-                              <br />
-                              {item.status}
-                            </Text>
-                          </VStack>
-                        </Td>
-                        <Td w="min-content" padding="0">
-                          <Button
-                            variant="solid"
-                            // color="whiteAlpha.900"
-                            // bgColor="orange.300"
-                            colorScheme="orange"
-                            onClick={() => {
-                              candidateDispatch({
-                                type: "DELETE",
-                                payload: {
-                                  index: item.viewIndex,
-                                },
-                              });
-                            }}
-                          >
-                            削除
-                          </Button>
-                        </Td>
-                      </Tr>
-                    );
-                  })}
-                </Tbody>
-              </Table>
-            </TableContainer>
-          </Box>
-          <Box mt="10">
-            <Box h="maxContent">
-              <Center h="100%">
-                <Button
-                  colorScheme="teal"
-                  variant="solid"
-                  type="button"
-                  onClick={onPostSubmit}
-                  disabled={submitState === "isSubmitting"}
-                  isLoading={submitState === "isSubmitting"}
-                  loadingText="送信中..."
-                  spinnerPlacement="start"
-                >
-                  送信する
-                </Button>
-              </Center>
-            </Box>
-          </Box>
-        </>
+        <CandidateArea
+          candidatesState={candidatesState}
+          onOpenModal={onOpen}
+          onDefaultForm={onReset}
+          candidateDispatch={candidateDispatch}
+          setModalMessage={setModalHandler}
+          setSubmitState={submitStateHandler}
+          checkSubmitState={checkSubmitStateHandler}
+        />
       )}
     </>
   );
