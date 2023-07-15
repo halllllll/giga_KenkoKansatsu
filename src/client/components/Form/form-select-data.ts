@@ -27,6 +27,7 @@ interface Condition extends OptionBase {
 
 interface FormValues {
   registerDate: string;
+  registerEndToDate?: string;
   grade: Grade | null;
   className: ClassName | null;
   classNumber: number | null;

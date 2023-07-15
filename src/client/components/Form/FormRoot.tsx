@@ -14,8 +14,11 @@ import {
   FormControl,
   FormErrorMessage,
   FormLabel,
+  Grid,
+  GridItem,
   HStack,
   Input,
+  Switch,
   Table,
   TableCaption,
   TableContainer,
@@ -52,7 +55,6 @@ import { Ctx } from "@/client/context";
 import { TimeoutError } from "@/client/errors";
 import { type CandidateAction } from "@/client/reducer/candidateReducer";
 
-// TODO: use useContext
 type FormProps = {
   readonly candidatesState: FormValues[];
   readonly userType: UserType;
@@ -109,6 +111,7 @@ const FormRoot: FC<FormProps> = (props) => {
   // あらかじめDefaultValuesをきめておけば、reset()に流用できる
   const formDefaultValues: FormValues = {
     registerDate: format(new Date(), "yyyy-MM-dd", { locale: ja }),
+    registerEndToDate: undefined,
     grade: null,
     className: null,
     classNumber: null,
@@ -244,6 +247,7 @@ const FormRoot: FC<FormProps> = (props) => {
     return {
       viewIndex: idx,
       registerDate: c.registerDate,
+      registerEndToDate: c.registerEndToDate,
       grade: c.grade,
       className: c.className,
       classNumber: c.classNumber,
@@ -335,16 +339,35 @@ const FormRoot: FC<FormProps> = (props) => {
                 id="registerDate"
                 isInvalid={!(errors.registerDate?.message == null)}
               >
-                <FormLabel>日付</FormLabel>
-                <Input
-                  size="lg"
-                  variant="flushed"
-                  {...register("registerDate")}
-                  type="date"
-                />
-                {(errors.registerDate?.message !== null && (
-                  <FormErrorMessage>日付を選んでね</FormErrorMessage>
-                )) ?? <> </>}
+                <Grid gap={10} templateColumns="repeat(4, 1fr)">
+                  <GridItem>
+                    <VStack align="flex-start">
+                      <FormLabel>日付</FormLabel>
+                      <Input
+                        size="lg"
+                        variant="flushed"
+                        {...register("registerDate")}
+                        type="date"
+                      />
+                      {(errors.registerDate?.message !== null && (
+                        <FormErrorMessage>日付を選んでね</FormErrorMessage>
+                      )) ?? <> </>}
+                    </VStack>
+                  </GridItem>
+                  <GridItem>
+                    <VStack align="flex-start">
+                      <FormLabel htmlFor="endDate">期間を設定する</FormLabel>
+                      <Switch
+                        id="endDate"
+                        colorScheme="cyan"
+                        size="lg"
+                        onChange={(event) => {
+                          console.log(event.target.checked);
+                        }}
+                      />
+                    </VStack>
+                  </GridItem>
+                </Grid>
               </FormControl>
             </Box>
           </HStack>
