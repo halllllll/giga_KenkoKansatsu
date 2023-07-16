@@ -1,18 +1,19 @@
 import { type FC } from "react";
 import {
   HStack,
-  FormControl,
   VStack,
-  FormLabel,
   Input,
-  Textarea,
   Box,
   ButtonGroup,
   Button,
 } from "@chakra-ui/react";
 import { type SubmitHandler, useFormContext } from "react-hook-form";
 import { type UserType } from "@/server/Config/Response";
-import ControlledSelect from "../controlled-select";
+import AdditionalFieldsRoot from "./AdditionalFields/AdditionalFieldsRoot";
+import DateField from "./DateField";
+import SelectClassNameField from "./SelectClassNameField";
+import SelectGradeField from "./SelectGradeField";
+import ControlledSelect from "@/client/components/Form/controlled-select";
 import {
   type FormValues,
   type Grade,
@@ -20,8 +21,7 @@ import {
   type Name,
   type Attendance,
   type Condition,
-} from "../form-select-data";
-import DateField from "./DateField";
+} from "@/client/components/Form/form-select-data";
 
 type FormProps = {
   onAdd: SubmitHandler<any>;
@@ -47,7 +47,8 @@ const Form: FC<FormProps> = (props) => {
     userType,
     setValueHandlers,
   } = props;
-  // handler 解答
+
+  // handler 解凍🍛
   const { setGradeHandler, setClassNameHandler, setNameHandler } =
     setValueHandlers;
   const methods = useFormContext();
@@ -64,45 +65,21 @@ const Form: FC<FormProps> = (props) => {
       <form onSubmit={methods.handleSubmit(onAdd)}>
         <HStack>
           <Box width="max-content">
-            <FormControl
-              my="5"
-              id="registerDate"
-              isInvalid={
-                !(methods.formState.errors.registerDate?.message == null)
-              }
-            >
-              <DateField />
-            </FormControl>
+            <DateField />
           </Box>
         </HStack>
         <VStack>
           <HStack width="full">
-            <ControlledSelect<FormValues, Grade, false>
-              name="grade"
-              id="grade"
-              control={methods.control}
-              label="学年"
-              placeholder="学年を選ぼう！"
-              options={gradeOptions}
-              // value={gradeOptions}
-              rules={{
-                onChange: setGradeHandler,
-              }}
+            <SelectGradeField
+              gradeOptions={gradeOptions}
+              setGradeHandler={setGradeHandler}
             />
-            <ControlledSelect<FormValues, ClassName, false>
-              name="className"
-              id="className"
-              control={methods.control}
-              label="クラス"
-              placeholder="クラスを選ぼう！"
-              options={classNameOptions}
-              // value={classNameOptions}
-              rules={{
-                onChange: setClassNameHandler,
-              }}
+            <SelectClassNameField
+              classNameOptions={classNameOptions}
+              setClassNameHandler={setClassNameHandler}
             />
           </HStack>
-          {userType === "educator" ? (
+          {userType === "educator" ? ( // TODO: provide select name field by useType
             <ControlledSelect<FormValues, Name, false>
               name="name"
               id="name"
@@ -130,7 +107,6 @@ const Form: FC<FormProps> = (props) => {
                 // eslint-disable-next-line @typescript-eslint/no-unsafe-return
                 dropdownIndicator: (provided: any) => ({
                   ...provided,
-                  // bg: "transparent",
                   px: 2,
                   cursor: "inherit",
                 }),
@@ -147,39 +123,11 @@ const Form: FC<FormProps> = (props) => {
               <Input placeholder="名前入力"></Input>
             </>
           )}
-          <HStack width="full">
-            <Box minWidth="3xs">
-              <ControlledSelect<FormValues, Attendance, false>
-                name="attendance"
-                id="attendance"
-                control={methods.control}
-                label="出欠・遅刻"
-                placeholder="どうしたの？"
-                options={attendanceOptions}
-              />
-            </Box>
-            <ControlledSelect<FormValues, Condition, true>
-              isMulti
-              name="condition"
-              id="condition"
-              control={methods.control}
-              label="症状・理由"
-              placeholder="なんでかな？（複数可）"
-              options={conditionOptions}
-            />
-          </HStack>
-        </VStack>
-        <FormControl
-          id="status"
-          isInvalid={!(methods.formState.errors.status?.message == null)}
-        >
-          <FormLabel>備考</FormLabel>
-          <Textarea
-            maxHeight={200}
-            placeholder="備考があれば書いてね"
-            {...methods.register("status")}
+          <AdditionalFieldsRoot
+            attendanceOptions={attendanceOptions}
+            conditionOptions={conditionOptions}
           />
-        </FormControl>
+        </VStack>
         <HStack alignItems="center" justifyContent="center">
           <ButtonGroup mt="5" w="xs" gap="4">
             <Button
