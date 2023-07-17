@@ -60,8 +60,6 @@ const FormRoot: FC<FormProps> = (props) => {
   const [curClassName, setCurClassName] = useState<ClassName | null>(null);
   const [curName, setCurName] = useState<Name | null>(null);
 
-  // 期間
-
   // 選択肢
   const [gradeOptions, setGradeOptions] = useState<Grade[]>([]);
   const [classNameOptions, setClassNameOptions] = useState<ClassName[]>([]);
@@ -96,6 +94,7 @@ const FormRoot: FC<FormProps> = (props) => {
     },
   };
 
+  // 各種options/value用
   useEffect(() => {
     // labelで候補の絞り込み
     // 全部undefined -> 全候補をそのまま設定
@@ -124,12 +123,14 @@ const FormRoot: FC<FormProps> = (props) => {
       })
       .sort((a, b) => (a.value >= b.value ? 1 : -1));
 
+    // TODO: how to treat student class number
     const nameOptions: Name[] = targetStudents
       .map((d) => {
         return {
           label: d.Name,
           value: `${d.Name}`,
           kana: d.Kana,
+          number: d.Number,
         };
       })
       .sort((a, b) => (a.value >= b.value ? 1 : -1));

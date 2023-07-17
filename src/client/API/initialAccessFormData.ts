@@ -3,6 +3,7 @@ import { type FormViewResponse } from "@/server/Config/Response";
 import { type Student, type InquiryItem } from "@/server/Config/SheetData";
 import { serverFunctions, isGASEnvironment } from "./serverFunctions";
 
+// non-used
 const FormInquiryAPI = async (): Promise<InquiryItem> => {
   if (isGASEnvironment()) {
     const ret = await serverFunctions.getInquiryData();
@@ -26,6 +27,7 @@ const FormInquiryAPI = async (): Promise<InquiryItem> => {
   }
 };
 
+// non-used
 const FormMemberAPI = async (): Promise<Student[]> => {
   if (isGASEnvironment()) {
     const ret = await serverFunctions.getMemberData();

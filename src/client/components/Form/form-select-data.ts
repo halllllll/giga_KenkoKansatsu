@@ -9,10 +9,13 @@ interface ClassName extends OptionBase {
   value: string;
 }
 
+type StudentNumberForClass = number;
+
 interface Name extends OptionBase {
   label: string;
   value: string;
   kana: string;
+  number: StudentNumberForClass;
 }
 
 interface Attendance extends OptionBase {

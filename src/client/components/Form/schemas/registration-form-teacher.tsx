@@ -3,7 +3,13 @@ import * as yup from "yup";
 // yup用スキーマ
 const schema = yup.object().shape({
   registerDate: yup.date().required("登録する日付を選んでね"),
-  registerEndToDate: yup.date(),
+  termSwitch: yup.bool().default(false).required(),
+  registerEndToDate: yup
+    // 「期間日のバリデーション」を考えたい
+    // TODO: あとでやる
+    .date()
+    .nullable()
+    .notRequired(),
   grade: yup
     .object()
     .shape({

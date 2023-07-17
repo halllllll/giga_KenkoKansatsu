@@ -21,6 +21,7 @@ interface InquiryItem {
   Condition: string[];
 }
 
+// TODO: don't need?
 interface Answer {
   TimeStamp: Date;
   Date: Date;
