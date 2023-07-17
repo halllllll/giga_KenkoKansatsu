@@ -184,6 +184,8 @@ const FormRoot: FC<FormProps> = (props) => {
       condition: [],
     });
     setCurName(null);
+    setCurGrade(methods.getValues().grade);
+    setCurClassName(methods.getValues().className);
   };
 
   // 全部リセット(event.propagationは不要らしい)
