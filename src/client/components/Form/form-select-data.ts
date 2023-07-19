@@ -29,7 +29,7 @@ interface Condition extends OptionBase {
 }
 
 interface FormValues {
-  registerDate: string;
+  registerDate: string; // not date but string
   registerEndToDate?: string;
   grade: Grade | null;
   className: ClassName | null;

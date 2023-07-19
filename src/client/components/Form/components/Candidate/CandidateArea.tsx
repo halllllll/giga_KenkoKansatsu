@@ -12,6 +12,8 @@ import {
   Tr,
   VStack,
 } from "@chakra-ui/react";
+import { format } from "date-fns";
+import ja from "date-fns/locale/ja";
 import { type ModalMessage } from "@/client/components/Screen/Modal";
 import { type postDataResult } from "@/server/API/Post";
 import { type submitStateType } from "../../submit-state";
@@ -70,7 +72,6 @@ const CandidateArea: FC<CandidateAreaProps> = (props) => {
    * send button用
    */
 
-  // const [submitState, setSubmitState] = useState<submitStateType>("idle");
   const onPostSubmit = async () => {
     setSubmitState("isSubmitting");
     window.scrollTo({
@@ -121,7 +122,7 @@ const CandidateArea: FC<CandidateAreaProps> = (props) => {
     <>
       <Box>
         <Box
-          mt="10"
+          mt="2"
           py="5"
           h="fit-content"
           bg="burlywood"
@@ -145,6 +146,20 @@ const CandidateArea: FC<CandidateAreaProps> = (props) => {
                     </Td>
                     <Td w="xl">
                       <VStack align="flex-start">
+                        <Text>
+                          【日付】{" "}
+                          {format(new Date(item.registerDate), "yyyy-MM-dd", {
+                            locale: ja,
+                          })}
+                          {item.registerEndToDate != null &&
+                            format(
+                              new Date(item.registerEndToDate),
+                              "yyyy-MM-dd",
+                              {
+                                locale: ja,
+                              }
+                            )}
+                        </Text>
                         <Text>
                           【出欠・遅刻】
                           <br />
