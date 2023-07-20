@@ -48,7 +48,6 @@ export const useOptionsOfForm = (
   useEffect(() => {
     // labelで候補の絞り込み
     // 全部undefined -> 全候補をそのまま設定
-    /** thank chat GPT */
 
     const targetStudents = students.filter((student) => {
       return (

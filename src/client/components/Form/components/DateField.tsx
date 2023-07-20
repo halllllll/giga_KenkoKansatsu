@@ -10,8 +10,7 @@ import {
   Switch,
   Box,
 } from "@chakra-ui/react";
-import { addDays, format } from "date-fns";
-import ja from "date-fns/locale/ja-Hira";
+import { addDays } from "date-fns";
 
 import { useFormContext } from "react-hook-form";
 
@@ -19,18 +18,20 @@ const DateField: FC = () => {
   const methods = useFormContext();
   // TODO: 期間
   const [haveTerm, setHaveTerm] = useState<boolean>(false);
-  // const [_endToDate, setEndToDate] = useState<Date | undefined>(undefined);
 
   useEffect(() => {
     if (haveTerm) {
+      // TODO:
       // 日付+1をデフォ値に
+      // const aaa = methods.getValues().registerEndToDate as undefined | Date;
+      // if (aaa !== undefined) return;
+      // console.log(aaa);
       const curDay = methods.getValues().registerDate as Date;
-      console.log(curDay);
-      methods.setValue(
-        "registerEndToDate",
-        format(addDays(new Date(curDay), 1), "yyyy-MM-dd", { locale: ja })
-      );
-      // setEndToDate(addDays(new Date(curDay), 1));
+      console.log(`セット ->  ${curDay.toString()}`);
+      // methods.setValue("registerEndToDate", new Date());
+      // // const initDay = addDays(curDay, 1);
+      // methods.setValue("registerEndToDate", curDay);
+      // methods.setValue("registerEndToDate", initDay);
     } else {
       methods.setValue("registerEndToDate", undefined);
     }
@@ -88,8 +89,7 @@ const DateField: FC = () => {
                   variant="flushed"
                   {...methods.register("registerEndToDate")}
                   onChange={(event) => {
-                    console.log(`wa~ ${event.target.value}`);
-                    // setEndToDate(new Date(event.target.value));
+                    console.log(event.target.value);
                   }}
                   type="date"
                 />

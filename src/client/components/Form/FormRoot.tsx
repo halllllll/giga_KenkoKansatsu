@@ -54,6 +54,7 @@ const FormRoot: FC<FormProps> = (props) => {
    * TODO: MORE BETTER temporary-customhook
    *
    */
+
   // 選択肢・選択した値を管理
   // 選択された値
   const [curGrade, setCurGrade] = useState<Grade | null>(null);
@@ -130,7 +131,6 @@ const FormRoot: FC<FormProps> = (props) => {
           label: d.Name,
           value: `${d.Name}`,
           kana: d.Kana,
-          classNumber: d.Number,
         };
       })
       .sort((a, b) => (a.value >= b.value ? 1 : -1));

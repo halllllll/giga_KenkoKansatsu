@@ -30,6 +30,7 @@ export const CandidateReducer = (
     case "ADD": {
       const addData: FormValues = {
         registerDate: action.payload.registerDate,
+        registerEndToDate: action.payload.registerEndToDate,
         grade: action.payload.grade,
         className: action.payload.className,
         classNumber: action.payload.classNumber,

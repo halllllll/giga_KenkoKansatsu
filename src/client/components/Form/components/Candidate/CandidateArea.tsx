@@ -151,14 +151,14 @@ const CandidateArea: FC<CandidateAreaProps> = (props) => {
                           {format(new Date(item.registerDate), "yyyy-MM-dd", {
                             locale: ja,
                           })}
-                          {item.registerEndToDate != null &&
-                            format(
+                          {item.registerEndToDate !== undefined &&
+                            ` 〜 ${format(
                               new Date(item.registerEndToDate),
                               "yyyy-MM-dd",
                               {
                                 locale: ja,
                               }
-                            )}
+                            )} `}
                         </Text>
                         <Text>
                           【出欠・遅刻】

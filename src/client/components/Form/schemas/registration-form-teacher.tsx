@@ -7,46 +7,14 @@ interface EndToDateTestContext extends yup.TestContext {
   };
 }
 
-// interface AtDateTestContext extends yup.TestContext {
-//   parent: {
-//     registerEndToDate: Date;
-//   };
-// }
-
-interface TermTestContext extends yup.TestContext {
-  parent: {
-    termSwitch: boolean;
-  };
-}
-
 // yup用スキーマ
 const schema = yup.object().shape({
-  registerDate: yup
-    .date()
-    .required("登録する日付を選んでね")
-    .test(
-      "is-lesser",
-      "開始日は終了日よりも前にしてね",
-      function (/* value */) {
-        // TODO: a~....
-        const { termSwitch } = (this as TermTestContext).parent;
-        if (!termSwitch) return true;
-
-        // const { registerEndToDate } = (this as AtDateTestContext).parent;
-        // if (value instanceof Date) {
-        //   return isBefore(registerEndToDate, value);
-        // }
-
-        return true;
-      }
-    ),
-
+  registerDate: yup.date().required("登録する日付を選んでね"),
   termSwitch: yup.bool().default(false).required(),
   registerEndToDate: yup
     // 「期間日のバリデーション」を考えたい
     // TODO: あとでやる
     .date()
-    .nullable()
     .notRequired()
     .test("is-greater", "終了日は開始日よりも後にしてね", function (value) {
       const { registerDate } = (this as EndToDateTestContext).parent;
@@ -54,7 +22,6 @@ const schema = yup.object().shape({
       if (value instanceof Date) {
         return isBefore(registerDate, value);
       }
-      console.log("omg...");
 
       return true;
     })
@@ -64,13 +31,11 @@ const schema = yup.object().shape({
       function (value) {
         const { registerDate } = (this as EndToDateTestContext).parent;
         if (value === null || value === undefined) return true;
-
         if (value instanceof Date) {
           const daysDifference = differenceInDays(value, registerDate);
 
           return daysDifference <= 40;
         }
-        console.log("omg...");
 
         return false;
       }
