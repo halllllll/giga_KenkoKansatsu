@@ -15,7 +15,7 @@ interface Name extends OptionBase {
   label: string;
   value: string;
   kana: string;
-  number: StudentNumberForClass;
+  classNumber?: StudentNumberForClass;
 }
 
 interface Attendance extends OptionBase {

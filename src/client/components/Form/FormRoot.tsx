@@ -130,7 +130,7 @@ const FormRoot: FC<FormProps> = (props) => {
           label: d.Name,
           value: `${d.Name}`,
           kana: d.Kana,
-          number: d.Number,
+          classNumber: d.Number,
         };
       })
       .sort((a, b) => (a.value >= b.value ? 1 : -1));

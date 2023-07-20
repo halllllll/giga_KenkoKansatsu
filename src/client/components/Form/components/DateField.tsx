@@ -23,7 +23,6 @@ const DateField: FC = () => {
 
   useEffect(() => {
     if (haveTerm) {
-      console.log("a????");
       // 日付+1をデフォ値に
       const curDay = methods.getValues().registerDate as Date;
       console.log(curDay);

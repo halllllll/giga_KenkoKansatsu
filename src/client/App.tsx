@@ -1,7 +1,7 @@
 import { type FC, useReducer } from "react";
-import { Box, Container, Text } from "@chakra-ui/react";
+import { Box, Container, Text, useDisclosure } from "@chakra-ui/react";
 import "./App.css";
-import { Footer, Header, FormRoot } from "@/client/components/Index";
+import { Footer, Header, FormRoot, Info } from "@/client/components/Index";
 import { type FormValues } from "./components/Form/form-select-data";
 import InfoBlockForGeneral from "./components/Info/forGeneral";
 
@@ -24,11 +24,15 @@ const App: FC = () => {
   const { formStudents, formInquiryItems, accessedUserId, accessedUserType } =
     useMemberData();
 
-  // 使い回すcontext
+  // infoバナー用
+  const { isOpen, onClose } = useDisclosure({
+    defaultIsOpen: true,
+  });
 
   return (
     <div className="App">
       <Ctx.Provider
+        // 使い回すcontext
         value={{
           students: formStudents,
           inquiries: formInquiryItems,
@@ -38,7 +42,13 @@ const App: FC = () => {
         <Header headerTitle={sheetName} spreadsheetLink={sheetUrl} />
         <Container maxW="4xl">
           {/** TODO: information area */}
-          {/* <Info message={""} hasUrl={false} url={""} /> */}
+          <Info
+            message={""}
+            hasUrl={false}
+            url={""}
+            isOpen={isOpen}
+            onClose={onClose}
+          />
           {accessedUserType === "general" ? (
             <InfoBlockForGeneral />
           ) : (

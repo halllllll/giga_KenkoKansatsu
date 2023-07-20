@@ -5,6 +5,7 @@ import {
   AlertIcon,
   AlertTitle,
   Box,
+  CloseButton,
   Link,
   ListItem,
   Spacer,
@@ -16,18 +17,25 @@ type InfoBlockProps = {
   message: string;
   hasUrl: boolean; // no message information is actually evil
   url: string;
+  isOpen: boolean;
+  onClose: () => void;
 };
 
 const dev = true;
 const devMsg = `これは開発中です。ぜひあそんで、フィードバックをください。また、一緒につくる人、ドキュメントを書いてくれる人も募集しています。`;
 const todo = [
-  "仮データをまともなものにする(適当にChatGPTで生成してます。名前はもう少し国際色豊かなものにする予定です)",
-  "送信直後の挙動をちゃんとさせる（今は仮実装で適当にオーバーレイして動作を止めてるだけ）",
-  "「反映予定のアカウント」欄のデザインとフォームのデザインをちゃんとする(案があればぜひどうぞ！)",
-  "仕様的に、「Googleアカウントにログインした状態での使用」に限定する気でいるので、そうすれば「投稿した人がその日に投稿したアカウントをアクセス時に表示（重複させないため）」とかも可能になります",
+  "期間設定（近日実装。まだ仮なのでうまく動作しません（でもぜひさわってみてね！））",
+  "保護者用画面作成",
+  "SpreadSheetでのカスタムメニュー作成",
 ];
 
-const InfoBlock: FC<InfoBlockProps> = ({ message, hasUrl, url }) => {
+const InfoBlock: FC<InfoBlockProps> = ({
+  message,
+  hasUrl,
+  url,
+  isOpen,
+  onClose,
+}) => {
   return hasUrl ? (
     <Box marginY="3" p="5" border="1px" borderStyle="dashed" bgColor="#f1e9d0">
       <p>{message}</p>
@@ -36,32 +44,33 @@ const InfoBlock: FC<InfoBlockProps> = ({ message, hasUrl, url }) => {
   ) : (
     <>
       <Spacer p="2" />
-      {dev ? (
-        <Alert status="warning">
-          <AlertIcon />
-          <Box>
-            <AlertTitle>STATUS - Development: ver 2023-07-01</AlertTitle>
-            <AlertDescription>
-              {devMsg}
-              <br />
-              <Text as="b">あそびかた（簡易）</Text>
-              <Text>
-                フォームを埋めて投稿するとSheetにデータが追加されます。また、試しにSpreadSheetのタイトルを変更したり、生徒や設問のシートを変更してからこの画面を再読み込みしてみてください。Sheetからデータを取得しているのがわかると思います
-              </Text>
-              <Box py="2">
-                <Text as="b">予定してるアプデ内容（一部・順不同）</Text>
-                <UnorderedList>
-                  {todo.map((v, idx) => {
-                    return <ListItem key={idx}>{v}</ListItem>;
-                  })}
-                </UnorderedList>
+      {dev
+        ? isOpen && (
+            <Alert status="warning">
+              <CloseButton position="absolute" top="2" onClick={onClose} />
+              <AlertIcon />
+              <Box>
+                <AlertTitle>STATUS - Development: ver 2023-07-20</AlertTitle>
+                <AlertDescription>
+                  {devMsg}
+                  <br />
+                  <Text as="b">あそびかた（簡易）</Text>
+                  <Text>
+                    フォームを埋めて投稿するとSheetにデータが追加されます。また、試しにSpreadSheetのタイトルを変更したり、生徒や設問のシートを変更してからこの画面を再読み込みしてみてください。Sheetからデータを取得しているのがわかると思います
+                  </Text>
+                  <Box py="2">
+                    <Text as="b">予定してるアプデ内容（一部・順不同）</Text>
+                    <UnorderedList>
+                      {todo.map((v, idx) => {
+                        return <ListItem key={idx}>{v}</ListItem>;
+                      })}
+                    </UnorderedList>
+                  </Box>
+                </AlertDescription>
               </Box>
-            </AlertDescription>
-          </Box>
-        </Alert>
-      ) : (
-        ""
-      )}
+            </Alert>
+          )
+        : ""}
     </>
   );
 };
