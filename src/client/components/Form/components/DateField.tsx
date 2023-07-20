@@ -23,15 +23,12 @@ const DateField: FC = () => {
     if (haveTerm) {
       // TODO:
       // 日付+1をデフォ値に
-      // const aaa = methods.getValues().registerEndToDate as undefined | Date;
-      // if (aaa !== undefined) return;
-      // console.log(aaa);
-      const curDay = methods.getValues().registerDate as Date;
-      console.log(`セット ->  ${curDay.toString()}`);
+      const curDay = new Date(methods.getValues("registerDate") as Date);
+      console.log(`セット ->  ${curDay}`);
       // methods.setValue("registerEndToDate", new Date());
-      // // const initDay = addDays(curDay, 1);
-      // methods.setValue("registerEndToDate", curDay);
-      // methods.setValue("registerEndToDate", initDay);
+      const initDay = addDays(curDay, 1); // なんかnew Dateしないと駄目
+      console.log(`+1 -> ${initDay.toString()}`);
+      methods.setValue("registerEndToDate", initDay);
     } else {
       methods.setValue("registerEndToDate", undefined);
     }

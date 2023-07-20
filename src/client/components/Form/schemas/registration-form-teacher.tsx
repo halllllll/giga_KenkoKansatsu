@@ -16,7 +16,7 @@ const schema = yup.object().shape({
     // TODO: あとでやる
     .date()
     .notRequired()
-    .test("is-greater", "終了日は開始日よりも後にしてね", function (value) {
+    .test("is-greater", "日付より後にしよう！", function (value) {
       const { registerDate } = (this as EndToDateTestContext).parent;
       if (value === null || value === undefined) return true;
       if (value instanceof Date) {
@@ -25,21 +25,18 @@ const schema = yup.object().shape({
 
       return true;
     })
-    .test(
-      "within-40-days",
-      "終了日は開始日から40日以内にしてね",
-      function (value) {
-        const { registerDate } = (this as EndToDateTestContext).parent;
-        if (value === null || value === undefined) return true;
-        if (value instanceof Date) {
-          const daysDifference = differenceInDays(value, registerDate);
+    // TODO: 妥当？
+    .test("within-40-days", "開始日から40日以内にしよう！", function (value) {
+      const { registerDate } = (this as EndToDateTestContext).parent;
+      if (value === null || value === undefined) return true;
+      if (value instanceof Date) {
+        const daysDifference = differenceInDays(value, registerDate);
 
-          return daysDifference <= 40;
-        }
-
-        return false;
+        return daysDifference <= 40;
       }
-    ),
+
+      return false;
+    }),
   grade: yup
     .object()
     .shape({
