@@ -20,6 +20,9 @@ const postFormValueDataAPI = async (
 
     return ret;
   } else {
+    console.log(`data:`);
+    console.dir(data);
+
     return await new Promise((resolve) => {
       setTimeout(() => {
         resolve({ status: "success" });

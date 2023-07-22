@@ -35,7 +35,7 @@ const DateField: FC = () => {
 
   return (
     <Box my="5">
-      <Grid gap={6} templateColumns={["1fr 2fr 2fr"]}>
+      <Grid gap={6} templateColumns={["1fr", "1fr 2fr 2fr"]}>
         <GridItem>
           <VStack align="flex-start">
             <FormControl id="endDate">
