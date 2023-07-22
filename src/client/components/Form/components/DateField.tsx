@@ -22,7 +22,7 @@ const DateField: FC = () => {
   useEffect(() => {
     if (haveTerm) {
       // 日付+1をデフォ値に
-      const curDay = new Date(methods.getValues("registerDate") as Date); // なんかnew Dateしないと駄目
+      const curDay = new Date(methods.getValues("registerDate") as Date); // なんかnew Dateしないと駄目(parseISOをやってもいいかもしれない)
       const initDay = addDays(curDay, 1);
       const endDay = format(initDay, "yyyy-MM-dd", { locale: ja });
       methods.setValue("registerEndToDate", endDay);

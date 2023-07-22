@@ -131,7 +131,7 @@ const CandidateArea: FC<CandidateAreaProps> = (props) => {
           fontWeight="extrabold"
           borderRadius="md"
         >
-          <Center h="100%">反映予定のアカウント</Center>
+          <Center h="100%">反映予定データリスト</Center>
         </Box>
         <TableContainer whiteSpace="unset">
           <Table variant="simple" colorScheme="gray">
@@ -140,7 +140,15 @@ const CandidateArea: FC<CandidateAreaProps> = (props) => {
               {candidatesItems.map((item) => {
                 return (
                   <Tr key={item.viewIndex}>
-                    <Td>{item.name?.value} さん</Td>
+                    <Td w="min-content">
+                      <VStack>
+                        <Text>{item.name?.value} さん</Text>
+                        <Text color="gray.500">
+                          {item.grade?.value}年{item.className?.value}組
+                          {item.classNumber}番
+                        </Text>
+                      </VStack>
+                    </Td>
                     <Td fontWeight="extrabold" p="0">
                       {item.attendance.value}
                     </Td>

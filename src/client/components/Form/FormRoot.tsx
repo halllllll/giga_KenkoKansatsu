@@ -159,6 +159,11 @@ const FormRoot: FC<FormProps> = (props) => {
     }
     setAttendanceOptions(attendance);
     setConditionOptions(conditions);
+
+    // 出席番号
+    if (curName !== null) {
+      methods.setValue("classNumber", targetStudents[0].Number);
+    }
   }, [
     curGrade,
     curClassName,

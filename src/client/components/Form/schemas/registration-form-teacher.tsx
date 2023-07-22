@@ -10,10 +10,7 @@ interface EndToDateTestContext extends yup.TestContext {
 // yup用スキーマ
 const schema = yup.object().shape({
   registerDate: yup.date().required("登録する日付を選んでね"),
-  termSwitch: yup.bool().default(false).required(),
   registerEndToDate: yup
-    // 「期間日のバリデーション」を考えたい
-    // TODO: あとでやる
     .date()
     .notRequired()
     .test("is-greater", "日付より後にしよう！", function (value) {
@@ -61,6 +58,7 @@ const schema = yup.object().shape({
     })
     .nullable()
     .required("クラスを選んでね"),
+  classNumber: yup.number().nullable(), // 出席番号
   status: yup.string(),
 });
 

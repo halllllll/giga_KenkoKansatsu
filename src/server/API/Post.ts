@@ -1,3 +1,4 @@
+import { parseISO, differenceInDays, addDays } from "date-fns";
 import { ss, AnswerSheetHeaders } from "@/server/Config/Const";
 import { StoreSheetName } from "@/server/Config/SheetData";
 import {
@@ -37,22 +38,35 @@ const postFormValues = (data: postDataRequest): postDataResult => {
       console.error(`header of ${StoreSheetName} : ${headers.join(", ")}`);
       throw new InvalidSheetArchtectureError("INVALID sheet architecture");
     }
-
+    const TIMESTAMP = new Date();
     for (const formValue of formValues) {
-      const row = [
-        new Date(),
-        userId, // "（未実装）", // TODO
-        new Date(formValue.registerDate),
-        formValue.grade?.value,
-        formValue.className?.value,
-        formValue.classNumber,
-        formValue.name?.value,
-        formValue.classNumber,
-        formValue.attendance.value,
-        formValue.condition?.map((val) => val.value).join(", "),
-        formValue.status,
-      ];
-      storeSheet.appendRow(row);
+      let days = 1;
+      const startDay = parseISO(formValue.registerDate);
+      if (formValue.registerEndToDate !== undefined) {
+        days = differenceInDays(
+          parseISO(formValue.registerEndToDate),
+          startDay
+        );
+      }
+      console.info(`${formValue.registerDate}からスタートして${days}日分！`);
+      for (let day = 0; day < days; day++) {
+        const curDay = addDays(startDay, day);
+        console.log(curDay);
+        const row = [
+          TIMESTAMP,
+          userId, // TODO
+          curDay, // new Date(formValue.registerDate),
+          formValue.grade?.value,
+          formValue.className?.value,
+          formValue.classNumber,
+          formValue.name?.value,
+          formValue.name?.kana,
+          formValue.attendance.value,
+          formValue.condition?.map((val) => val.value).join(", "),
+          formValue.status,
+        ];
+        storeSheet.appendRow(row);
+      }
     }
     ret.status = "success";
   } catch (err) {
