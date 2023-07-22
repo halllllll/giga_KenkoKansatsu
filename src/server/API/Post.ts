@@ -49,10 +49,8 @@ const postFormValues = (data: postDataRequest): postDataResult => {
           startDay
         );
       }
-      console.info(`${formValue.registerDate}からスタートして${days}日分！`);
       for (let day = 0; day < days; day++) {
         const curDay = addDays(startDay, day);
-        console.log(curDay);
         const row = [
           TIMESTAMP,
           userId, // TODO

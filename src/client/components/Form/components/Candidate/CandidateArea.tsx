@@ -180,7 +180,7 @@ const CandidateArea: FC<CandidateAreaProps> = (props) => {
                         </Text>
                       </VStack>
                     </Td>
-                    <Td w="min-content" padding="0">
+                    <Td w="max-content" padding="0">
                       <Button
                         variant="solid"
                         // color="whiteAlpha.900"
