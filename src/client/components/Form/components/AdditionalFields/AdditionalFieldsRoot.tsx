@@ -1,5 +1,5 @@
 import { type FC } from "react";
-import { Box, HStack } from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
 import InputStatusField from "./InputStatusField";
 import SelectAttendanceField from "./SelectAttendanceField";
 import SelectConditionField from "./SelectConditionField";
@@ -18,12 +18,12 @@ const AdditionalFieldsRoot: FC<AdditionalFieldOptions> = (props) => {
 
   return (
     <>
-      <HStack width="full">
+      <Flex width="full" flexDirection={["column", "row"]} gap={2}>
         <Box minWidth="3xs">
           <SelectAttendanceField attendanceOptions={attendanceOptions} />
         </Box>
         <SelectConditionField conditionOptions={conditionOptions} />
-      </HStack>
+      </Flex>
       <InputStatusField />
     </>
   );
