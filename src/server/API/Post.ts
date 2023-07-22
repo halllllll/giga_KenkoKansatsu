@@ -43,7 +43,8 @@ const postFormValues = (data: postDataRequest): postDataResult => {
       let days = 1;
       const startDay = parseISO(formValue.registerDate);
       if (formValue.registerEndToDate !== undefined) {
-        days = differenceInDays(
+        // differenceInDaysは差分なのでもともとのぶん（1日）足す
+        days += differenceInDays(
           parseISO(formValue.registerEndToDate),
           startDay
         );
