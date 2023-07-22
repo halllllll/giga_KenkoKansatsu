@@ -12,8 +12,10 @@ type AccessedUserResp = {
 
 const getAccessUser = (): AccessedUserResp => {
   const user = Session.getActiveUser().getEmail();
+  // TODO: for parent user
   console.log("Yo!");
   console.log(`id is ${user}`);
+  // TODO: set from sheet custom menu, and save and invoke from cache
   const pattern = /^.*@.+\.(ed\.jp|ac\.jp)$/i;
 
   // TODO: for admin
