@@ -1,6 +1,5 @@
-import { getInquiryData, getMemberData } from "./API/FormInquiry";
+import { onOpen } from "../CustomMenu/MenuRoot";
 import { genFormViewData } from "./API/FormView";
-import { onOpen } from "./API/Menu";
 import { postFormValues } from "./API/Post";
 import { getSpreadSheetName, getSpreadSheetUrl } from "./API/SheetInfo";
 
@@ -20,8 +19,6 @@ global.doGet = doGet;
 // These functions are invoked when the front-end is first accessed
 global.getSpreadSheetName = getSpreadSheetName;
 global.getSpreadSheetUrl = getSpreadSheetUrl;
-global.getInquiryData = getInquiryData;
-global.getMemberData = getMemberData;
 global.postFormValues = postFormValues;
 
 global.genFormViewData = genFormViewData; // test
@@ -30,8 +27,6 @@ global.genFormViewData = genFormViewData; // test
 export {
   getSpreadSheetName,
   getSpreadSheetUrl,
-  getMemberData,
   postFormValues,
-  getInquiryData,
   genFormViewData, // test
 };

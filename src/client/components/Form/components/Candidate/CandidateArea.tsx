@@ -15,7 +15,7 @@ import {
 import { format } from "date-fns";
 import ja from "date-fns/locale/ja";
 import { type ModalMessage } from "@/client/components/Screen/Modal";
-import { type postDataResult } from "@/server/API/Post";
+import { type postDataResult } from "@/server/app/API/Post";
 import { type submitStateType } from "../../submit-state";
 import { type ViewData } from "./CandidateInfo";
 import { postFormValueDataAPI } from "@/client/API/postData";

@@ -8,7 +8,7 @@ import {
   type InquiryItem,
   type Role,
 } from "@/server/Config/SheetData";
-import { NothingFormSheetError } from "../Config/errors";
+import { NothingFormSheetError } from "../../Config/errors";
 
 type inquiryDataResult = {
   status: null | "success" | "error";

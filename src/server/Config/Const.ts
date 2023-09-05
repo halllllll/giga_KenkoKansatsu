@@ -1,6 +1,8 @@
 const ssApp: GoogleAppsScript.Spreadsheet.SpreadsheetApp = SpreadsheetApp;
 const ss = ssApp.getActive();
-
+const propService: GoogleAppsScript.Properties.PropertiesService =
+  PropertiesService;
+const properties = propService.getScriptProperties();
 // Memberシート ヘッダー用
 const MemberSheetHeaders = [
   "学年",
@@ -29,4 +31,20 @@ const AnswerSheetHeaders = [
 // admin account
 const ADMIN_ACCOUNT: string[] = ["あとでやる"];
 
-export { ss, ssApp, AnswerSheetHeaders, MemberSheetHeaders, ADMIN_ACCOUNT };
+/** Script Properties **/
+// 教師用画面のためのアカウントのドメイン
+const SPK_TEACHER_DOMAIN = "teacher_domain";
+
+// 教師以外用画面のためのパスワード
+const SPK_GENERAL_PASSWORD = "general_password";
+
+export {
+  ss,
+  ssApp,
+  properties,
+  AnswerSheetHeaders,
+  MemberSheetHeaders,
+  ADMIN_ACCOUNT,
+  SPK_TEACHER_DOMAIN,
+  SPK_GENERAL_PASSWORD,
+};

@@ -7,31 +7,35 @@ const onOpen = (): void => {
     .createMenu(
       `${SpreadsheetApp.getActive().getName() ?? "カスタム"} メニュー`
     );
+
+  // globalにはアンダースコア付きで定義する
   menu.addItem("初期化", "initEnv_");
+  menu.addItem("統合メニュー", "menuRoot_");
   menu.addToUi();
 };
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const initEnv_ = (): void => {
+const initEnv = (): void => {
   const ssUi = ssApp.getUi();
-  const response = ssUi.prompt(
+  const response = ssUi.alert(
     "CAUTION",
     "すべてのデータを初期化します。\n（この操作は取り消せません。アーカイブを残しておきたいときは、初期化する前にSpreadSheetごとコピーを作成しておいてください）\n（もし間違えて初期化した場合は、SpreadSheetの「編集履歴」に残っていれば復元は可能です）",
     ssUi.ButtonSet.YES_NO
   );
-  switch (response.getSelectedButton()) {
+  switch (response) {
     case ssUi.Button.NO:
       break;
     case ssUi.Button.YES:
-      init_();
+      init();
       break;
     default:
-      Logger.log("push init menu button.");
+      console.info("undefined init button behavior");
+      break;
   }
+  Logger.log("push init menu button.");
 };
 
 // とりあえず中身を全部消すだけ シート自体は先送り
-const init_ = (): void => {
+const init = (): void => {
   const sheets = ss.getSheets();
   sheets.map((sheet) => {
     if (EssentialSheets.includes(sheet.getName())) return sheet.clear();
@@ -40,7 +44,18 @@ const init_ = (): void => {
   });
 };
 
-global.initEnv_ = initEnv_;
-global.init_ = init_;
+const menuRoot = (): void => {
+  const ssUi = ssApp.getUi();
+  const html = HtmlService.createHtmlOutputFromFile("menu.html")
+    .setWidth(600)
+    .setHeight(600);
+  ssUi.showModalDialog(html, "統合メニュー");
+};
+
+// globalにはアンダースコア付きで定義する
+global.initEnv_ = initEnv;
+global.init_ = init;
+
+global.menuRoot_ = menuRoot;
 
 export { onOpen };

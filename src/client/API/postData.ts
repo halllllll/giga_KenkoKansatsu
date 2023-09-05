@@ -1,4 +1,4 @@
-import { type postDataResult } from "@/server/API/Post";
+import { type postDataResult } from "@/server/app/API/Post";
 import { type FormValues } from "../components/Form/form-select-data";
 import { serverFunctions, isGASEnvironment } from "./serverFunctions";
 
