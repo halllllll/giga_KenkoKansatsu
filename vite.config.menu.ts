@@ -14,7 +14,7 @@ export default defineConfig({
     outDir: dist,
     rollupOptions: {
       input: {
-        menu: resolve(root, "server", "CustomMenu", "menu.html"),
+        menu: resolve(root, "CustomMenu", "client", "menu.html"),
       },
     },
   },
