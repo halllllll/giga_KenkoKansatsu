@@ -1,5 +1,5 @@
 import { type FC } from "react";
-import Providers from "./Providers";
+import { Providers } from "./Providers";
 
 const App: FC = () => {
   return <Providers />;

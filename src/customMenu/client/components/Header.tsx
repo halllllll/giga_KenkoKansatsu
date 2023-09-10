@@ -6,7 +6,7 @@ type headerProps = {
 };
 
 const Header: FC<headerProps> = (props) => {
-  const title = props.title ?? "Hello!";
+  const title = props.title ?? "管理画面";
 
   return (
     <VStack>

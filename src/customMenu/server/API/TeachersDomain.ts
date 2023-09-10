@@ -13,7 +13,7 @@ const initTeacherDomain = (): boolean => {
 const setTeacherDomain = (domain: string): boolean => {
   properties.setProperty(SPK_TEACHER_DOMAIN, domain);
 
-  return getTeacherDomain !== null;
+  return getTeacherDomain() !== null;
 };
 
 export { getTeacherDomain, initTeacherDomain, setTeacherDomain };

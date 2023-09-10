@@ -28,6 +28,9 @@ const AnswerSheetHeaders = [
   "備考",
 ];
 
+// Sheet カスタムメニュー用html
+const MENU_HTML = "menu.html";
+
 // admin account
 const ADMIN_ACCOUNT: string[] = ["あとでやる"];
 
@@ -39,12 +42,13 @@ const SPK_TEACHER_DOMAIN = "teacher_domain";
 const SPK_GENERAL_PASSWORD = "general_password";
 
 export {
-  ss,
-  ssApp,
-  properties,
+  ADMIN_ACCOUNT,
   AnswerSheetHeaders,
   MemberSheetHeaders,
-  ADMIN_ACCOUNT,
-  SPK_TEACHER_DOMAIN,
+  MENU_HTML,
+  properties,
   SPK_GENERAL_PASSWORD,
+  SPK_TEACHER_DOMAIN,
+  ss,
+  ssApp,
 };
