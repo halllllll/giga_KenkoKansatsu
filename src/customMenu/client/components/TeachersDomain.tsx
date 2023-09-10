@@ -1,4 +1,4 @@
-import { type FC, useState } from "react";
+import { type FC, useContext, useState } from "react";
 import { InfoOutlineIcon, ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import {
   Heading,
@@ -11,13 +11,18 @@ import {
   HStack,
 } from "@chakra-ui/react";
 import { motion } from "framer-motion";
-import FormRoot from "./Form/FormRoot";
+import { type AboutDomain } from "@/Config/MenuResponse";
+import { CustomMenuCtx } from "../Providers";
+import DomainForm from "./Form/DomainForm";
 
 const TeachersDomain: FC = () => {
   const [show, setShow] = useState(false);
   const handleViewSwitch = () => {
     setShow(!show);
   };
+  const c = useContext(CustomMenuCtx);
+
+  const domain = c.domain as AboutDomain;
 
   return (
     <Box mx="auto">
@@ -29,19 +34,29 @@ const TeachersDomain: FC = () => {
           <Heading as="h2" size="lg" my={2}>
             設定済みドメイン
           </Heading>
-          <Text as="span">確認および削除。設定できるのは1ドメインです。</Text>
-          <HStack>
-            <Box w="sm" fontSize="md">
-              {show ? "nya-n" : "******"}
-            </Box>
-            <Button
-              as={motion.div}
-              whileTap={{ scale: 0.9 }}
-              onClick={handleViewSwitch}
-            >
-              {show ? <ViewOffIcon /> : <ViewIcon />}
-            </Button>
-          </HStack>
+          {!domain.hasDomain ? (
+            <>
+              <Text>ドメイン未設定</Text>
+            </>
+          ) : (
+            <>
+              <Text as="span">
+                確認および削除。設定できるのは1ドメインです。
+              </Text>
+              <HStack>
+                <Box fontSize="md">
+                  {show ? domain.definedDomain : "******"}
+                </Box>
+                <Button
+                  as={motion.div}
+                  whileTap={{ scale: 0.9 }}
+                  onClick={handleViewSwitch}
+                >
+                  {show ? <ViewOffIcon /> : <ViewIcon />}
+                </Button>
+              </HStack>
+            </>
+          )}
           <Heading as="h2" size="lg" my={2}>
             新規設定
           </Heading>
@@ -61,7 +76,7 @@ const TeachersDomain: FC = () => {
           </Icon>
         </Box>
       </Box>
-      <FormRoot />
+      <DomainForm />
     </Box>
   );
 };
