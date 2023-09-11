@@ -1,40 +1,26 @@
-import { type FC, useContext, useState } from "react";
+import { useState, type FC } from "react";
 import { InfoOutlineIcon } from "@chakra-ui/icons";
 import {
   Box,
   Button,
   Center,
-  FormControl,
-  FormLabel,
   Heading,
   Icon,
-  Modal,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalHeader,
-  ModalOverlay,
-  Switch,
-  HStack,
-  VStack,
   Text,
   Tooltip,
   useDisclosure,
 } from "@chakra-ui/react";
-import { type AboutDomain } from "@/Config/MenuResponse";
-import { CustomMenuCtx } from "../Providers";
-import DomainForm from "./Form/DomainForm";
+import DomainForm from "./DomainForm/DomainForm";
+import DomainModal from "./DomainForm/DomainModal";
 
 const TeachersDomain: FC = () => {
-  // TODO: non needed
-
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [isReadyRemoveDomain, setIsReadyRemoveDomain] =
-    useState<boolean>(false);
+  // const [isReadyRemoveDomain, setIsReadyRemoveDomain] =
+  useState<boolean>(false);
 
-  const c = useContext(CustomMenuCtx);
+  // const c = useContext(CustomMenuCtx);
 
-  const domain = c.domain as AboutDomain;
+  // const domain = c.domain as AboutDomain;
 
   return (
     <Box mx="auto">
@@ -50,52 +36,8 @@ const TeachersDomain: FC = () => {
           <Center my="5">
             <Button onClick={onOpen}>確認</Button>
           </Center>
-          <Modal
-            closeOnOverlayClick={false}
-            onClose={onClose}
-            isOpen={isOpen}
-            isCentered
-          >
-            <ModalOverlay />
-            <ModalContent>
-              <ModalHeader>現在の教師用ドメイン</ModalHeader>
-              <ModalCloseButton />
-              <ModalBody>
-                <Box>
-                  {!domain.hasDomain ? (
-                    <Text justifyContent="center">ドメイン未設定</Text>
-                  ) : (
-                    <>
-                      <VStack spacing="8">
-                        <Text fontSize="3xl" fontWeight="bold">
-                          {domain.definedDomain}
-                        </Text>
-                        <HStack>
-                          <FormControl display="flex" alignItems="center">
-                            <FormLabel htmlFor="remove-domain" mb="0">
-                              削除する
-                            </FormLabel>
-                            <Switch
-                              id="remove-domain"
-                              onChange={(event) => {
-                                setIsReadyRemoveDomain(event.target.checked);
-                              }}
-                            />
-                          </FormControl>
-                          <Button
-                            colorScheme="red"
-                            isDisabled={!isReadyRemoveDomain}
-                          >
-                            削除
-                          </Button>
-                        </HStack>
-                      </VStack>
-                    </>
-                  )}
-                </Box>
-              </ModalBody>
-            </ModalContent>
-          </Modal>
+          <DomainModal isOpen={isOpen} onClose={onClose} />
+
           <Heading as="h2" size="lg" my={2}>
             新規設定
           </Heading>
