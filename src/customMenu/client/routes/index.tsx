@@ -1,6 +1,7 @@
 import { Navigate, createBrowserRouter } from "react-router-dom";
 import Card from "../components/Card";
 import Home from "../components/Home";
+import Info from "../components/Info";
 import ParentPassword from "../components/ParentPassword";
 import TeachersDomain from "../components/TeachersDomain";
 import ErrorPage from "../components/error-page";
@@ -19,6 +20,10 @@ const router = createBrowserRouter([
       {
         path: "teachers_domain",
         element: <TeachersDomain />,
+      },
+      {
+        path: "info",
+        element: <Info />,
       },
     ],
   },

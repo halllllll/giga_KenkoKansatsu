@@ -7,10 +7,18 @@ const getDomainAPI = async (): Promise<AboutDomain> => {
 
     return ret;
   } else {
+    console.log("local test");
+
     return await new Promise((resolve) => {
       setTimeout(() => {
-        resolve({ hasDomain: true, definedDomain: "dummy" });
-      }, 1000);
+        if (Math.random() < 0.5) {
+          console.log("mock - having domain");
+          resolve({ hasDomain: true, definedDomain: "dummy" });
+        } else {
+          console.log("mock - NO domain");
+          resolve({ hasDomain: false });
+        }
+      }, 10);
     });
   }
 };

@@ -6,13 +6,13 @@ type headerProps = {
 };
 
 const Header: FC<headerProps> = (props) => {
-  const title = props.title ?? "管理画面";
+  const title = props.title ?? "管理画面メニュー";
 
   return (
     <VStack>
       <Flex
         w="100%" // 100vwだと一定の幅以下で文頭が左端にめり込んだことがあった
-        h="5vh"
+        h="8vh"
         as="header"
         position="sticky"
         pos="relative"
@@ -20,7 +20,7 @@ const Header: FC<headerProps> = (props) => {
         justify="center"
         bg="blackAlpha.100"
       >
-        <Heading as="h1" size="xl" my={4}>
+        <Heading as="h1" size="xl">
           {title}
         </Heading>
       </Flex>

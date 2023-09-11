@@ -11,9 +11,9 @@ import {
 } from "@chakra-ui/react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm, type SubmitHandler, FormProvider } from "react-hook-form";
-import { useLocation, redirect } from "react-router-dom";
+import toast from "react-hot-toast";
 import { PropagateLoader } from "react-spinners";
-import { setDomainAPI } from "../../API/MenuData";
+import { setDomainAPI } from "@/customMenu/client/API/MenuData";
 import { TDSchema } from "./schemas/TeachersDomainSchema";
 
 interface FormValues {
@@ -30,17 +30,16 @@ const DomainForm: FC = () => {
     resolver: yupResolver(TDSchema),
     defaultValues: formDefaultValues,
   });
-  const loc = useLocation();
 
   const onSetDomain: SubmitHandler<FormValues> = async (data) => {
     // TODO: 登録処理
     // TODO: 登録処理後画面
     const result = await setDomainAPI(data.domain);
     if (!result.isSuccessed) {
-      console.log("oh");
+      toast.error("ドメイン変更に失敗しました");
     } else {
       methods.reset();
-      redirect(loc.pathname);
+      toast.success("ドメインを変更しました!");
     }
   };
 
@@ -67,7 +66,6 @@ const DomainForm: FC = () => {
           />
         </Box>
       )}
-
       <FormProvider {...methods}>
         <form onSubmit={methods.handleSubmit(onSetDomain)}>
           <FormControl
@@ -100,7 +98,6 @@ const DomainForm: FC = () => {
             GO
           </Button>
         </form>
-        {methods.formState.isSubmitSuccessful && <Box>yes</Box>}
       </FormProvider>
     </>
   );

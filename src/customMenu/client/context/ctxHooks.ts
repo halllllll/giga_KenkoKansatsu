@@ -10,14 +10,16 @@ type MenuDataResult = {
 const useMenuData = (): MenuDataResult & { isLoading: boolean } => {
   let isMounted = false;
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [domain, setDomain] = useState<AboutDomain>({ hasDomain: false });
+  const [domainData, setDomainData] = useState<AboutDomain>({
+    hasDomain: false,
+  });
 
   // TODO: and passcord
   useEffect(() => {
     const f = async () => {
       const ret = await getDomainAPI();
       if (!isMounted) {
-        setDomain(ret);
+        setDomainData(ret);
         setIsLoading(false);
       }
     };
@@ -28,7 +30,7 @@ const useMenuData = (): MenuDataResult & { isLoading: boolean } => {
     };
   }, []);
 
-  return { isLoading, domain };
+  return { isLoading, domain: domainData };
 };
 
 export { useMenuData, type MenuDataResult };

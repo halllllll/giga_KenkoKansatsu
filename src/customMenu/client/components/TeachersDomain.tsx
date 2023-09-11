@@ -1,25 +1,37 @@
 import { type FC, useContext, useState } from "react";
-import { InfoOutlineIcon, ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
+import { InfoOutlineIcon } from "@chakra-ui/icons";
 import {
-  Heading,
   Box,
+  Button,
   Center,
+  FormControl,
+  FormLabel,
+  Heading,
   Icon,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalHeader,
+  ModalOverlay,
+  Switch,
+  HStack,
+  VStack,
   Text,
   Tooltip,
-  Button,
-  HStack,
+  useDisclosure,
 } from "@chakra-ui/react";
-import { motion } from "framer-motion";
 import { type AboutDomain } from "@/Config/MenuResponse";
 import { CustomMenuCtx } from "../Providers";
 import DomainForm from "./Form/DomainForm";
 
 const TeachersDomain: FC = () => {
-  const [show, setShow] = useState(false);
-  const handleViewSwitch = () => {
-    setShow(!show);
-  };
+  // TODO: non needed
+
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [isReadyRemoveDomain, setIsReadyRemoveDomain] =
+    useState<boolean>(false);
+
   const c = useContext(CustomMenuCtx);
 
   const domain = c.domain as AboutDomain;
@@ -32,31 +44,58 @@ const TeachersDomain: FC = () => {
         </Center>
         <Box alignContent="center" pb="5">
           <Heading as="h2" size="lg" my={2}>
-            設定済みドメイン
+            設定済み教師用ドメイン
           </Heading>
-          {!domain.hasDomain ? (
-            <>
-              <Text>ドメイン未設定</Text>
-            </>
-          ) : (
-            <>
-              <Text as="span">
-                確認および削除。設定できるのは1ドメインです。
-              </Text>
-              <HStack>
-                <Box fontSize="md">
-                  {show ? domain.definedDomain : "******"}
+          <Text as="span">確認と削除。設定できるのは1ドメインです</Text>
+          <Center my="5">
+            <Button onClick={onOpen}>確認</Button>
+          </Center>
+          <Modal
+            closeOnOverlayClick={false}
+            onClose={onClose}
+            isOpen={isOpen}
+            isCentered
+          >
+            <ModalOverlay />
+            <ModalContent>
+              <ModalHeader>現在の教師用ドメイン</ModalHeader>
+              <ModalCloseButton />
+              <ModalBody>
+                <Box>
+                  {!domain.hasDomain ? (
+                    <Text justifyContent="center">ドメイン未設定</Text>
+                  ) : (
+                    <>
+                      <VStack spacing="8">
+                        <Text fontSize="3xl" fontWeight="bold">
+                          {domain.definedDomain}
+                        </Text>
+                        <HStack>
+                          <FormControl display="flex" alignItems="center">
+                            <FormLabel htmlFor="remove-domain" mb="0">
+                              削除する
+                            </FormLabel>
+                            <Switch
+                              id="remove-domain"
+                              onChange={(event) => {
+                                setIsReadyRemoveDomain(event.target.checked);
+                              }}
+                            />
+                          </FormControl>
+                          <Button
+                            colorScheme="red"
+                            isDisabled={!isReadyRemoveDomain}
+                          >
+                            削除
+                          </Button>
+                        </HStack>
+                      </VStack>
+                    </>
+                  )}
                 </Box>
-                <Button
-                  as={motion.div}
-                  whileTap={{ scale: 0.9 }}
-                  onClick={handleViewSwitch}
-                >
-                  {show ? <ViewOffIcon /> : <ViewIcon />}
-                </Button>
-              </HStack>
-            </>
-          )}
+              </ModalBody>
+            </ModalContent>
+          </Modal>
           <Heading as="h2" size="lg" my={2}>
             新規設定
           </Heading>
