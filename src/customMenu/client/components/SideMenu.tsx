@@ -4,7 +4,7 @@ import { FaSchool } from "react-icons/fa";
 import { MdOutlineAutoGraph } from "react-icons/md";
 import { PiSealWarningFill } from "react-icons/pi";
 import { RiParentLine } from "react-icons/ri";
-import MenuItems, { type MenuItem } from "./MenuItems";
+import { type MenuItem, MenuItems } from "./menuParts/MenuItems";
 
 export const SideMenu: FC = () => {
   const sideMenuItems: MenuItem[] = [

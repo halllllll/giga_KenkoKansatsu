@@ -10,17 +10,12 @@ import {
   Tooltip,
   useDisclosure,
 } from "@chakra-ui/react";
-import DomainForm from "./DomainForm/DomainForm";
-import DomainModal from "./DomainForm/DomainModal";
+import DomainForm from "./components/DomainForm";
+import DomainModal from "./components/DomainModal";
 
 const TeachersDomain: FC = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  // const [isReadyRemoveDomain, setIsReadyRemoveDomain] =
   useState<boolean>(false);
-
-  // const c = useContext(CustomMenuCtx);
-
-  // const domain = c.domain as AboutDomain;
 
   return (
     <Box mx="auto">

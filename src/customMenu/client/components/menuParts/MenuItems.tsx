@@ -3,7 +3,7 @@ import { Icon, Stack, StackDivider, VStack } from "@chakra-ui/react";
 import { type IconType } from "react-icons";
 import { Link } from "react-router-dom";
 
-export type MenuItem = {
+type MenuItem = {
   link: string;
   icon?: IconType;
   name: string;
@@ -36,4 +36,4 @@ const MenuItems: FC<MenuItemProps> = (props) => {
   );
 };
 
-export default MenuItems;
+export { MenuItems, type MenuItem };

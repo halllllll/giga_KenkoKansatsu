@@ -17,7 +17,7 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { type AboutDomain } from "@/Config/MenuResponse";
-import { CustomMenuCtx } from "../../Providers";
+import { CustomMenuCtx } from "@/customMenu/client/Providers";
 
 type MyProps = {
   isOpen: boolean;

@@ -14,7 +14,7 @@ import { useForm, type SubmitHandler, FormProvider } from "react-hook-form";
 import toast from "react-hot-toast";
 import { PropagateLoader } from "react-spinners";
 import { setDomainAPI } from "@/customMenu/client/API/MenuData";
-import { TDSchema } from "./schemas/TeachersDomainSchema";
+import { TDSchema } from "../schemas/TeachersDomainSchema";
 
 interface FormValues {
   domain: string;

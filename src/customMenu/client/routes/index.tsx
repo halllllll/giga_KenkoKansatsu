@@ -1,10 +1,10 @@
 import { Navigate, createBrowserRouter } from "react-router-dom";
-import Card from "../components/Card";
 import Home from "../components/Home";
-import Info from "../components/Info";
-import ParentPassword from "../components/ParentPassword";
-import TeachersDomain from "../components/TeachersDomain";
 import ErrorPage from "../components/error-page";
+import Card from "../components/menuParts/Card";
+import TeachersDomain from "../components/menuParts/DomainForm/DomainFormRoot";
+import Info from "../components/menuParts/Info";
+import ParentPassword from "../components/menuParts/ParentPassForm/ParentPassword";
 
 const router = createBrowserRouter([
   {
