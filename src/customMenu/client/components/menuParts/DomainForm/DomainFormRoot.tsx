@@ -1,4 +1,4 @@
-import { useState, type FC } from "react";
+import { type FC } from "react";
 import { InfoOutlineIcon } from "@chakra-ui/icons";
 import {
   Box,
@@ -13,9 +13,9 @@ import {
 import DomainForm from "./components/DomainForm";
 import DomainModal from "./components/DomainModal";
 
+// 本番用 消さない
 const TeachersDomain: FC = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  useState<boolean>(false);
 
   return (
     <Box mx="auto">

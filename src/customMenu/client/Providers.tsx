@@ -8,7 +8,13 @@ import { useMenuData } from "./context/ctxHooks";
 import router from "./routes";
 
 // useContextとProviderは同じファイルで書く必要があるっぽい
-const CustomMenuCtx = createContext<Partial<MenuCtxType>>({});
+// Partialを使ったら読み込み時にエラーになったので外してみる
+const CustomMenuCtx = createContext<MenuCtxType>({
+  domain: {
+    hasDomain: false,
+  },
+  message: "",
+});
 
 const Providers: FC = () => {
   const menuData = useMenuData();
