@@ -18,7 +18,7 @@ const getDomainAPI = async (): Promise<AboutDomain> => {
           console.log("mock - NO domain");
           resolve({ hasDomain: false });
         }
-      }, 10);
+      }, 1000);
     });
   }
 };

@@ -1,6 +1,7 @@
 import { type FC } from "react";
 import { Box } from "@chakra-ui/react";
 import { FaSchool } from "react-icons/fa";
+import { LuCog } from "react-icons/lu";
 import { MdOutlineAutoGraph } from "react-icons/md";
 import { PiSealWarningFill } from "react-icons/pi";
 import { RiParentLine } from "react-icons/ri";
@@ -27,6 +28,11 @@ export const SideMenu: FC = () => {
       link: `data`,
       icon: MdOutlineAutoGraph,
       name: "統計",
+    },
+    {
+      link: `info`,
+      icon: LuCog,
+      name: "情報",
     },
   ];
 

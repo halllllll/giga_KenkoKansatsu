@@ -16,21 +16,25 @@ import {
   Modal,
   VStack,
 } from "@chakra-ui/react";
-import { type AboutDomain } from "@/Config/MenuResponse";
-import { CustomMenuCtx } from "@/customMenu/client/Providers";
-
-type MyProps = {
+import { CustomMenuCtx } from "@/customMenu/client/App";
+type ModalProps = {
   isOpen: boolean;
   onClose: () => void;
 };
 
-const DomainModal: FC<MyProps> = (props) => {
+const DomainModal: FC<ModalProps> = (props) => {
   const { isOpen, onClose } = props;
   const [isReadyRemoveDomain, setIsReadyRemoveDomain] =
     useState<boolean>(false);
   const c = useContext(CustomMenuCtx);
+  if (c === null) {
+    throw Error("null context");
+  }
+  const domain = c.domain;
+  console.log("domain???");
+  console.table(domain);
 
-  const domain = c.domain as AboutDomain;
+  // TEST: モーダルを開いたときにドメインを取得してくる
 
   return (
     <>
@@ -69,6 +73,7 @@ const DomainModal: FC<MyProps> = (props) => {
                         }}
                       />
                     </FormControl>
+                    {/** TODO: delete event */}
                     <Button colorScheme="red" isDisabled={!isReadyRemoveDomain}>
                       削除
                     </Button>

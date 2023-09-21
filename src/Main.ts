@@ -21,6 +21,7 @@ export const doGet = (): GoogleAppsScript.HTML.HtmlOutput => {
 // get domain for teacher account
 const getTeacherDomainData = (): AboutDomain => {
   const domain = getTeacherDomain();
+  console.log(`get domain: ${domain ?? "oh no, it's null..."}`);
 
   return domain === null
     ? {

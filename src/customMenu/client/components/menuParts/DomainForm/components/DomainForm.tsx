@@ -5,6 +5,7 @@ import {
   FormControl,
   FormErrorMessage,
   FormLabel,
+  VStack,
   Input,
   InputGroup,
   InputLeftAddon,
@@ -85,18 +86,21 @@ const DomainForm: FC = () => {
               {methods.formState.errors.domain?.message}
             </FormErrorMessage>
           </FormControl>
-          <Button
-            mt="4"
-            type="submit"
-            disabled={
-              !methods.formState.isValid || methods.formState.isSubmitting
-            }
-            isLoading={methods.formState.isSubmitting}
-            loadingText="submitting..."
-            spinnerPlacement="start"
-          >
-            GO
-          </Button>
+          <VStack>
+            <Button
+              mt="4"
+              type="submit"
+              colorScheme="twitter"
+              isLoading={methods.formState.isSubmitting}
+              loadingText="送信中..."
+              spinnerPlacement="start"
+              isDisabled={
+                !methods.formState.isValid || methods.formState.isSubmitting
+              }
+            >
+              更新
+            </Button>
+          </VStack>
         </form>
       </FormProvider>
     </>

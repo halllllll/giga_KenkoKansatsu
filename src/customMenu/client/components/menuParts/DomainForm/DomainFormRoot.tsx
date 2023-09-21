@@ -8,6 +8,7 @@ import {
   Icon,
   Text,
   Tooltip,
+  VStack,
   useDisclosure,
 } from "@chakra-ui/react";
 import DomainForm from "./components/DomainForm";
@@ -28,9 +29,9 @@ const TeachersDomain: FC = () => {
             設定済み教師用ドメイン
           </Heading>
           <Text as="span">確認と削除。設定できるのは1ドメインです</Text>
-          <Center my="5">
+          <VStack my="5">
             <Button onClick={onOpen}>確認</Button>
-          </Center>
+          </VStack>
           <DomainModal isOpen={isOpen} onClose={onClose} />
 
           <Heading as="h2" size="lg" my={2}>
