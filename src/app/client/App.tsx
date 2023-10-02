@@ -41,8 +41,9 @@ const App: FC = () => {
           ) : (
             <Box py={4} paddingLeft={3}>
               <Text>
-                {" "}
-                {accessedUserId && `こんにちわ、${accessedUserId} さん！`}
+                {accessedUserId !== ""
+                  ? `こんにちは、${accessedUserId} さん！`
+                  : "よみこみちゅう..."}
               </Text>
             </Box>
           )}

@@ -1,3 +1,6 @@
+// !! this code is any referenced now !!
+// (wip)
+
 import { useState, useEffect } from "react";
 import { type InquiryItem, type Student } from "@/Config/SheetData";
 import {
@@ -82,7 +85,7 @@ export const useOptionsOfForm = (
           kana: d.Kana,
         };
       })
-      .sort((a, b) => (a.value >= b.value ? 1 : -1));
+      .sort((a, b) => (a.kana >= b.kana ? 1 : -1));
 
     const attendance: Attendance[] = inquiryItem.Attendance.map((a) => {
       return { label: a, value: a };

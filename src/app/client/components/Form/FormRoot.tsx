@@ -131,9 +131,15 @@ const FormRoot: FC<FormProps> = (props) => {
           label: d.Name,
           value: `${d.Name}`,
           kana: d.Kana,
+          order: d.Number,
         };
       })
-      .sort((a, b) => (a.value >= b.value ? 1 : -1));
+      .sort((a, b) => {
+        // 出席番号優先名前降順
+        if (a.order === b.order) return a.kana >= b.kana ? 1 : -1;
+
+        return a.order - b.order;
+      });
 
     const attendance: Attendance[] = formInquiryItems?.Attendance.map((a) => {
       return { label: a, value: a };

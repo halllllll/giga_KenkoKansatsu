@@ -79,13 +79,17 @@ const getMemberData = (): memberDataResult => {
     }
     const students: Student[] = studentSheet
       .getDataRange()
-      .getValues()
+      .getDisplayValues()
       .slice(1)
       .map((row: Array<string | number | Role>) => {
         const tmp = {
           Grade: row[0] as string,
           Class: row[1] as string,
-          Number: row[2] as number,
+          // ↓↓↓ It likes that Apps Script has NOT `Number.NEGATIVE_INFINITY` property.
+          // Number: row[2] === "" ? Number.NEGATIVE_INFINITY : (row[2] as number),
+          Number: Number.isNaN(parseInt(row[2] as string))
+            ? 0
+            : (row[2] as number),
           Name: row[3] as string,
           Kana: row[4] as string,
           Role: row[5] as Role,
