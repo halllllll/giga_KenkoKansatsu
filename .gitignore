@@ -1,3 +1,6 @@
+# なぜか現時点のdevcontainer環境・`ghcr.io/shyim/devcontainers-features/bun:0`(bun v1.0.3)ではbunのロックファイルが存在しないと言われる
+bun.lockb
+
 # Logs
 logs
 *.log
