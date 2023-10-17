@@ -1,6 +1,7 @@
 import { type FC, useReducer } from "react";
-import { Box, Container, Text } from "@chakra-ui/react";
+import { Box, Container, HStack, Icon, Spacer, Text } from "@chakra-ui/react";
 import "./App.css";
+import { RiArrowDownCircleLine } from "react-icons/ri";
 import { Footer, Header, FormRoot } from "@/app/client/components/Index";
 import { type FormValues } from "./components/Form/form-select-data";
 import InfoBlockForGeneral from "./components/_Info/forGeneral";
@@ -40,11 +41,41 @@ const App: FC = () => {
             <InfoBlockForGeneral />
           ) : (
             <Box py={4} paddingLeft={3}>
-              <Text>
-                {accessedUserId !== ""
-                  ? `こんにちは、${accessedUserId} さん！`
-                  : "よみこみちゅう..."}
-              </Text>
+              <HStack>
+                <Text>
+                  {accessedUserId !== ""
+                    ? `こんにちは、${accessedUserId} さん！`
+                    : "よみこみちゅう..."}
+                </Text>
+                {candidateStates.length > 0 && (
+                  <>
+                    <Spacer />
+                    <Text as={"b"} color={"red.600"}>
+                      未送信のデータがあります。
+                    </Text>
+                    <Icon
+                      onClick={() => {
+                        window.scrollTo({
+                          top: document.body.scrollHeight,
+                          behavior: "smooth",
+                        });
+                      }} // 上までSmoothスクロール
+                      cursor="pointer"
+                      as={RiArrowDownCircleLine}
+                      bgColor="gray.100"
+                      color="gray.500"
+                      w={8}
+                      h={8}
+                      rounded="full"
+                      // p={2}
+                      boxShadow="md"
+                      _hover={{
+                        bgColor: "gray.200",
+                      }}
+                    />
+                  </>
+                )}
+              </HStack>
             </Box>
           )}
           <FormRoot

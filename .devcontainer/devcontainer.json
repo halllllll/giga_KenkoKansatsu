@@ -35,7 +35,10 @@
 
 	// Use 'postCreateCommand' to run commands after the container is created.
 	// idk but current version devcontainer can't save lockfile(bun.lockb)
-	"postCreateCommand": "bun install --no-save && bun add --global clasp --no-save",
+	// "postCreateCommand": "bun install --no-save && bun add --global clasp --no-save",
+
+	// "postCreateCommand": "yarn add clasp -y && bun install --no-save",
+	"postCreateCommand": "bun install --no-save && yarn add -D @google/clasp --yes",
 
 	// Configure tool-specific properties.
 	// "customizations": {},

@@ -24,7 +24,7 @@ import {
 } from "@/app/client/components/Form/form-select-data";
 
 type FormProps = {
-  onAdd: SubmitHandler<any>;
+  onAdd: SubmitHandler<FormValues>;
   onReset: () => void;
   gradeOptions: Grade[];
   classNameOptions: ClassName[];
@@ -51,7 +51,7 @@ const Form: FC<FormProps> = (props) => {
   // handler 解凍🍛
   const { setGradeHandler, setClassNameHandler, setNameHandler } =
     setValueHandlers;
-  const methods = useFormContext();
+  const methods = useFormContext<FormValues>();
 
   return (
     <Box
