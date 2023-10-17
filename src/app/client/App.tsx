@@ -55,11 +55,12 @@ const App: FC = () => {
                     </Text>
                     <Icon
                       onClick={() => {
+                        // なぜかiPadのsafariだとdocument.body.clientHightが底をつきぬけた時点の底の座標がてっぺんになってしまう
                         window.scrollTo({
-                          top: document.body.scrollHeight,
+                          top: document.body.clientHeight - window.innerHeight,
                           behavior: "smooth",
                         });
-                      }} // 上までSmoothスクロール
+                      }}
                       cursor="pointer"
                       as={RiArrowDownCircleLine}
                       bgColor="gray.100"
@@ -67,7 +68,6 @@ const App: FC = () => {
                       w={8}
                       h={8}
                       rounded="full"
-                      // p={2}
                       boxShadow="md"
                       _hover={{
                         bgColor: "gray.200",
