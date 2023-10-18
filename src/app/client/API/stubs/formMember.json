@@ -154,6 +154,15 @@
     },
     {
       "Grade": "1",
+      "Class": "レイブンクロー",
+      "Name": "Narimichi・如月・アズナブル",
+      "Kana": "きさらぎ　なりみち　あずなぶる",
+      "Number": 4,
+      "Role": "児童生徒"
+    },
+
+    {
+      "Grade": "1",
       "Class": "ハッフルパフ",
       "Name": "Abe",
       "Kana": "あべ",
@@ -227,8 +236,8 @@
     {
       "Grade": "3",
       "Class": "レイブンクロー",
-      "Name": "Isabella",
-      "Kana": "いざべら",
+      "Name": "Isabella　奥見敷",
+      "Kana": "おくみしき　いざべら",
       "Number": 3,
       "Role": "児童生徒"
     },
@@ -323,8 +332,8 @@
     {
       "Grade": "4",
       "Class": "レイブンクロー",
-      "Name": "Leroy",
-      "Kana": "るろわ",
+      "Name": "流川　Leroy",
+      "Kana": "るかわ　るろわ",
       "Number": 7,
       "Role": "児童生徒"
     },
