@@ -1,7 +1,5 @@
 import { type FC, useReducer } from "react";
-import { Box, Container, HStack, Icon, Spacer, Text } from "@chakra-ui/react";
-import "./App.css";
-import { RiArrowDownCircleLine } from "react-icons/ri";
+import { Box, Container, HStack, Text } from "@chakra-ui/react";
 import { Footer, Header, FormRoot } from "@/app/client/components/Index";
 import { type FormValues } from "./components/Form/form-select-data";
 import InfoBlockForGeneral from "./components/_Info/forGeneral";
@@ -36,7 +34,7 @@ const App: FC = () => {
         }}
       >
         <Header headerTitle={sheetName} spreadsheetLink={sheetUrl} />
-        <Container maxW="4xl">
+        <Container maxW="3xl">
           {accessedUserType === "general" ? (
             <InfoBlockForGeneral />
           ) : (
@@ -47,34 +45,6 @@ const App: FC = () => {
                     ? `こんにちは、${accessedUserId} さん！`
                     : "よみこみちゅう..."}
                 </Text>
-                {candidateStates.length > 0 && (
-                  <>
-                    <Spacer />
-                    <Text as={"b"} color={"red.600"}>
-                      未送信のデータがあります。
-                    </Text>
-                    <Icon
-                      onClick={() => {
-                        // なぜかiPadのsafariだとdocument.body.clientHightが底をつきぬけた時点の底の座標がてっぺんになってしまう
-                        window.scrollTo({
-                          top: document.body.clientHeight - window.innerHeight,
-                          behavior: "smooth",
-                        });
-                      }}
-                      cursor="pointer"
-                      as={RiArrowDownCircleLine}
-                      bgColor="gray.100"
-                      color="gray.500"
-                      w={8}
-                      h={8}
-                      rounded="full"
-                      boxShadow="md"
-                      _hover={{
-                        bgColor: "gray.200",
-                      }}
-                    />
-                  </>
-                )}
               </HStack>
             </Box>
           )}

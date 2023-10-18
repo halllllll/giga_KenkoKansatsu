@@ -6,6 +6,7 @@ import { type UserType } from "@/Config/Response";
 import { type InquiryItem, type Student } from "@/Config/SheetData";
 import { ScreenSpinner } from "@/app/client/components/Index";
 import SendingModal, { type ModalMessage } from "../Screen/Modal";
+import { HavingListToast } from "../Screen/Toast";
 import CandidateArea from "./components/Candidate/CandidateArea";
 import Form from "./components/Form";
 import formDefaultValues from "./form-default-values";
@@ -226,6 +227,9 @@ const FormRoot: FC<FormProps> = (props) => {
 
   return (
     <>
+      {candidatesState.length > 0 && submitState !== "isSubmitting" && (
+        <HavingListToast />
+      )}
       {submitState === "isSubmitting" && <ScreenSpinner />}
       {submitState === "isSubmitted" && (
         <SendingModal
