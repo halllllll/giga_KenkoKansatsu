@@ -3,6 +3,7 @@ import {
   Box,
   Button,
   Center,
+  StackDivider,
   Table,
   TableCaption,
   TableContainer,
@@ -131,7 +132,7 @@ const CandidateRoot: FC<CandidateAreaProps> = (props) => {
           fontWeight="extrabold"
           borderRadius="md"
         >
-          <Center h="100%">反映予定データリスト</Center>
+          <Center h="100%">{"送信待ちリスト"}</Center>
         </Box>
         <TableContainer whiteSpace="unset">
           <Table variant="simple" colorScheme="gray">
@@ -140,8 +141,11 @@ const CandidateRoot: FC<CandidateAreaProps> = (props) => {
               {candidatesItems.map((item) => {
                 return (
                   <Tr key={item.viewIndex}>
-                    <Td w="min-content">
-                      <VStack>
+                    <Td w="min-content" minW={"3xs"}>
+                      <VStack
+                        align={"left"}
+                        divider={<StackDivider borderColor="gray.200" />}
+                      >
                         <Text>{item.name?.value} さん</Text>
                         <Text color="gray.500">
                           {item.grade?.value}年{item.className?.value}組
@@ -149,11 +153,11 @@ const CandidateRoot: FC<CandidateAreaProps> = (props) => {
                         </Text>
                       </VStack>
                     </Td>
-                    <Td fontWeight="extrabold" p="0">
-                      {item.attendance.value}
-                    </Td>
+                    {/* <Td fontWeight="extrabold" p="0">
+                      {item.attendance.value} // なんだっけ？
+                    </Td> */}
                     <Td w="xl">
-                      <VStack align="flex-start">
+                      <VStack align={"left"}>
                         <Text>
                           【日付】{" "}
                           {format(new Date(item.registerDate), "yyyy-MM-dd", {
@@ -183,8 +187,8 @@ const CandidateRoot: FC<CandidateAreaProps> = (props) => {
                     <Td w="max-content" padding="0">
                       <Button
                         variant="solid"
-                        // color="whiteAlpha.900"
-                        // bgColor="orange.300"
+                        w={"min-content"}
+                        fontSize={"sm"}
                         colorScheme="orange"
                         onClick={() => {
                           candidateDispatch({
@@ -195,7 +199,7 @@ const CandidateRoot: FC<CandidateAreaProps> = (props) => {
                           });
                         }}
                       >
-                        削除
+                        リストから外す
                       </Button>
                     </Td>
                   </Tr>
@@ -205,10 +209,13 @@ const CandidateRoot: FC<CandidateAreaProps> = (props) => {
           </Table>
         </TableContainer>
       </Box>
-      <Box mt="10">
+      <Box mt="12">
         <Box h="maxContent">
           <Center h="100%">
             <Button
+              fontSize={"xl"}
+              fontWeight={"bold"}
+              p={"30"}
               colorScheme="teal"
               variant="solid"
               type="button"
