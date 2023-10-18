@@ -7,7 +7,7 @@ import { type InquiryItem, type Student } from "@/Config/SheetData";
 import { ScreenSpinner } from "@/app/client/components/Index";
 import SendingModal, { type ModalMessage } from "../Screen/Modal";
 import { HavingListToast } from "../Screen/Toast";
-import CandidateArea from "./components/Candidate/CandidateArea";
+import CandidateRoot from "./components/Candidate/CandidateRoot";
 import Form from "./components/Form";
 import formDefaultValues from "./form-default-values";
 import {
@@ -252,7 +252,7 @@ const FormRoot: FC<FormProps> = (props) => {
         />
       </FormProvider>
       {candidatesState.length > 0 && (
-        <CandidateArea
+        <CandidateRoot
           candidatesState={candidatesState}
           onOpenModal={onOpen}
           onDefaultForm={onReset}
