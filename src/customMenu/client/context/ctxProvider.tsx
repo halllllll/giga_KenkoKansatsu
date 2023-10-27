@@ -2,7 +2,7 @@ import { type FC, useState, useEffect, type ReactNode } from "react";
 import { Box, Center } from "@chakra-ui/react";
 import { ClimbingBoxLoader } from "react-spinners";
 import { CustomMenuCtx } from "@/customMenu/client/App";
-import { getDomainAPI } from "../API/MenuData";
+import { getDomainAPI, getWebAppUrlAPI } from "../API/MenuData";
 import { type MenuCtxType } from "./context";
 
 type Props = {
@@ -16,11 +16,15 @@ const CtxProvider: FC<Props> = ({ children }) => {
     let isMounted = false;
     const f = async () => {
       setIsloading(true);
-      const ret = await getDomainAPI();
+      const [domain, url] = await Promise.all([
+        getDomainAPI(),
+        getWebAppUrlAPI(),
+      ]);
       if (!isMounted) {
-        setData({ domain: ret });
-        console.log(`YOYOYOY!! chant getto dekita?`);
-        console.table(ret);
+        setData({ domain, appUrl: url });
+
+        console.log(`sheet url: ${url}`);
+        console.table(domain);
         console.log("↑↑↑↑↑");
         isMounted = true;
         setIsloading(false);

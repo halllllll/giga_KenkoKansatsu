@@ -18,8 +18,16 @@ export const doGet = (): GoogleAppsScript.HTML.HtmlOutput => {
 };
 
 /* Custom Menu APIs */
+// sheet url
+const getWebAppUrl = (): string => {
+  const url = ScriptApp.getService().getUrl();
+
+  return url;
+};
+
 // get domain for teacher account
 const getTeacherDomainData = (): AboutDomain => {
+  Logger.log("やってやるぜ！");
   const domain = getTeacherDomain();
   console.log(`get domain: ${domain ?? "oh no, it's null..."}`);
 
@@ -57,6 +65,7 @@ global.onOpen = onOpen;
 global.doGet = doGet;
 
 // These functions are invoked when the front-end is first accessed
+global.getWebAppUrl = getWebAppUrl;
 global.getSpreadSheetName = getSpreadSheetName;
 global.getSpreadSheetUrl = getSpreadSheetUrl;
 global.postFormValues = postFormValues;
@@ -69,6 +78,7 @@ global.setTeacherDomainData = setTeacherDomainData;
 // Export to frontend (gas-client)
 export {
   getSpreadSheetName,
+  getWebAppUrl,
   getSpreadSheetUrl,
   postFormValues,
   genFormViewData,

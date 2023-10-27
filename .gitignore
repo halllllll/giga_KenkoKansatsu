@@ -28,3 +28,4 @@ appsscript.json
 *.njsproj
 *.sln
 *.sw?
+.env

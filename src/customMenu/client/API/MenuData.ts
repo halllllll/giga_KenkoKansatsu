@@ -1,6 +1,23 @@
 import { type SetDomainResult, type AboutDomain } from "@/Config/MenuResponse";
 import { serverFunctions, isGASEnvironment } from "./serverFunctions";
 
+const getWebAppUrlAPI = async (): Promise<string> => {
+  if (isGASEnvironment()) {
+    const ret = await serverFunctions.getWebAppUrl();
+
+    return ret;
+  } else {
+    console.log("local test");
+
+    return await new Promise((resolve) => {
+      setTimeout(() => {
+        console.log("mock - having domain");
+        resolve("https://sample.com");
+      }, 1000);
+    });
+  }
+};
+
 const getDomainAPI = async (): Promise<AboutDomain> => {
   if (isGASEnvironment()) {
     const ret = await serverFunctions.getTeacherDomainData();
@@ -41,4 +58,4 @@ const setDomainAPI = async (domain: string): Promise<SetDomainResult> => {
   }
 };
 
-export { getDomainAPI, setDomainAPI };
+export { getDomainAPI, setDomainAPI, getWebAppUrlAPI };
