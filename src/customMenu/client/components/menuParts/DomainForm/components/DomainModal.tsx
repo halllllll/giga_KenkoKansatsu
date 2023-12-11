@@ -31,8 +31,6 @@ const DomainModal: FC<ModalProps> = (props) => {
     throw Error("null context");
   }
   const domain = c.domain;
-  console.log("domain???");
-  console.table(domain);
 
   // TEST: モーダルを開いたときにドメインを取得してくる
 

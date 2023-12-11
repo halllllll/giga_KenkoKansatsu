@@ -23,9 +23,6 @@ const CtxProvider: FC<Props> = ({ children }) => {
       if (!isMounted) {
         setData({ domain, appUrl: url });
 
-        console.log(`sheet url: ${url}`);
-        console.table(domain);
-        console.log("↑↑↑↑↑");
         isMounted = true;
         setIsloading(false);
       }

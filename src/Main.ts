@@ -27,9 +27,7 @@ const getWebAppUrl = (): string => {
 
 // get domain for teacher account
 const getTeacherDomainData = (): AboutDomain => {
-  Logger.log("やってやるぜ！");
   const domain = getTeacherDomain();
-  console.log(`get domain: ${domain ?? "oh no, it's null..."}`);
 
   return domain === null
     ? {
