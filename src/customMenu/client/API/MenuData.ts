@@ -12,7 +12,7 @@ const getWebAppUrlAPI = async (): Promise<string> => {
     return await new Promise((resolve) => {
       setTimeout(() => {
         console.log("mock - having domain");
-        resolve("https://sample.com");
+        resolve("https://example.com");
       }, 1000);
     });
   }

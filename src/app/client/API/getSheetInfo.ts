@@ -1,3 +1,4 @@
+import { devFetch } from "./devFetch";
 import { serverFunctions, isGASEnvironment } from "./serverFunctions";
 
 const SheetNameAPI = async (): Promise<string> => {
@@ -7,8 +8,10 @@ const SheetNameAPI = async (): Promise<string> => {
     return ret;
   } else {
     return await new Promise((resolve) => {
-      setTimeout(() => {
-        resolve("THIS IS PSEUDO TITLE");
+      setTimeout(async () => {
+        // resolve("THIS IS PSEUDO TITLE");
+        const res = await devFetch<Record<"title", string>>("/api/title");
+        resolve(res.title);
       }, 1500);
     });
   }
