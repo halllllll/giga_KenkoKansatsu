@@ -13,7 +13,6 @@ const postFormValueDataAPI = async (
   userId?: string
 ): Promise<postDataResult> => {
   if (isGASEnvironment()) {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const ret: postDataResult = await serverFunctions.postFormValues(
       JSON.stringify({ data, userId })
     );

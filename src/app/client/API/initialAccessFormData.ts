@@ -1,5 +1,6 @@
-/* eslint-disable import/extensions */
 import { type FormViewResponse } from "@/Config/Response";
+import { type InquiryItem, type Student } from "@/Config/SheetData";
+import { devFetch } from "./devFetch";
 import { serverFunctions, isGASEnvironment } from "./serverFunctions";
 
 const FormViewDataAPI = async (): Promise<FormViewResponse> => {
@@ -10,8 +11,8 @@ const FormViewDataAPI = async (): Promise<FormViewResponse> => {
   } else {
     // in dev (treat as educator)
     const [inquiryStub, memberStub] = await Promise.all([
-      import("./stubs/formInquiries.json"),
-      import("./stubs/formMember.json"),
+      devFetch<InquiryItem>("/api/inquiries"),
+      devFetch<Student>("/api/students"),
     ]);
 
     return await new Promise((resolve) => {
@@ -19,8 +20,8 @@ const FormViewDataAPI = async (): Promise<FormViewResponse> => {
         const ret = {
           userType: "educator",
           userId: "educator@example.mail",
-          InquiryItem: inquiryStub.Inquiries,
-          Students: memberStub.Students,
+          InquiryItem: inquiryStub,
+          Students: memberStub,
         };
         resolve(ret as FormViewResponse);
       }, 1500);

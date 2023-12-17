@@ -2,8 +2,6 @@ import { type FC, useReducer } from "react";
 import { Box, Container, HStack, Text } from "@chakra-ui/react";
 import { Footer, Header, FormRoot } from "@/app/client/components/Index";
 import { type FormValues } from "./components/Form/form-select-data";
-import InfoBlockForGeneral from "./components/_Info/forGeneral";
-
 import { Ctx } from "./context";
 import { useMemberData } from "./hooks/useMemberData";
 import { useSheetNameAndUrl } from "./hooks/useSheetNameAndUrl";
@@ -36,7 +34,7 @@ const App: FC = () => {
         <Header headerTitle={sheetName} spreadsheetLink={sheetUrl} />
         <Container maxW="3xl">
           {accessedUserType === "general" ? (
-            <InfoBlockForGeneral />
+            <></>
           ) : (
             <Box py={4} paddingLeft={3}>
               <HStack>

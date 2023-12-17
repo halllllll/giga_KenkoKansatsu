@@ -22,7 +22,7 @@ const SheetUrlAPI = async (): Promise<string> => {
   } else {
     return await new Promise((resolve) => {
       setTimeout(() => {
-        resolve("");
+        resolve("https://github.com/halllllll/giga_KenkoKansatsu");
       }, 1500);
     });
   }

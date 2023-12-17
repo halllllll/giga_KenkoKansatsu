@@ -1,21 +1,7 @@
 import { type FC } from "react";
-import {
-  AttachmentIcon,
-  ChatIcon,
-  HamburgerIcon,
-  InfoOutlineIcon,
-} from "@chakra-ui/icons";
-import {
-  Box,
-  Flex,
-  Heading,
-  Menu,
-  MenuItem,
-  MenuButton,
-  MenuList,
-  Spacer,
-  IconButton,
-} from "@chakra-ui/react";
+import { Box, Flex, Heading, Spacer, useDisclosure } from "@chakra-ui/react";
+import DrawerRoot from "@/app/client/components/Screen/History/DrawerRoot";
+import HeaderMenu from "./HeaderMenu";
 
 type HeaderProps = {
   headerTitle: string;
@@ -23,8 +9,17 @@ type HeaderProps = {
 };
 
 const Header: FC<HeaderProps> = ({ headerTitle, spreadsheetLink }) => {
+  const {
+    isOpen: isDrawerOpen,
+    onOpen: onDrowerOpen,
+    onClose: onDrowerClose,
+  } = useDisclosure();
+
   return (
     <Box w="full" bgColor="#C1DBDA">
+      {isDrawerOpen && (
+        <DrawerRoot isOpen={isDrawerOpen} onClose={onDrowerClose} />
+      )}
       <Box maxW={"3xl"} mx={"auto"}>
         <Flex
           minW={"xl"}
@@ -38,23 +33,9 @@ const Header: FC<HeaderProps> = ({ headerTitle, spreadsheetLink }) => {
             {headerTitle}
           </Heading>
           <Spacer />
-          <Menu>
-            <MenuButton as={IconButton} icon={<HamburgerIcon />} />
-            <MenuList>
-              <MenuItem
-                icon={<AttachmentIcon />}
-                as="a"
-                href={spreadsheetLink}
-                target="_blank"
-              >
-                SpreadSheetを開く
-              </MenuItem>
-              <MenuItem icon={<InfoOutlineIcon />}>
-                【未実装】使い方をみる
-              </MenuItem>
-              <MenuItem icon={<ChatIcon />}>【DEV】リリースノート</MenuItem>
-            </MenuList>
-          </Menu>
+          {spreadsheetLink && (
+            <HeaderMenu link={spreadsheetLink} onDrawerOpen={onDrowerOpen} />
+          )}
         </Flex>
       </Box>
     </Box>
