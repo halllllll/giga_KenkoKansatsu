@@ -9,7 +9,6 @@ const SheetNameAPI = async (): Promise<string> => {
   } else {
     return await new Promise((resolve) => {
       setTimeout(async () => {
-        // resolve("THIS IS PSEUDO TITLE");
         const res = await devFetch<Record<"title", string>>("/api/title");
         resolve(res.title);
       }, 1500);

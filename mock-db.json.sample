@@ -1,0 +1,203 @@
+{
+  "title": {
+    "title": "THIS IS PSEUDO TITLE"
+  },
+  "inquiries": {
+    "Condition": [
+      "風邪",
+      "COVID 19",
+      "腹痛",
+      "筋肉痛",
+      "深爪",
+      "虫歯",
+      "寝違え",
+      "寝不足",
+      "ボランティア"
+    ],
+    "Attendance": [
+      "遅刻",
+      "休み",
+      "行けたら行く",
+      "VR登校",
+      "忌引"
+    ]
+  },
+  "students": [
+    {
+      "Grade": "1",
+      "Class": "スリザリン",
+      "Name": "寺田　友",
+      "Kana": "てらだ　とも",
+      "Number": 5,
+      "Role": "児童生徒"
+    },
+    {
+      "Grade": "4",
+      "Class": "グリフィンドール",
+      "Name": "松田　勇気",
+      "Kana": "まつだ　ゆうき",
+      "Number": 14,
+      "Role": "児童生徒"
+    },
+    {
+      "Grade": "2",
+      "Class": "スリザリン",
+      "Name": "Bernardin",
+      "Kana": "べるなるだん",
+      "Number": 16,
+      "Role": "児童生徒"
+    },
+    {
+      "Grade": "1",
+      "Class": "レイブンクロー",
+      "Name": "Ai KUBO",
+      "Kana": "くぼ　あい",
+      "Number": 18,
+      "Role": "児童生徒"
+    },
+    {
+      "Grade": "3",
+      "Class": "ハッフルパフ",
+      "Name": "John Takahashi",
+      "Kana": "じょん たかはし",
+      "Number": 20,
+      "Role": "児童生徒"
+    },
+    {
+      "Grade": "4",
+      "Class": "スリザリン",
+      "Name": "吉田 裕次郎",
+      "Kana": "よしだ　ゆうじろう",
+      "Number": 22,
+      "Role": "児童生徒"
+    },
+    {
+      "Grade": "1",
+      "Class": "グリフィンドール",
+      "Name": "伊東　南",
+      "Kana": "いとう　みなみ",
+      "Number": 24,
+      "Role": "児童生徒"
+    },
+    {
+      "Grade": "3",
+      "Class": "スリザリン",
+      "Name": "韓 未来",
+      "Kana": "はん みく",
+      "Number": 26,
+      "Role": "児童生徒"
+    },
+    {
+      "Grade": "2",
+      "Class": "ハッフルパフ",
+      "Name": "にしむら　ふゆ",
+      "Kana": "にしむら　ふゆ",
+      "Number": 28,
+      "Role": "児童生徒"
+    },
+    {
+      "Grade": "1",
+      "Class": "スリザリン",
+      "Name": "宮本　番",
+      "Kana": "みやもと　ばん",
+      "Number": 30,
+      "Role": "児童生徒"
+    },
+    {
+      "Grade": "4",
+      "Class": "レイブンクロー",
+      "Name": "Suzumura",
+      "Kana": "すずむら",
+      "Number": 32,
+      "Role": "児童生徒"
+    },
+    {
+      "Grade": "1",
+      "Class": "スリザリン",
+      "Name": "中村　太陽",
+      "Kana": "なかむら　たいよう",
+      "Number": 7,
+      "Role": "児童生徒"
+    },
+    {
+      "Grade": "2",
+      "Class": "ハッフルパフ",
+      "Name": "鈴木　月",
+      "Kana": "すずき　つき",
+      "Number": 4,
+      "Role": "児童生徒"
+    },
+    {
+      "Grade": "4",
+      "Class": "レイブンクロー",
+      "Name": "Hanna Leclère",
+      "Kana": "はんな　れくれーる",
+      "Number": 1,
+      "Role": "児童生徒"
+    },
+    {
+      "Grade": "3",
+      "Class": "スリザリン",
+      "Name": "Teriyaki WATANABE",
+      "Kana": "わたなべ てりやき",
+      "Number": 6,
+      "Role": "児童生徒"
+    },
+    {
+      "Grade": "3",
+      "Class": "グリフィンドール",
+      "Name": "Leveque",
+      "Kana": "るうべーく",
+      "Number": 17,
+      "Role": "児童生徒"
+    },
+    {
+      "Grade": "4",
+      "Class": "スリザリン",
+      "Name": "Durand",
+      "Kana": "でゅらん",
+      "Number": 3,
+      "Role": "児童生徒"
+    },
+    {
+      "Grade": "2",
+      "Class": "グリフィンドール",
+      "Name": "Gautier",
+      "Kana": "ごーてぃえ",
+      "Number": 11,
+      "Role": "児童生徒"
+    },
+    {
+      "Grade": "3",
+      "Class": "スリザリン",
+      "Name": "Moreau",
+      "Kana": "もろー",
+      "Number": 15,
+      "Role": "児童生徒"
+    },
+    {
+      "Grade": "1",
+      "Class": "レイブンクロー",
+      "Name": "Rousseau",
+      "Kana": "るーそー",
+      "Number": 19,
+      "Role": "児童生徒"
+    },
+    {
+      "Grade": "4",
+      "Class": "レイブンクロー",
+      "Name": "流川　Leroy",
+      "Kana": "るかわ　るろわ",
+      "Number": 7,
+      "Role": "児童生徒"
+    },
+    {
+      "Grade": "3",
+      "Class": "レイブンクロー",
+      "Name": "Blanchard",
+      "Kana": "ぶらんしゃーる",
+      "Number": 10,
+      "Role": "児童生徒"
+    }
+  ]
+}

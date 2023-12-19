@@ -25,7 +25,7 @@ const getInquiryData = (): inquiryDataResult => {
     if (formSheet === null) {
       throw new NothingFormSheetError(`NOT Found "${sheetName}" Sheet`);
     }
-    const inquiryArr = formSheet.getDataRange().getValues() as string[][];
+    const inquiryArr = formSheet.getDataRange().getDisplayValues();
     // カラム方向でのデータがほしいので転置
     const inquiry = inquiryArr.reduce(
       (preVal, curVal, curIdx) => {

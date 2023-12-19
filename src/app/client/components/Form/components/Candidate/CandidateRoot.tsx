@@ -153,9 +153,6 @@ const CandidateRoot: FC<CandidateAreaProps> = (props) => {
                         </Text>
                       </VStack>
                     </Td>
-                    {/* <Td fontWeight="extrabold" p="0">
-                      {item.attendance.value} // なんだっけ？
-                    </Td> */}
                     <Td w="xl">
                       <VStack align={"left"}>
                         <Text>
@@ -175,12 +172,12 @@ const CandidateRoot: FC<CandidateAreaProps> = (props) => {
                         <Text>
                           【出欠・遅刻】
                           <br />
-                          {item.condition?.map((v) => v.value).join("、")}
+                          {item.attendance.value}
                         </Text>
                         <Text>
                           【症状・理由】
                           <br />
-                          {item.status}
+                          {item.condition?.map((v) => v.value).join("、")}
                         </Text>
                       </VStack>
                     </Td>

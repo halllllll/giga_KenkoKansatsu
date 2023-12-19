@@ -192,9 +192,9 @@ const FormRoot: FC<FormProps> = (props) => {
       grade: methods.getValues().grade,
       name: null,
       className: methods.getValues().className,
-      status: "",
       attendance: { label: "", value: "" },
       condition: [],
+      status: "",
     });
     setCurName(null);
     setCurGrade(methods.getValues().grade);
