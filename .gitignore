@@ -3,6 +3,7 @@ bun.lockb
 
 # App
 mock-db.json
+temp-port.txt
 
 # Logs
 logs

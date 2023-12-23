@@ -3,7 +3,7 @@ import { ss, AnswerSheetHeaders } from "@/Config/Const";
 import { StoreSheetName } from "@/Config/SheetData";
 import {
   InvalidSheetArchtectureError,
-  NothingFormSheetError,
+  SheetNotFoundError,
 } from "@/Config/errors";
 import {
   type postDataRequestObj,
@@ -13,30 +13,44 @@ import { type FormValues } from "@/app/client/components/Form/form-select-data";
 
 const storeSheet = ss.getSheetByName(StoreSheetName);
 
-type postDataResult = {
-  status: null | "success" | "error";
-  error?: Error;
-  message?: string;
-  data?: any;
-};
+type postDataResult =
+  | {
+      success: true;
+    }
+  | {
+      success: false;
+      error: Error;
+      message: string;
+      data?: any;
+    };
 
 const postFormValues = (data: postDataRequest): postDataResult => {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const requestObj: postDataRequestObj = JSON.parse(data) as postDataRequestObj;
   const formValues: FormValues[] = requestObj.data;
   const userId = requestObj?.userId; // TODO: ...
-  const ret: postDataResult = { status: null };
   try {
     // validation
     if (storeSheet === null) {
-      throw new NothingFormSheetError(`NOT Found "${StoreSheetName}" Sheet`);
+      return {
+        success: false,
+        error: new SheetNotFoundError(`NOT Found "${StoreSheetName}" Sheet`),
+        message: `not found sheet named ${StoreSheetName}`,
+      };
     }
     const answerValues = storeSheet.getDataRange().getDisplayValues();
     const headers = answerValues[0];
     if (!headers.every((header) => AnswerSheetHeaders.includes(header))) {
       console.error("wrong headers!!!");
       console.error(`header of ${StoreSheetName} : ${headers.join(", ")}`);
-      throw new InvalidSheetArchtectureError("INVALID sheet architecture");
+
+      return {
+        success: false,
+        error: new InvalidSheetArchtectureError("INVALID sheet architecture"),
+        message: `header of ${
+          storeSheet?.getName() ?? "<undefined sheet>"
+        } archtecture is weired.`,
+      };
     }
     const TIMESTAMP = new Date();
     for (const formValue of formValues) {
@@ -67,26 +81,17 @@ const postFormValues = (data: postDataRequest): postDataResult => {
         storeSheet.appendRow(row);
       }
     }
-    ret.status = "success";
+
+    return { success: true };
   } catch (err) {
-    ret.status = "error";
-    if (err instanceof NothingFormSheetError) {
-      ret.error = err;
-      ret.message = `not found sheet named ${StoreSheetName}`;
-      console.error(err);
-    } else if (err instanceof InvalidSheetArchtectureError) {
-      ret.error = err;
-      ret.message = `header of ${
-        storeSheet?.getName() ?? "<undefined sheet>"
-      } archtecture is weired.`;
-      console.error(err);
-    } else {
-      ret.error = new Error("undefined error");
-      console.error(err);
-    }
-  } finally {
-    // eslint-disable-next-line no-unsafe-finally
-    return ret;
+    const e = err as Error;
+    console.error(e);
+
+    return {
+      success: false,
+      error: e,
+      message: `undefined`,
+    };
   }
 };
 

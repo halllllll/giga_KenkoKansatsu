@@ -84,7 +84,7 @@ const CandidateRoot: FC<CandidateAreaProps> = (props) => {
       new Promise((resolve, _reject) =>
         setTimeout(() => {
           const ret: postDataResult = {
-            status: "error",
+            success: false,
             error: new TimeoutError("time out"),
             message: "時間がかかりすぎています。やり直してください。",
           };
@@ -96,26 +96,21 @@ const CandidateRoot: FC<CandidateAreaProps> = (props) => {
     setSubmitState("isSubmitted");
 
     onOpenModal();
-    switch (result.status) {
-      case "success": {
-        onDefaultForm();
-        candidateDispatch({
-          type: "RESET",
-        });
-        setModalMessage({
-          headerText: "送信完了",
-          bodyText: `${candidatesState.length} 件送信しました。ありがとうございます！`,
-        });
-        break;
-      }
-      case "error": {
-        console.error(result.error);
-        setModalMessage({
-          headerText: result.error?.name ?? "Error",
-          bodyText: result.message ?? "some error occured",
-        });
-        break;
-      }
+    if (result.success) {
+      onDefaultForm();
+      candidateDispatch({
+        type: "RESET",
+      });
+      setModalMessage({
+        headerText: "送信完了",
+        bodyText: `${candidatesState.length} 件送信しました。ありがとうございます！`,
+      });
+    } else {
+      console.error(result.error);
+      setModalMessage({
+        headerText: result.error?.name ?? "Error",
+        bodyText: result.message ?? "some error occured",
+      });
     }
   };
 

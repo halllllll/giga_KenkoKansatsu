@@ -2,7 +2,8 @@
     "env": {
       "browser": true,
       "es2022": true,
-      "jest/globals": true
+      "jest/globals": true,
+      "node": true
     },
     "extends": [
       "eslint:recommended",
@@ -19,7 +20,7 @@
     "parserOptions": {
       "ecmaVersion": "latest",
       "tsconfigRootDir": ".",
-      "project": ["./tsconfig.json"],
+      "project": ["./tsconfig.json", "./json-mock-server.cts"],
       "sourceType": "module"
     },
     "plugins": [
@@ -129,4 +130,3 @@
       }
     }
   }
-  

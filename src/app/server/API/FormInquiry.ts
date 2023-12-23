@@ -8,7 +8,7 @@ import {
   type InquiryItem,
   type Role,
 } from "@/Config/SheetData";
-import { NothingFormSheetError } from "@/Config/errors";
+import { SheetNotFoundError } from "@/Config/errors";
 
 type inquiryDataResult = {
   status: null | "success" | "error";
@@ -23,7 +23,7 @@ const getInquiryData = (): inquiryDataResult => {
   const ret: inquiryDataResult = { status: null };
   try {
     if (formSheet === null) {
-      throw new NothingFormSheetError(`NOT Found "${sheetName}" Sheet`);
+      throw new SheetNotFoundError(`NOT Found "${sheetName}" Sheet`);
     }
     const inquiryArr = formSheet.getDataRange().getDisplayValues();
     // カラム方向でのデータがほしいので転置
@@ -50,7 +50,7 @@ const getInquiryData = (): inquiryDataResult => {
   } catch (err) {
     console.error(err);
     ret.status = "error";
-    if (err instanceof NothingFormSheetError) {
+    if (err instanceof SheetNotFoundError) {
       ret.error = err;
     } else {
       ret.error = new Error("undefined error occured...");
@@ -75,7 +75,7 @@ const getMemberData = (): memberDataResult => {
   try {
     if (studentSheet === null) {
       console.error(`can't find the sheet named [${MemberSheetName}]`);
-      throw new NothingFormSheetError(`NOT Found "${MemberSheetName}" Sheet`);
+      throw new SheetNotFoundError(`NOT Found "${MemberSheetName}" Sheet`);
     }
     const students: Student[] = studentSheet
       .getDataRange()
@@ -104,7 +104,7 @@ const getMemberData = (): memberDataResult => {
   } catch (err) {
     console.error(err);
     ret.status = "error";
-    if (err instanceof NothingFormSheetError) {
+    if (err instanceof SheetNotFoundError) {
       ret.error = err;
       ret.message = ""; // TODO: not need?
     } else {

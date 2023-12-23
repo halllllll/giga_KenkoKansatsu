@@ -21,7 +21,7 @@ const postFormValueDataAPI = async (
   } else {
     return await new Promise((resolve) => {
       setTimeout(() => {
-        resolve({ status: "success" });
+        resolve({ success: true });
       }, 3000);
     });
   }
